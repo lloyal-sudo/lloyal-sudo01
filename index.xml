@@ -8,6 +8,1888 @@
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
         <lastBuildDate>Mon, 16 Mar 2026 15:55:12 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Cross-Site Scripting（XSS）详解</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/cross-site-scriptingxss%E8%AF%A6%E8%A7%A3/</link>
+        <pubDate>Mon, 16 Mar 2026 15:55:12 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/cross-site-scriptingxss%E8%AF%A6%E8%A7%A3/</guid>
+        <description>&lt;h2 id=&#34;一什么是-xss&#34;&gt;一、什么是 XSS
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Cross-Site Scripting（跨站脚本攻击）&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;攻击者&lt;strong&gt;往网页里注入恶意 JavaScript 代码&lt;/strong&gt;，让浏览器执行&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;浏览器无法区分是“正常代码”还是“恶意代码”，就会直接运行&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;本质原因：&lt;strong&gt;用户输入未经过滤，直接输出到页面 / 存入数据库&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;二xss-能做什么危害&#34;&gt;二、XSS 能做什么（危害）
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;偷取 Cookie、Session，&lt;strong&gt;冒充用户登录&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;劫持账号、发帖、删帖、转账&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;监听用户操作、跳转到钓鱼网站&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;获取用户浏览器信息、内网信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三xss-三大类型&#34;&gt;三、XSS 三大类型
+&lt;/h2&gt;&lt;h3 id=&#34;1-反射型-xss非持久型&#34;&gt;1. 反射型 XSS（非持久型）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;恶意代码放在 &lt;strong&gt;URL 参数&lt;/strong&gt;里&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;诱导用户点开链接，代码直接在页面执行&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;常见场景：搜索框、URL 传参直接显示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;例子：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;http://xxx.com/search?keyword=&amp;lt;script&amp;gt;stealCookie()&amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;2-存储型-xss持久型最危险&#34;&gt;2. 存储型 XSS（持久型，最危险）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;恶意代码&lt;strong&gt;存入数据库&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;所有访问该页面的用户都会中招&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;常见场景：评论、留言、昵称、个人简介&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-dom-型-xss&#34;&gt;3. DOM 型 XSS
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;漏洞出在&lt;strong&gt;前端 JS 直接处理用户输入&lt;/strong&gt;，修改页面 DOM&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;数据不经过后端、不进数据库，纯前端漏洞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;例子：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;content&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;hash&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;substr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getElementById&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;msg&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;innerHTML&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;四xss-根本原因&#34;&gt;四、XSS 根本原因
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;信任用户输入&lt;/strong&gt;：任何输入都可能是恶意的&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;未编码、未过滤直接渲染&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;前端使用 &lt;code&gt;innerHTML&lt;/code&gt;、&lt;code&gt;document.write&lt;/code&gt; 等危险操作&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;五xss-解决方法最实用最全&#34;&gt;五、XSS 解决方法（最实用、最全）
+&lt;/h1&gt;&lt;h2 id=&#34;1-后端对输出到-html-的内容做转义编码&#34;&gt;1. 后端：对输出到 HTML 的内容做&lt;strong&gt;转义（编码）&lt;/strong&gt;
+&lt;/h2&gt;&lt;p&gt;把特殊字符换成实体，浏览器只会显示，不会执行：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt; → &lt;code&gt;&amp;amp;lt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;gt;&lt;/code&gt; → &lt;code&gt;&amp;amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;quot;&lt;/code&gt; → &lt;code&gt;&amp;amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&#39;&lt;/code&gt; → &lt;code&gt;&amp;amp;#x27;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;amp;&lt;/code&gt; → &lt;code&gt;&amp;amp;amp;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;只要&lt;strong&gt;输出到 HTML 前统一转义&lt;/strong&gt;，绝大多数 XSS 直接堵住。&lt;/p&gt;
+&lt;h2 id=&#34;2-永远不要信任用户输入&#34;&gt;2. 永远不要信任用户输入
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;对输入做&lt;strong&gt;白名单过滤&lt;/strong&gt;（只允许合法内容）&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;禁止/过滤：&lt;code&gt;&amp;lt;script&amp;gt;、javascript:、onclick、onload&lt;/code&gt; 等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-前端避免危险操作&#34;&gt;3. 前端避免危险操作
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;尽量用 &lt;code&gt;textContent&lt;/code&gt;，&lt;strong&gt;不用 &lt;code&gt;innerHTML&lt;/code&gt;&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;不用 &lt;code&gt;eval()&lt;/code&gt;、&lt;code&gt;setTimeout(字符串)&lt;/code&gt; 执行用户输入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-使用-cookie-httponly最重要防护之一&#34;&gt;4. 使用 Cookie HttpOnly（最重要防护之一）
+&lt;/h2&gt;&lt;p&gt;设置 Cookie 时加上 &lt;code&gt;HttpOnly&lt;/code&gt;：&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JS 无法通过 &lt;code&gt;document.cookie&lt;/code&gt; 读取&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;即使有 XSS，也偷不走 Cookie&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;5-csp内容安全策略&#34;&gt;5. CSP（内容安全策略）
+&lt;/h2&gt;&lt;p&gt;HTTP 头：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Content-Security-Policy: default-src &amp;#39;self&amp;#39;; script-src &amp;#39;self&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;作用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只允许信任域名加载 JS&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;禁止内联脚本、禁止 eval&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;是目前&lt;strong&gt;最强的 XSS 防护手段之一&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6-验证码referer-校验token&#34;&gt;6. 验证码、Referer 校验、Token
+&lt;/h2&gt;&lt;p&gt;防止攻击者构造恶意链接批量利用。&lt;/p&gt;
+&lt;h2 id=&#34;7-使用成熟框架&#34;&gt;7. 使用成熟框架
+&lt;/h2&gt;&lt;p&gt;Vue、React、Angular &lt;strong&gt;默认对插值内容转义&lt;/strong&gt;，天然防大部分 XSS。&lt;br&gt;
+只有你刻意用 &lt;code&gt;v-html&lt;/code&gt;、&lt;code&gt;dangerouslySetInnerHTML&lt;/code&gt; 才会有风险。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;六最简总结&#34;&gt;六、最简总结
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;XSS = 注入恶意 JS 让浏览器执行&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;分三类：&lt;strong&gt;反射、存储、DOM&lt;/strong&gt;，存储型最危险&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;根治方案：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;输入&lt;strong&gt;白名单过滤&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;输出&lt;strong&gt;HTML 转义&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Cookie &lt;strong&gt;HttpOnly&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;开启 &lt;strong&gt;CSP&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;前端少用 &lt;code&gt;innerHTML&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>Burt Force(暴力破解漏洞)</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/burt-force%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E6%BC%8F%E6%B4%9E/</link>
+        <pubDate>Sun, 15 Mar 2026 14:56:57 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/burt-force%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E6%BC%8F%E6%B4%9E/</guid>
+        <description>&lt;p&gt;暴力破解（Brute Force） 是攻击者通过自动化工具（如 Burp Suite Intruder） 对目标系统的认证入口（登录、验证码、API 密钥等）进行海量尝试，以猜解有效凭证的攻击方式；Burp Suite 是 Web 安全领域最常用的暴力破解工具，核心依赖Intruder 模块实现自动化字典 / 组合攻击。&lt;/p&gt;
+&lt;h3 id=&#34;一漏洞简介&#34;&gt;一、漏洞简介
+&lt;/h3&gt;&lt;h4 id=&#34;1-核心原理&#34;&gt;1. 核心原理
+&lt;/h4&gt;&lt;p&gt;攻击者利用工具批量替换请求中的用户名、密码、验证码、Token等敏感参数，通过分析响应差异（状态码、响应长度、关键词、跳转行为）判断是否猜解成功。&lt;/p&gt;
+&lt;h4 id=&#34;2-常见攻击场景&#34;&gt;2. 常见攻击场景
+&lt;/h4&gt;&lt;p&gt;登录表单（用户名 + 密码）暴力破解&lt;br&gt;
+短信 / 邮箱验证码爆破（4-6 位数字，无次数限制）&lt;br&gt;
+API 接口密钥、会话 Token 猜解&lt;br&gt;
+后台管理路径、文件目录枚举&lt;/p&gt;
+&lt;h4 id=&#34;3-burp-suite-暴力破解核心模块intruder&#34;&gt;3. Burp Suite 暴力破解核心模块（Intruder）
+&lt;/h4&gt;&lt;p&gt;Sniper（狙击手）：单字典，逐个替换单个标记位置（如已知用户名，爆破密码）&lt;br&gt;
+Cluster bomb（集束炸弹）：多字典，全组合替换（同时爆破用户名 + 密码，请求量 = 用户数 × 密码数）&lt;br&gt;
+Pitchfork（草叉）：多字典，按索引一一对应替换（如用户 1 对应密码 1）&lt;br&gt;
+Battering ram（攻城锤）：单字典，同时替换所有标记位置&lt;/p&gt;
+&lt;h3 id=&#34;二burp-suite-暴力破解实战步骤以登录表单为例&#34;&gt;二、Burp Suite 暴力破解实战步骤（以登录表单为例）
+&lt;/h3&gt;&lt;h4 id=&#34;1-环境准备&#34;&gt;1. 环境准备
+&lt;/h4&gt;&lt;p&gt;启动 Burp Suite，Proxy 模块默认监听127.0.0.1:8080&lt;br&gt;
+浏览器配置代理（与 Burp 一致），关闭浏览器代理自动检测&lt;/p&gt;
+&lt;h4 id=&#34;2-捕获登录请求&#34;&gt;2. 捕获登录请求
+&lt;/h4&gt;&lt;p&gt;浏览器访问目标登录页，输入任意用户名 / 密码（如admin/123456）&lt;br&gt;
+Burp Proxy→Intercept 开启拦截，提交登录，捕获 POST 请求&lt;br&gt;
+右键请求→Send to Intruder（快捷键 Ctrl+I）&lt;/p&gt;
+&lt;h4 id=&#34;3-配置攻击位置positions&#34;&gt;3. 配置攻击位置（Positions）
+&lt;/h4&gt;&lt;p&gt;清除默认标记（点击Clear §）&lt;br&gt;
+选中username和password参数值，点击Add §标记为爆破位置&lt;br&gt;
+攻击类型选择：已知用户名选Sniper；未知用户名选Cluster bomb&lt;/p&gt;
+&lt;h4 id=&#34;4-加载攻击字典payloads&#34;&gt;4. 加载攻击字典（Payloads）
+&lt;/h4&gt;&lt;p&gt;Payload Set 1（用户名）：选择Simple list，加载用户名字典（如users.txt）&lt;br&gt;
+Payload Set 2（密码）：选择Simple list，加载密码字典（如rockyou.txt、Top1000 弱口令）&lt;br&gt;
+可选：设置Payload Processing（如大小写转换、添加后缀）&lt;/p&gt;
+&lt;h4 id=&#34;5-攻击优化options&#34;&gt;5. 攻击优化（Options）
+&lt;/h4&gt;&lt;p&gt;Throttle：设置请求间隔（如 1000ms），避免触发 WAF/IP 封禁&lt;br&gt;
+Grep - Match：添加失败关键词（如 “登录失败”“错误”），快速筛选成功请求&lt;/p&gt;
+&lt;h4 id=&#34;6-启动攻击与结果分析&#34;&gt;6. 启动攻击与结果分析
+&lt;/h4&gt;&lt;p&gt;点击Start attack，Intruder 自动发送所有组合请求&lt;br&gt;
+结果判断：&lt;br&gt;
+状态码异常（如302跳转、200成功）&lt;br&gt;
+响应长度与其他请求差异显著&lt;br&gt;
+无失败关键词匹配&lt;br&gt;
+验证成功凭证，完成登录&lt;/p&gt;
+&lt;h3 id=&#34;三暴力破解漏洞解决方法防御--修复&#34;&gt;三、暴力破解漏洞解决方法（防御 + 修复）
+&lt;/h3&gt;&lt;h4 id=&#34;1-服务端核心防护最有效&#34;&gt;1. 服务端核心防护（最有效）
+&lt;/h4&gt;&lt;p&gt;（1）登录失败限制（Rate Limiting）&lt;br&gt;
+单账户：连续失败 5-10 次，锁定账户 15-30 分钟&lt;br&gt;
+单 IP：单位时间（如 1 分钟）请求超阈值，临时封禁 IP&lt;br&gt;
+结合Cookie+UA+IP多维识别，防止 IP 伪造绕过&lt;br&gt;
+（2）强制验证码机制&lt;br&gt;
+登录失败≥3 次，触发图形 / 滑动 / 行为验证码（如 Google reCAPTCHA）&lt;br&gt;
+验证码有效期短（≤5 分钟）、一次性使用、后端校验（禁止前端校验）&lt;br&gt;
+短信 / 邮箱验证码：6 位数字 + 有效期≤5 分钟 + 次数限制（每日≤5 次）&lt;br&gt;
+（3）强化密码策略&lt;br&gt;
+强制密码复杂度：≥12 位 + 大小写 + 数字 + 特殊字符&lt;br&gt;
+禁止弱口令（如123456、admin、生日、姓名拼音）&lt;br&gt;
+密码定期更换（90 天），禁止重复使用历史密码&lt;br&gt;
+（4）Token 与会话安全&lt;br&gt;
+登录请求使用一次性 CSRF Token（后端生成、前端隐藏、每次请求刷新）&lt;br&gt;
+会话 Token高熵值、随机生成、有效期短，禁止在 URL 中传递&lt;br&gt;
+（5）WAF 与安全设备&lt;br&gt;
+部署 Web 应用防火墙（WAF），识别并拦截暴力破解流量&lt;br&gt;
+启用异常请求检测（高频、字典特征、UA 异常）&lt;/p&gt;
+&lt;h4 id=&#34;2-前端与用户层面防护&#34;&gt;2. 前端与用户层面防护
+&lt;/h4&gt;&lt;p&gt;前端禁用自动填充、禁止记住密码（敏感系统）&lt;br&gt;
+提示用户不重复使用密码、启用双因素认证（2FA）&lt;br&gt;
+登录页添加防机器人检测（如滑块、点击验证）&lt;/p&gt;
+&lt;h4 id=&#34;3-漏洞修复步骤操作流程&#34;&gt;3. 漏洞修复步骤（操作流程）
+&lt;/h4&gt;&lt;p&gt;漏洞定位：通过渗透测试 / 日志分析，确认存在暴力破解的入口（登录、验证码、API）&lt;br&gt;
+策略配置：&lt;br&gt;
+后端添加登录失败计数 + 账户锁定逻辑&lt;br&gt;
+集成验证码服务（如阿里云、腾讯云验证码）&lt;br&gt;
+配置WAF 规则拦截高频请求&lt;br&gt;
+代码加固：&lt;br&gt;
+后端校验所有参数，禁止前端信任&lt;br&gt;
+验证码 / Token后端生成 + 销毁，不暴露于前端源码&lt;br&gt;
+测试验证：&lt;br&gt;
+使用 Burp Suite 重新尝试爆破，验证防护生效&lt;br&gt;
+模拟高频请求，确认 IP / 账户锁定机制正常&lt;br&gt;
+日志监控：开启登录日志，实时监控异常登录行为，及时告警&lt;br&gt;&lt;/p&gt;
+&lt;h3 id=&#34;四关键注意事项&#34;&gt;四、关键注意事项
+&lt;/h3&gt;&lt;p&gt;暴力破解属于非法攻击行为，仅可在授权测试环境中使用&lt;br&gt;
+防御需多维度组合（失败限制 + 验证码 + 2FA），单一措施易被绕过&lt;br&gt;
+字典质量决定攻击效率，优先使用弱口令字典 + 社工字典组合&lt;/p&gt;
+&lt;h2 id=&#34;验证码绕过on-server完整步骤流程&#34;&gt;验证码绕过（on server）完整步骤流程
+&lt;/h2&gt;&lt;p&gt;这里指&lt;strong&gt;服务端校验不严&lt;/strong&gt;导致的验证码绕过，比如验证码未过期、可复用、未绑定会话等场景，以 Pikachu 靶场为例。&lt;/p&gt;
+&lt;h3 id=&#34;一漏洞原理&#34;&gt;一、漏洞原理
+&lt;/h3&gt;&lt;p&gt;服务端在验证验证码时存在缺陷：&lt;br&gt;
+验证码&lt;strong&gt;未销毁/未过期&lt;/strong&gt;，可重复使用&lt;br&gt;
+验证码&lt;strong&gt;未与当前会话绑定&lt;/strong&gt;，攻击者可复用他人有效验证码&lt;br&gt;
+验证码&lt;strong&gt;逻辑校验不严&lt;/strong&gt;（如固定值、弱复杂度）&lt;br&gt;
+验证码&lt;strong&gt;未在每次请求后刷新&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;攻击者可以：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;获取一次有效验证码&lt;br&gt;
+暴力破解用户名/密码，&lt;strong&gt;复用同一个验证码&lt;/strong&gt;&lt;br&gt;
+绕过验证码防护，完成暴力破解&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;二工具准备&#34;&gt;二、工具准备
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Burp Suite（中文版）&lt;br&gt;
+浏览器（Chrome/Firefox）&lt;br&gt;
+Pikachu 靶场：&lt;code&gt;http://127.0.0.1/pikachu/vul/burteforce/bf_server.php&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;三完整攻击步骤&#34;&gt;三、完整攻击步骤
+&lt;/h3&gt;&lt;h4 id=&#34;步骤-1获取有效验证码&#34;&gt;步骤 1：获取有效验证码
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;打开 Pikachu「验证码绕过（on server）」页面&lt;br&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;输入任意用户名、密码，&lt;strong&gt;手动输入一次正确的验证码&lt;/strong&gt;并提交&lt;br&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Burp 拦截到该登录请求包，包含参数：&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;username=xxx&amp;amp;password=xxx&amp;amp;vcode=xxxx&amp;amp;submit=Login&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;记录下当前有效的 &lt;code&gt;vcode&lt;/code&gt; 值（比如 &lt;code&gt;8848&lt;/code&gt;），这个验证码在服务端未销毁，可重复使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h4 id=&#34;步骤-2将请求发送到-intruder入侵者&#34;&gt;步骤 2：将请求发送到 Intruder（入侵者）
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;在 Burp 中右键该请求 → &lt;strong&gt;发送到入侵者&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;进入 &lt;strong&gt;位置&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;点击「清除§」&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;选中 &lt;code&gt;username&lt;/code&gt; 和 &lt;code&gt;password&lt;/code&gt; 的值，分别点击「添加§」标记为爆破点&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;验证码 &lt;code&gt;vcode&lt;/code&gt; 保持刚才获取的有效值，&lt;strong&gt;不做标记&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;攻击类型选择：&lt;strong&gt;集束炸弹（Cluster bomb）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-3配置载荷字典&#34;&gt;步骤 3：配置载荷（字典）
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;进入 &lt;strong&gt;载荷&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;载荷集 1（用户名）&lt;/strong&gt;：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;类型：简单列表&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;添加常见用户名：&lt;code&gt;admin&lt;/code&gt;、&lt;code&gt;test&lt;/code&gt;、&lt;code&gt;user&lt;/code&gt;、&lt;code&gt;pikachu&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;载荷集 2（密码）&lt;/strong&gt;：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;类型：简单列表&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;添加弱口令：&lt;code&gt;123456&lt;/code&gt;、&lt;code&gt;admin&lt;/code&gt;、&lt;code&gt;123&lt;/code&gt;、&lt;code&gt;123123&lt;/code&gt;、&lt;code&gt;password&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-4设置成功失败判断规则&#34;&gt;步骤 4：设置成功/失败判断规则
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;进入 &lt;strong&gt;选项&lt;/strong&gt; 标签页&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;找到 &lt;strong&gt;匹配提取（Grep - Match）&lt;/strong&gt;：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;取消所有默认勾选&lt;br&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;点击「添加」，输入 Pikachu 登录失败提示：&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;username or password is not exists&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;点击「确定」&lt;br&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;（可选）调整 &lt;strong&gt;请求引擎&lt;/strong&gt;：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;并发请求数设为 &lt;code&gt;5~10&lt;/code&gt;，避免过快被拦截&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h4 id=&#34;步骤-5启动攻击--分析结果&#34;&gt;步骤 5：启动攻击 &amp;amp; 分析结果
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;等待攻击完成后，查看结果表：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;匹配提取&lt;/strong&gt; 列：&lt;br&gt;
+✅ 打勾 = 包含失败提示 = 登录失败&lt;br&gt;
+❌ 未打勾 = 登录成功！&lt;br&gt;
+同时看 &lt;strong&gt;长度&lt;/strong&gt; 列，成功请求的响应长度通常与失败请求不同&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;找到未打勾的行，对应的 &lt;code&gt;username&lt;/code&gt; 和 &lt;code&gt;password&lt;/code&gt; 即为正确凭证。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-6验证漏洞&#34;&gt;步骤 6：验证漏洞
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;用爆破出的账号密码，&lt;strong&gt;复用同一个验证码&lt;/strong&gt;手动登录&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若成功登录，证明&lt;strong&gt;服务端验证码未销毁/可复用&lt;/strong&gt;，漏洞存在。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;四漏洞修复方法&#34;&gt;四、漏洞修复方法
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;验证码一次性使用&lt;/strong&gt;：验证后立即销毁，不允许重复提交&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;设置有效期&lt;/strong&gt;：验证码有效期设为 1~3 分钟，超时自动失效&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;每次请求刷新验证码&lt;/strong&gt;：登录失败/页面刷新后，强制生成新验证码&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;增加复杂度&lt;/strong&gt;：使用字母+数字+干扰线的复杂验证码，避免 OCR 识别&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;五关键注意事项&#34;&gt;五、关键注意事项
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;核心是&lt;strong&gt;复用有效验证码&lt;/strong&gt;，所以 &lt;code&gt;vcode&lt;/code&gt; 参数不要标记为爆破点&lt;br&gt;
+若服务端做了 IP 限流，可适当降低并发请求数&lt;br&gt;
+该攻击仅在&lt;strong&gt;服务端验证码校验不严&lt;/strong&gt;的场景下生效，若验证码已销毁则无法绕过&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;验证码绕过on-client完整步骤流程&#34;&gt;验证码绕过（on client）完整步骤流程
+&lt;/h2&gt;&lt;p&gt;这里指&lt;strong&gt;前端校验不严&lt;/strong&gt;导致的验证码绕过，即验证码仅在浏览器端做校验，服务端未做验证，攻击者可直接绕过前端逻辑发起请求。&lt;/p&gt;
+&lt;h3 id=&#34;一漏洞原理-1&#34;&gt;一、漏洞原理
+&lt;/h3&gt;&lt;p&gt;验证码仅在&lt;strong&gt;前端 JavaScript&lt;/strong&gt; 中完成校验：&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;验证码正确/错误的判断逻辑写在前端 JS 里，服务端未校验&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;攻击者可通过&lt;strong&gt;禁用 JS、修改前端代码、直接发包&lt;/strong&gt;等方式，绕过验证码校验&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;本质是&lt;strong&gt;前端安全不可信&lt;/strong&gt;，所有校验必须在服务端完成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;二工具准备与on-server相同&#34;&gt;二、工具准备(与on server相同)
+&lt;/h3&gt;&lt;h3 id=&#34;三完整攻击步骤-1&#34;&gt;三、完整攻击步骤
+&lt;/h3&gt;&lt;h4 id=&#34;步骤-1观察前端验证码逻辑&#34;&gt;步骤 1：观察前端验证码逻辑
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;打开 Pikachu「验证码绕过（on client）」页面&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;输入任意用户名、密码，故意输错验证码，点击登录&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;观察到页面弹出提示（如“验证码错误”），但&lt;strong&gt;页面未刷新、未向后端发请求&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;按 &lt;code&gt;F12&lt;/code&gt; 打开开发者工具 → 「源代码/ Sources」，找到验证码校验 JS 代码，确认校验逻辑在前端&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-2绕过前端校验两种常用方法&#34;&gt;步骤 2：绕过前端校验（两种常用方法）
+&lt;/h4&gt;&lt;p&gt;方法一：禁用 JavaScript（最简单）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;按 &lt;code&gt;F12&lt;/code&gt; → 点击右上角「设置（⚙️）」&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;找到「Debugger」→ 勾选 &lt;strong&gt;Disable JavaScript（禁用 JavaScript）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;刷新页面，此时前端验证码校验逻辑失效&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;输入任意用户名、密码，&lt;strong&gt;验证码随便填（甚至留空）&lt;/strong&gt;，点击登录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;方法二：直接抓包修改（推荐用于爆破）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器代理配置为 Burp，开启拦截&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;输入任意用户名、密码、验证码（随便填），点击登录&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若前端拦截导致无法提交，先按方法一禁用 JS，再提交&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Burp 拦截到登录请求包，参数格式：&lt;br&gt;
+username=xxx&amp;amp;password=xxx&amp;amp;vcode=xxxx&amp;amp;submit=Login&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;右键 → &lt;strong&gt;发送到入侵者（Intruder）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-3配置-intruder-爆破&#34;&gt;步骤 3：配置 Intruder 爆破
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;进入 &lt;strong&gt;位置&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;点击「清除§」&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;选中 &lt;code&gt;username&lt;/code&gt; 和 &lt;code&gt;password&lt;/code&gt; 的值，分别点击「添加§」标记为爆破点&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vcode&lt;/code&gt; 保持任意值（如 &lt;code&gt;1234&lt;/code&gt;），&lt;strong&gt;不做标记&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;攻击类型选择：&lt;strong&gt;集束炸弹（Cluster bomb）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;进入 &lt;strong&gt;载荷&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;载荷集 1（用户名）&lt;/strong&gt;：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;类型：简单列表&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;添加常见用户名：&lt;code&gt;admin&lt;/code&gt;、&lt;code&gt;test&lt;/code&gt;、&lt;code&gt;user&lt;/code&gt;、&lt;code&gt;pikachu&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;载荷集 2（密码）&lt;/strong&gt;：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;类型：简单列表&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;添加弱口令：&lt;code&gt;123456&lt;/code&gt;、&lt;code&gt;admin&lt;/code&gt;、&lt;code&gt;123&lt;/code&gt;、&lt;code&gt;123123&lt;/code&gt;、&lt;code&gt;password&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;进入 &lt;strong&gt;选项&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;找到 &lt;strong&gt;匹配提取（Grep - Match）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;取消所有默认勾选，点击「添加」，输入登录失败提示：&lt;br&gt;
+username or password is not exists&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;（可选）调整 &lt;strong&gt;请求引擎&lt;/strong&gt;：并发请求数设为 &lt;code&gt;5~10&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-4启动攻击--分析结果&#34;&gt;步骤 4：启动攻击 &amp;amp; 分析结果
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;点击右上角 &lt;strong&gt;开始攻击&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;等待攻击完成后，查看结果表：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;匹配提取&lt;/strong&gt; 列：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;✅ 打勾 = 包含失败提示 = 登录失败&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;❌ 未打勾 = 登录成功！&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;同时看 &lt;strong&gt;长度&lt;/strong&gt; 列，成功请求的响应长度通常与失败请求不同&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;找到未打勾的行，对应的 &lt;code&gt;username&lt;/code&gt; 和 &lt;code&gt;password&lt;/code&gt; 即为正确凭证&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-5验证漏洞&#34;&gt;步骤 5：验证漏洞
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;用爆破出的账号密码，&lt;strong&gt;随便填一个验证码&lt;/strong&gt;（甚至错误验证码）&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若成功登录，证明&lt;strong&gt;验证码仅在前端校验，服务端未做验证&lt;/strong&gt;，漏洞存在&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;四漏洞修复方法-1&#34;&gt;四、漏洞修复方法
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;服务端校验验证码&lt;/strong&gt;：所有验证码校验逻辑必须在服务端实现，禁止依赖前端校验&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;验证码一次性使用&lt;/strong&gt;：验证后立即销毁，不允许重复提交&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;绑定会话与验证码&lt;/strong&gt;：验证码与当前 Session 绑定，防止跨会话复用&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;验证码有效期&lt;/strong&gt;：设置 1~3 分钟有效期，超时自动失效&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;移除前端校验提示&lt;/strong&gt;：前端仅做格式提示，最终判断由服务端返回&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;五关键注意事项-1&#34;&gt;五、关键注意事项
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;核心是&lt;strong&gt;绕过前端 JS 校验&lt;/strong&gt;，禁用 JS 或直接发包是最直接的方式&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若服务端未校验验证码，&lt;code&gt;vcode&lt;/code&gt; 参数可以是任意值，无需正确&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;该漏洞本质是&lt;strong&gt;前后端职责不清&lt;/strong&gt;，是最基础的安全设计错误&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;token-防爆破场景下的暴力破解流程&#34;&gt;Token 防爆破场景下的暴力破解流程
+&lt;/h2&gt;&lt;p&gt;这里指&lt;strong&gt;服务端生成 CSRF Token 防护表单&lt;/strong&gt;，但防护不严导致可被绕过或批量爆破的场景，以 Pikachu 靶场为例。&lt;/p&gt;
+&lt;h3 id=&#34;一漏洞原理-2&#34;&gt;一、漏洞原理
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;正常情况下，表单会携带一次性 CSRF Token：&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;服务端生成 Token，嵌入表单隐藏域&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;每次提交需携带有效 Token，防止批量请求&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若防护不严（Token 可复用、未绑定会话、可预测、未刷新），攻击者可通过&lt;strong&gt;获取 Token → 复用/批量获取 → 暴力破解&lt;/strong&gt;绕过防护&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;二工具准备同上&#34;&gt;二、工具准备(同上)
+&lt;/h3&gt;&lt;h3 id=&#34;三完整攻击步骤-2&#34;&gt;三、完整攻击步骤
+&lt;/h3&gt;&lt;h4 id=&#34;步骤-1分析-token-位置与特性&#34;&gt;步骤 1：分析 Token 位置与特性
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;打开 Pikachu「token防爆破?」页面，按 &lt;code&gt;F12&lt;/code&gt; 查看源码&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;找到登录表单中的隐藏 Token 参数：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;html&lt;br&gt;
+&lt;input type=&#34;hidden&#34; name=&#34;token&#34; value=&#34;xxxxxx&#34;&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;手动提交一次登录，观察 Burp 数据包：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;username=xxx&amp;amp;password=xxx&amp;amp;token=xxxxxx&amp;amp;submit=Login&lt;br&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;验证 Token 特性：是否每次刷新页面都会变化、是否可重复使用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-2配置-burp-抓取-token关键步骤&#34;&gt;步骤 2：配置 Burp 抓取 Token（关键步骤）
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器代理配置为 Burp，开启拦截&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;访问登录页面，Burp 拦截到 GET 请求（获取登录页）&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;右键该 GET 请求 → &lt;strong&gt;发送到宏（Macro）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;新建宏，命名为 &lt;code&gt;Get Token&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;选择该 GET 请求，确认后保存&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;配置宏的响应解析：提取 &lt;code&gt;token&lt;/code&gt; 值（使用正则表达式 &lt;code&gt;value=&amp;quot;([a-zA-Z0-9]+)&amp;quot;&lt;/code&gt; 匹配）&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;回到登录请求，将其发送到 &lt;strong&gt;入侵者（Intruder）&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-3配置-intruder-爆破位置&#34;&gt;步骤 3：配置 Intruder 爆破位置
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;进入 &lt;strong&gt;位置&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;点击「清除§」&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;选中 &lt;code&gt;username&lt;/code&gt; 和 &lt;code&gt;password&lt;/code&gt; 的值，分别点击「添加§」标记为爆破点&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;token&lt;/code&gt; 参数保持原样，&lt;strong&gt;不做标记&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;攻击类型选择：&lt;strong&gt;集束炸弹（Cluster bomb）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;进入 &lt;strong&gt;选项&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;找到 &lt;strong&gt;会话处理规则（Session Handling Rules）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;新建规则：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;规则动作：&lt;strong&gt;运行宏&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;选择刚才创建的 &lt;code&gt;Get Token&lt;/code&gt; 宏&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;作用范围：当前 Intruder 攻击&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;作用时机：&lt;strong&gt;每次请求前&lt;/strong&gt;，自动获取新 Token 并更新到请求中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-4配置载荷字典与成功判断&#34;&gt;步骤 4：配置载荷（字典）与成功判断
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;进入 &lt;strong&gt;载荷&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;载荷集 1（用户名）&lt;/strong&gt;：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;类型：简单列表&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;添加常见用户名：&lt;code&gt;admin&lt;/code&gt;、&lt;code&gt;test&lt;/code&gt;、&lt;code&gt;user&lt;/code&gt;、&lt;code&gt;pikachu&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;载荷集 2（密码）&lt;/strong&gt;：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;类型：简单列表&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;添加弱口令：&lt;code&gt;123456&lt;/code&gt;、&lt;code&gt;admin&lt;/code&gt;、&lt;code&gt;123&lt;/code&gt;、&lt;code&gt;123123&lt;/code&gt;、&lt;code&gt;password&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;进入 &lt;strong&gt;选项&lt;/strong&gt; 标签页：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;找到 &lt;strong&gt;匹配提取（Grep - Match）&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;取消所有默认勾选，点击「添加」，输入登录失败提示：&lt;br&gt;
+username or password is not exists&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;（可选）调整 &lt;strong&gt;请求引擎&lt;/strong&gt;：并发请求数设为 &lt;code&gt;5~10&lt;/code&gt;，避免 Token 刷新过快&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-5启动攻击--分析结果-1&#34;&gt;步骤 5：启动攻击 &amp;amp; 分析结果
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;点击右上角 &lt;strong&gt;开始攻击&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;攻击过程中，Burp 会自动为每个请求获取新的有效 Token&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;等待攻击完成后，查看结果表：&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;匹配提取&lt;/strong&gt; 列：&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt;✅ 打勾 = 包含失败提示 = 登录失败&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;❌ 未打勾 = 登录成功！&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;同时看 &lt;strong&gt;长度&lt;/strong&gt; 列，成功请求的响应长度通常与失败请求不同&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;找到未打勾的行，对应的 &lt;code&gt;username&lt;/code&gt; 和 &lt;code&gt;password&lt;/code&gt; 即为正确凭证&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;步骤-6验证漏洞-1&#34;&gt;步骤 6：验证漏洞
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;用爆破出的账号密码，手动提交登录（需携带新 Token）&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若成功登录，证明&lt;strong&gt;Token 防护机制可被自动化绕过&lt;/strong&gt;，漏洞存在。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;四漏洞修复方法-2&#34;&gt;四、漏洞修复方法
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;严格绑定会话与 Token&lt;/strong&gt;：Token 与当前 Session 强绑定，不同会话不可复用&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Token 一次性使用&lt;/strong&gt;：验证后立即销毁，每次请求必须生成新 Token&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;设置有效期&lt;/strong&gt;：Token 有效期设为 1~3 分钟，超时自动失效&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;高熵值生成&lt;/strong&gt;：使用加密安全的随机数生成 Token，避免可预测&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;服务端严格校验&lt;/strong&gt;：每次提交必须验证 Token 有效性，无效则拒绝请求&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;五关键注意事项-2&#34;&gt;五、关键注意事项
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;核心是&lt;strong&gt;自动化获取/更新 Token&lt;/strong&gt;，通过 Burp 宏实现“请求前获取新 Token”&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若 Token 绑定会话，需确保宏与攻击使用同一会话（Cookie 一致）&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若服务端 Token 校验严格（一次性+会话绑定），则无法绕过，暴力破解失效&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>Linux基本命令的使用</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+        <pubDate>Sat, 14 Mar 2026 16:09:58 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/linux%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+        <description>&lt;h3 id=&#34;一文件--目录操作最核心&#34;&gt;一、文件 / 目录操作（最核心）
+&lt;/h3&gt;&lt;h4 id=&#34;1-查看当前目录--切换目录&#34;&gt;1. 查看当前目录 &amp;amp; 切换目录
+&lt;/h4&gt;&lt;p&gt;核心命令：pwd（显示当前路径）、cd（切换目录），实操：&lt;/p&gt;
+&lt;p&gt;查看当前工作目录（比如输出 /home/你的用户名）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;pwd&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;切换到系统根目录:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd ~&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;cd&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;回到上一级目录:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd ..&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;切换到具体目录（比如 /usr/local）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd /usr/local&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;2-查看目录内容&#34;&gt;2. 查看目录内容
+&lt;/h4&gt;&lt;p&gt;核心命令：ls（列出文件 / 目录），实操任务：&lt;/p&gt;
+&lt;p&gt;查看当前目录的文件/目录（简略版）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看详细信息（权限、大小、修改时间等）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;显示隐藏文件（以 . 开头的文件，比如 .bashrc）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -a&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;组合使用：详细显示所有文件（包括隐藏）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -la&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看指定目录的内容（比如 /var/log）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /var/log&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;3-创建--删除文件--目录&#34;&gt;3. 创建 / 删除文件 / 目录
+&lt;/h4&gt;&lt;p&gt;核心命令：mkdir（建目录）、touch（建空文件）、rm（删除），实操任务：&lt;/p&gt;
+&lt;p&gt;在当前目录创建 test 目录:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir test&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;递归创建多级目录（比如 test/docs/note）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir -p test/docs/note&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在 test 目录下创建空文件 readme.md:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch test/readme.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;删除空目录 test/docs/note:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rmdir test/docs/note&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;删除文件 test/readme.md（需确认，加 -f 强制删除）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm test/readme.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;强制删除（无提示）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm -f test/readme.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;删除非空目录 test（递归删除，谨慎使用！）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm -rf test&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;4-复制--移动文件&#34;&gt;4. 复制 / 移动文件
+&lt;/h4&gt;&lt;p&gt;核心命令：cp（复制）、mv（移动 / 重命名）实操任务：&lt;/p&gt;
+&lt;p&gt;先准备测试文件:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch demo.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;mkdir temp&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;复制 demo.txt 到 temp 目录:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp demo.txt temp/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;复制目录（需加 -r 递归）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir src&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;touch src/file1.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;cp -r src/ temp/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;重命名文件（把 demo.txt 改成 test.txt）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv demo.txt test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;移动 test.txt 到 temp 目录:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv test.txt temp/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;移动并改名（把 temp/test.txt 移到当前目录，改名为 new.txt）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv temp/test.txt ./new.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;二文件内容查看&#34;&gt;二、文件内容查看
+&lt;/h3&gt;&lt;p&gt;核心命令：cat、more、less、head、tail，实操任务：&lt;/p&gt;
+&lt;p&gt;先创建一个有内容的文件:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;echo &amp;ldquo;第一行内容&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;第二行内容&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;第三行内容&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;&amp;hellip;&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;第十行内容&amp;rdquo; &amp;gt; content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看文件全部内容:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看文件并显示行号:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat -n content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看大文件（分页显示，按空格翻页，q 退出）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;more content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;更灵活的分页（支持上下翻页）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;less content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看文件前 5 行（默认前10行）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;head -5 content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看文件最后 3 行:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tail -3 content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;实时监控文件更新（比如日志文件）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tail -f /var/log/syslog  # 按 Ctrl+C 退出&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;三权限管理&#34;&gt;三、权限管理
+&lt;/h3&gt;&lt;p&gt;核心命令：chmod（修改权限），实操任务：&lt;/p&gt;
+&lt;p&gt;查看文件权限（比如 content.txt）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;#输出示例：-rw-r&amp;ndash;r&amp;ndash; 1 user user  50 Mar 14 10:00 content.txt&lt;/p&gt;
+&lt;p&gt;#解读：-rw-r&amp;ndash;r&amp;ndash; = 所有者可读可写，组用户可读，其他用户可读&lt;/p&gt;
+&lt;p&gt;给文件所有者添加执行权限:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod u+x content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;移除其他用户的读权限:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod o-r content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;用数字权限（最常用：755 目录，644 文件）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod 644 content.txt  # 所有者读写，其他只读&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;chmod 755 temp/        # 所有者读写执行，其他读执行&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;四系统信息查看&#34;&gt;四、系统信息查看
+&lt;/h3&gt;&lt;p&gt;核心命令：top、df、free、uname，实操任务：&lt;/p&gt;
+&lt;p&gt;查看系统进程（实时监控，按 q 退出）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;top&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看磁盘空间使用情况（-h 人性化显示）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;df -h&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看内存使用情况（-h 人性化显示）:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;free -h&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看系统内核版本:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;uname -r&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看系统完整信息:&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;uname -a&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;五文件查找&#34;&gt;五、文件查找
+&lt;/h3&gt;&lt;p&gt;核心命令：find、grep，实操任务：&lt;/p&gt;
+&lt;p&gt;在当前目录查找 .txt 后缀的文件:&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find . -name &amp;ldquo;&lt;/em&gt;*&lt;em&gt;.txt&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在 /var/log 目录查找修改时间7天内的文件:&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /var/log -mtime -7&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在 content.txt 中查找包含「第二行」的行:&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;grep &amp;ldquo;第二行&amp;rdquo; content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;忽略大小写查找:&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;grep -i &amp;ldquo;第二行&amp;rdquo; content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;显示匹配行的行号：&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;grep -n &amp;ldquo;第二行&amp;rdquo; content.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;ls--l的命令展示的内容详情&#34;&gt;ls -l的命令展示的内容详情
+&lt;/h2&gt;&lt;p&gt;执行ls -l后的输出示例：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;-rw-r&amp;ndash;r&amp;ndash;  1 root  root   1234 Mar 14 10:25 demo.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;drwxr-xr-x  2 user  user   4096 Mar 13 18:00 test_dir&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;以第一行为例，逐列拆解：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;-rw-r&amp;ndash;r&amp;ndash;	：文件类型 + 权限&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;1	:硬链接数&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;root	:所有者（属主）&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;root	:所属组（属组）&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;1234	:文件大小&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;Mar 14 10:25	:最后修改时间&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;demo.txt   :文件名 / 目录名&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;第一列 10 个字符中的第一个字符：文件类型
+&lt;em&gt;-	：普通文件	，如.txt、.sh、.log 等&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;d	：目录	，文件夹&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;l	：软链接（快捷方式）	，类似 Windows 快捷方式&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;c	：字符设备文件	，如键盘、鼠标&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;b	：块设备文件	，如硬盘、U 盘&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;第 2-10 个字符：权限（9 位，分 3 组）&lt;br&gt;
+9 位权限分为 3 组（每组 3 位），对应：所有者 (u) → 所属组 (g) → 其他用户 (o)&lt;br&gt;
+每组包含：r（读，4）、w（写，2）、x（执行，1）、-（无权限）&lt;br&gt;
+示例：rw-r&amp;ndash;r&amp;ndash; 拆解&lt;br&gt;
+&lt;em&gt;所有者（u）：rw- → 可读、可写、不可执行&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;所属组（g）：r&amp;ndash; → 可读、不可写、不可执行&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;其他用户（o）：r&amp;ndash; → 可读、不可写、不可执行&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总结：&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;1.ls -l 输出共 9 列核心信息，核心关注文件类型 + 权限、所有者 / 所属组、文件大小、修改时间。&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;2.第一列 10 个字符(-rw-r&amp;ndash;r&amp;ndash;)：第 1 位是文件类型，后 9 位是 3 组权限（所有者 / 所属组 / 其他用户）。&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h2 id=&#34;touch命令怎么创造文件管道符的使用&#34;&gt;touch命令怎么创造文件管道符的使用
+&lt;/h2&gt;&lt;h4 id=&#34;一touch-命令创建文件--修改时间戳br&#34;&gt;一、touch 命令（创建文件 / 修改时间戳）&lt;br&gt;
+&lt;/h4&gt;&lt;p&gt;touch 最核心的作用是创建空文件，也能修改文件的访问 / 修改时间戳，先看最常用的实操场景：&lt;/p&gt;
+&lt;h5 id=&#34;1-基础用法创建空文件&#34;&gt;1. 基础用法：创建空文件
+&lt;/h5&gt;&lt;p&gt;创建单个空文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;同时创建多个空文件（空格分隔）&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch file1.txt file2.md file3.sh&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在指定目录创建文件（目录需先存在）&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch /home/user/docs/note.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;创建带特殊字符的文件（用引号包裹，不推荐，但需了解）&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch &amp;ldquo;my file.txt&amp;rdquo;  # 文件名含空格&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2进阶用法修改文件时间戳不改变文件内容&#34;&gt;2.进阶用法：修改文件时间戳（不改变文件内容）
+&lt;/h5&gt;&lt;p&gt;先创建测试文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch demo.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看文件的时间戳（ls -l 看修改时间）&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l demo.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;更新文件的「访问时间」和「修改时间」为当前时间&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch demo.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;只修改「修改时间」（-m）为指定时间（格式：YYYYMMDDhhmm）&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch -m -t 202603141530 demo.txt  # 改为2026年3月14日15:30&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果文件不存在，touch 会创建；如果存在，只更新时间戳&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch existing_file.txt  # 仅更新时间，不删内容&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;二管道符--的核心使用&#34;&gt;二、管道符 | 的核心使用
+&lt;/h4&gt;&lt;p&gt;管道符的作用是：把前一个命令的输出，作为后一个命令的输入，是 Linux 中最常用的 “命令拼接” 方式，先看基础逻辑：&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;命令1 | 命令2  # 命令1的输出 → 命令2的输入&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;1-基础实操任务结合-touch-或常用命令&#34;&gt;1. 基础实操任务（结合 touch 或常用命令）
+&lt;/h5&gt;&lt;p&gt;筛选 ls 输出，只看 .txt 文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l | grep &amp;ldquo;.txt&amp;rdquo;  # ls -l 的输出 → grep 筛选含 .txt 的行&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;先创建文件，再统计数量&lt;/p&gt;
+&lt;p&gt;先批量创建5个文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch doc{1..5}.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;用管道统计当前目录下 .txt 文件的数量&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l | grep &amp;ldquo;.txt&amp;rdquo; | wc -l  # wc -l 统计行数（即文件数）&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;把命令输出写入文件（结合 touch + 管道 + &amp;gt;）&lt;/p&gt;
+&lt;p&gt;先创建空文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch system_info.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;把系统信息（uname -a）通过管道筛选后写入文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;uname -a | grep &amp;ldquo;Linux&amp;rdquo; &amp;gt; system_info.txt  # &amp;gt; 是重定向，和管道常配合&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看写入结果&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat system_info.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;实时监控日志，只看含 “error” 的行&lt;/p&gt;
+&lt;p&gt;先创建测试日志文件&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch app.log&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;echo &amp;ldquo;info: 启动成功&amp;rdquo; &amp;raquo; app.log&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;echo &amp;ldquo;error: 连接失败&amp;rdquo; &amp;raquo; app.log&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;用管道筛选日志中的错误行&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat app.log | grep &amp;ldquo;error&amp;rdquo;  # 只输出含 error 的行&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-管道符的核心规则&#34;&gt;2. 管道符的核心规则
+&lt;/h5&gt;&lt;p&gt;&lt;strong&gt;管道只传递标准输出，不传递错误输出（如果要传错误输出，需用 2&amp;gt;&amp;amp;1，比如 ls /xxx 2&amp;gt;&amp;amp;1 | grep &amp;ldquo;No such file&amp;rdquo;）。&lt;/strong&gt;
+&lt;strong&gt;管道可以无限拼接：命令1 | 命令2 | 命令3 | &amp;hellip;，比如 ls | grep &amp;ldquo;.txt&amp;rdquo; | sort | head -2（筛选 txt 文件→排序→取前 2 个）。&lt;/strong&gt;&lt;/p&gt;
+&lt;h5 id=&#34;3-常用管道组合示例&#34;&gt;3. 常用管道组合示例
+&lt;/h5&gt;&lt;p&gt;组合命令:&lt;code&gt;ps aux	，作用	：grep &amp;quot;python&amp;quot;&lt;/code&gt;	，查找所有 python 进程&lt;br&gt;
+组合命令:&lt;code&gt;cat file.txt	，作用	：wc -l&lt;/code&gt;	，统计文件的行数&lt;br&gt;
+组合命令:&lt;code&gt;ls -lh	，作用	：sort -k5&lt;/code&gt;	，按文件大小排序显示（第 5 列是大小）&lt;/p&gt;
+&lt;h4 id=&#34;三touch--管道符-综合实战&#34;&gt;三、touch + 管道符 综合实战
+&lt;/h4&gt;&lt;p&gt;批量创建10个文件（test1-test10.txt）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch test{1..10}.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;筛选含 test 的文件 → 统计数量 → 写入 result.txt&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l | grep &amp;ldquo;test&amp;rdquo; | wc -l &amp;gt; result.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看结果&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat result.txt  # 输出 10&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;mv如何重命名文件&#34;&gt;mv如何重命名文件
+&lt;/h2&gt;&lt;h4 id=&#34;一mv-重命名的核心逻辑&#34;&gt;一、mv 重命名的核心逻辑
+&lt;/h4&gt;&lt;p&gt;mv 原本是 “移动文件 / 目录” 的命令，重命名本质是将文件移动到 “原目录 + 新文件名”，核心语法：&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv 原文件名 新文件名  # 同一目录下 → 重命名&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;mv 原路径/原文件名 新路径/新文件名  # 跨目录 → 移动+重命名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;二基础实操单个文件重命名&#34;&gt;二、基础实操：单个文件重命名
+&lt;/h4&gt;&lt;h5 id=&#34;1-同一目录下最简单的重命名&#34;&gt;1. 同一目录下最简单的重命名
+&lt;/h5&gt;&lt;p&gt;先创建测试文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch old_name.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;重命名为 new_name.txt&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv old_name.txt new_name.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证结果（查看文件是否存在）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l new_name.txt  # 输出 -rw-r&amp;ndash;r&amp;ndash; &amp;hellip; new_name.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-带路径的文件重命名&#34;&gt;2. 带路径的文件重命名
+&lt;/h5&gt;&lt;p&gt;在指定目录创建文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch /home/user/docs/old_doc.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;重命名该文件（保持路径不变，只改名字）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv /home/user/docs/old_doc.md /home/user/docs/new_doc.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/docs/new_doc.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3-重命名同时移动目录移动--改名&#34;&gt;3. 重命名同时移动目录（移动 + 改名）
+&lt;/h5&gt;&lt;p&gt;先创建测试文件和目标目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch file.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;mkdir new_dir&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;将 file.txt 移动到 new_dir 并改名为 moved_file.txt&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv file.txt new_dir/moved_file.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证（查看 new_dir 下的文件）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l new_dir/  # 输出 -rw-r&amp;ndash;r&amp;ndash; &amp;hellip; moved_file.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;三批量重命名文件&#34;&gt;三、批量重命名文件
+&lt;/h4&gt;&lt;p&gt;先批量创建测试文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch file{1..5}.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;用 for 循环批量重命名&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;for i in {1..5}; do&lt;/em&gt;&lt;br&gt;
+    &lt;em&gt;mv file${i}.txt doc${i}.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;done&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证结果&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ls -l doc*.txt  # 输出 doc1.txt doc2.txt &amp;hellip; doc5.txt&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;四避坑技巧--注意事项&#34;&gt;四、避坑技巧 &amp;amp; 注意事项
+&lt;/h4&gt;&lt;h5 id=&#34;1覆盖警告如果新文件名已存在mv-会直接覆盖无提示非常危险&#34;&gt;1.覆盖警告：如果新文件名已存在，mv 会直接覆盖（无提示），非常危险！
+&lt;/h5&gt;&lt;p&gt;解决方案：加 -i 参数（交互式），覆盖前会提示确认：&lt;br&gt;
+创建两个文件：&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch a.txt b.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;重命名 a.txt 为 b.txt（会提示是否覆盖）&lt;br&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv -i a.txt b.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;输出：mv: overwrite &amp;lsquo;b.txt&amp;rsquo;? （输入 y 覆盖，n 取消）&lt;/p&gt;
+&lt;h5 id=&#34;2重命名目录mv-重命名目录和文件用法完全一样&#34;&gt;2.重命名目录：mv 重命名目录和文件用法完全一样：
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir old_dir&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;mv old_dir new_dir  # 目录重命名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3特殊字符处理如果文件名含空格--特殊符号如-my-filetxt用引号包裹&#34;&gt;3.特殊字符处理：如果文件名含空格 / 特殊符号（如 my file.txt），用引号包裹：
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch &amp;ldquo;my file.txt&amp;rdquo;&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;mv &amp;ldquo;my file.txt&amp;rdquo; &amp;ldquo;my new file.txt&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;五实用示例重命名日志文件带时间戳&#34;&gt;五、实用示例：重命名日志文件（带时间戳）
+&lt;/h4&gt;&lt;p&gt;创建测试日志&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch app.log&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;获取当前日期（格式：20260314）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;DATE=$(date +%Y%m%d)&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;重命名为 app_20260314.log&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mv app.log app_${DATE}.log&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l app_${DATE}.log&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;如何创建软链接并正常使用&#34;&gt;如何创建软链接并正常使用
+&lt;/h2&gt;&lt;h4 id=&#34;一软链接核心概念&#34;&gt;一、软链接核心概念
+&lt;/h4&gt;&lt;p&gt;软链接（Symbolic Link）相当于 Windows 的 “快捷方式”：&lt;br&gt;
+  它是一个独立文件，指向原文件 / 目录的路径&lt;br&gt;
+  删除软链接不影响原文件，删除原文件则软链接失效&lt;br&gt;
+  软链接可以跨文件系统，支持指向目录或文件&lt;/p&gt;
+&lt;h4 id=&#34;二创建软链接ln--s-命令&#34;&gt;二、创建软链接：ln -s 命令
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ln -s 原文件/目录的路径 软链接的路径&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;给文件创建软链接&lt;/p&gt;
+&lt;p&gt;先创建测试文件（原文件）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch /home/user/docs/note.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;echo &amp;ldquo;测试内容&amp;rdquo; &amp;gt; /home/user/docs/note.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;创建软链接（把 note.txt 的快捷方式放到用户主目录）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ln -s /home/user/docs/note.txt /home/user/note_link.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证软链接是否创建成功（ls -l 看标识）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/note_link.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;输出示例（l 表示软链接，-&amp;gt; 指向原文件）：&lt;br&gt;
+lrwxrwxrwx 1 user user 24 Mar 14 16:00 note_link.txt -&amp;gt; /home/user/docs/note.txt&lt;/p&gt;
+&lt;p&gt;给目录创建软链接（更常用）&lt;/p&gt;
+&lt;p&gt;先创建测试目录（原目录）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir -p /home/user/data/logs&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;创建目录的软链接（把 logs 目录的快捷方式放到 /tmp 下）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ln -s /home/user/data/logs /tmp/logs_link&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /tmp/ | grep logs_link&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;输出示例：&lt;br&gt;
+lrwxrwxrwx 1 user user 20 Mar 14 16:05 logs_link -&amp;gt; /home/user/data/logs/&lt;/p&gt;
+&lt;h4 id=&#34;三正常使用软链接读写--进入--操作&#34;&gt;三、正常使用软链接（读写 / 进入 / 操作）
+&lt;/h4&gt;&lt;p&gt;软链接的使用和原文件 / 目录完全一致，无需特殊操作：&lt;/p&gt;
+&lt;h5 id=&#34;1-使用文件软链接&#34;&gt;1. 使用文件软链接
+&lt;/h5&gt;&lt;p&gt;读取软链接内容（等同于读原文件）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /home/user/note_link.txt  # 输出：测试内容&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;修改软链接内容（实际修改的是原文件）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;echo &amp;ldquo;新增内容&amp;rdquo; &amp;raquo; /home/user/note_link.txt&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;cat /home/user/docs/note.txt  # 能看到新增内容：测试内容\n新增内容&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-使用目录软链接&#34;&gt;2. 使用目录软链接
+&lt;/h5&gt;&lt;p&gt;进入软链接目录（等同于进入原目录）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd /tmp/logs_link&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在软链接目录创建文件（实际创建在原目录）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch /tmp/logs_link/app.log&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;ls /home/user/data/logs/  # 能看到 app.log&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;查看目录软链接的内容&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /tmp/logs_link/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;四关键注意事项避坑&#34;&gt;四、关键注意事项（避坑！）
+&lt;/h4&gt;&lt;h5 id=&#34;1-路径问题最容易出错&#34;&gt;1. 路径问题（最容易出错）
+&lt;/h5&gt;&lt;p&gt;推荐用绝对路径：创建软链接时，原文件 / 目录和软链接都用绝对路径（如 /home/user/xxx），避免软链接移动后失效。&lt;br&gt;
+若用相对路径：仅当软链接和原文件的相对位置不变时才有效，否则会报错 No such file or directory。&lt;/p&gt;
+&lt;h5 id=&#34;2-原文件--目录被删除--移动后的处理&#34;&gt;2. 原文件 / 目录被删除 / 移动后的处理
+&lt;/h5&gt;&lt;p&gt;假设删除原文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm /home/user/docs/note.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;此时访问软链接会报错&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /home/user/note_link.txt&lt;/em&gt;&lt;br&gt;
+输出：cat: /home/user/note_link.txt: No such file or directory&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;解决：恢复原文件到原路径，或重新创建软链接指向新路径&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ln -sf /新路径/note.txt /home/user/note_link.txt  # -f 强制覆盖旧软链接&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3-权限问题&#34;&gt;3. 权限问题
+&lt;/h5&gt;&lt;p&gt;软链接的权限始终是 lrwxrwxrwx（所有用户读写执行），但实际访问权限由原文件 / 目录决定。&lt;br&gt;
+例：原文件是 rw-r&amp;ndash;r&amp;ndash;，即使软链接权限是 rwxrwxrwx，其他用户也只能读，不能写。&lt;/p&gt;
+&lt;h4 id=&#34;五删除软链接避免误删原文件&#34;&gt;五、删除软链接（避免误删原文件）
+&lt;/h4&gt;&lt;h5 id=&#34;1-删除文件软链接直接-rm-软链接名不加-&#34;&gt;1. 删除文件软链接（直接 rm 软链接名，不加 /）
+&lt;/h5&gt;&lt;p&gt;正确删除（不加 /，否则会删原文件！）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm /home/user/note_link.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;错误示范（加了 /，会尝试删除原文件，幸运的是会提示）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm /home/user/note_link.txt/&lt;/em&gt;&lt;br&gt;
+输出：rm: cannot remove &amp;lsquo;/home/user/note_link.txt/&amp;rsquo;: Not a directory&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-删除目录软链接同样不加-&#34;&gt;2. 删除目录软链接（同样不加 /）
+&lt;/h5&gt;&lt;p&gt;正确删除&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm /tmp/logs_link&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;或用 rm -rf（但仍不加 /！）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm -rf /tmp/logs_link&lt;/em&gt;&lt;br&gt;
+⚠️ 关键：删除目录软链接时，绝对不要在软链接名后加 /，否则会递归删除原目录的内容！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;六常见问题排查&#34;&gt;六、常见问题排查
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;问题 1：软链接显示红色 / 闪烁，提示失效&lt;/strong&gt;&lt;br&gt;
+原因：原文件 / 目录被删除、移动，或软链接的路径写错。&lt;br&gt;
+解决：检查原文件路径是否存在，重新创建软链接。&lt;br&gt;
+&lt;strong&gt;问题 2：cd 进软链接目录后，pwd 显示软链接路径而非原路径&lt;/strong&gt;&lt;br&gt;
+原因：默认行为，可加 -P 参数显示原路径：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd -P /tmp/logs_link&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;pwd  # 输出原目录路径：/home/user/data/logs&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;如何复制文件到指定位置&#34;&gt;如何复制文件到指定位置
+&lt;/h2&gt;&lt;h4 id=&#34;一cp-命令核心语法&#34;&gt;一、cp 命令核心语法
+&lt;/h4&gt;&lt;p&gt;复制文件的基础格式：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp [ 可选参数 ] 源文件路径 目标位置路径&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;核心逻辑：&lt;br&gt;
+源文件路径：要复制的文件（绝对 / 相对路径都可）&lt;br&gt;
+目标位置路径：可以是目录（文件会复制到该目录下，文件名不变），也可以是新文件名（复制并重命名）&lt;/p&gt;
+&lt;h4 id=&#34;二基础实操复制文件到指定位置&#34;&gt;二、基础实操：复制文件到指定位置
+&lt;/h4&gt;&lt;h5 id=&#34;场景-1复制文件到指定目录文件名不变&#34;&gt;场景 1：复制文件到指定目录（文件名不变）
+&lt;/h5&gt;&lt;p&gt;先创建测试文件和目标目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch /home/user/test.txt  # 源文件&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;mkdir -p /home/user/backup  # 目标目录&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;复制 test.txt 到 backup 目录（最基础用法）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp /home/user/test.txt /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证是否复制成功&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/backup/test.txt&lt;/em&gt;&lt;br&gt;
+#输出：-rw-r&amp;ndash;r&amp;ndash; 1 user user 0 Mar 14 17:00 /home/user/backup/test.txt&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;场景-2复制文件到指定目录并改名&#34;&gt;场景 2：复制文件到指定目录并改名
+&lt;/h5&gt;&lt;p&gt;复制 test.txt 到 backup 目录，并重命名为 test_bak.txt&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp /home/user/test.txt /home/user/backup/test_bak.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/backup/test_bak.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;场景-3复制多个文件到指定目录&#34;&gt;场景 3：复制多个文件到指定目录
+&lt;/h5&gt;&lt;p&gt;创建多个测试文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch file1.txt file2.md file3.sh&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;一次性复制这3个文件到 backup 目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp file1.txt file2.md file3.sh /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/backup/  # 能看到3个文件&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;场景-4用相对路径复制更灵活&#34;&gt;场景 4：用相对路径复制（更灵活）
+&lt;/h5&gt;&lt;p&gt;假设当前目录是 /home/user&lt;br&gt;
+源文件相对路径：./test.txt（当前目录下的 test.txt）&lt;br&gt;
+目标目录相对路径：./backup/（当前目录下的 backup 目录）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp ./test.txt ./backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;三进阶用法处理覆盖--保留属性&#34;&gt;三、进阶用法：处理覆盖 / 保留属性
+&lt;/h4&gt;&lt;h5 id=&#34;1-安全复制覆盖前提示&#34;&gt;1. 安全复制（覆盖前提示）
+&lt;/h5&gt;&lt;p&gt;默认 cp 会直接覆盖目标文件（无提示），加 -i 参数（interactive）可避免误覆盖：&lt;/p&gt;
+&lt;p&gt;先在 backup 目录创建同名文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch /home/user/backup/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;复制时提示是否覆盖&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp -i /home/user/test.txt /home/user/backup/&lt;/em&gt;&lt;br&gt;
+输出：cp: overwrite &amp;lsquo;/home/user/backup/test.txt&amp;rsquo;? （输入 y 覆盖，n 取消）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-强制复制无提示覆盖&#34;&gt;2. 强制复制（无提示覆盖）
+&lt;/h5&gt;&lt;p&gt;加 -f 参数（force），跳过提示直接覆盖（适合脚本批量操作）：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp -f /home/user/test.txt /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3-复制时保留文件属性权限时间戳等&#34;&gt;3. 复制时保留文件属性（权限、时间戳等）
+&lt;/h5&gt;&lt;p&gt;加 -p 参数（preserve），适合备份场景，保留源文件的权限、所有者、修改时间等：&lt;/p&gt;
+&lt;p&gt;先给源文件加执行权限&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod +x /home/user/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;带属性复制&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp -p /home/user/test.txt /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证：目标文件和源文件权限一致&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/test.txt&lt;/em&gt;
+&lt;em&gt;ls -l /home/user/backup/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;四扩展复制目录递归复制&#34;&gt;四、扩展：复制目录（递归复制）
+&lt;/h4&gt;&lt;p&gt;如果需要复制整个目录（含子文件 / 子目录），加 -r 参数（recursive）：&lt;/p&gt;
+&lt;p&gt;创建测试目录和子文件&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir -p /home/user/docs/note&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;touch /home/user/docs/note/readme.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;递归复制 docs 目录到 backup 目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp -r /home/user/docs /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;验证：子文件也被复制&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l /home/user/backup/docs/note/readme.md&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;五避坑技巧&#34;&gt;五、避坑技巧
+&lt;/h4&gt;&lt;h5 id=&#34;1目标路径结尾加--更安全复制到目录时目标路径最后加-明确表示-复制到该目录下避免误改名&#34;&gt;1.目标路径结尾加 / 更安全：复制到目录时，目标路径最后加 /，明确表示 “复制到该目录下”，避免误改名：
+&lt;/h5&gt;&lt;p&gt;正确（复制到 backup 目录下）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp test.txt /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;错误（如果 backup 不是目录，会把 test.txt 重命名为 backup）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cp test.txt /home/user/backup&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2处理空格--特殊字符文件名含空格时用引号包裹路径&#34;&gt;2.处理空格 / 特殊字符：文件名含空格时，用引号包裹路径：
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;touch &amp;ldquo;my file.txt&amp;rdquo;&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;cp &amp;ldquo;my file.txt&amp;rdquo; /home/user/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3跨用户复制如果目标目录属于其他用户加-sudo-提升权限&#34;&gt;3.跨用户复制：如果目标目录属于其他用户，加 sudo 提升权限：
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;sudo cp test.txt /root/backup/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;六实用示例日常备份脚本&#34;&gt;六、实用示例：日常备份脚本
+&lt;/h4&gt;&lt;p&gt;脚本功能：每天备份 /home/user/logs 下的 .log 文件到 /tmp/backup_logs!/bin/bash&lt;br&gt;
+创建目标目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir -p /tmp/backup_logs&lt;/em&gt;
+复制所有 .log 文件，保留属性，覆盖前提示
+&lt;em&gt;cp -ip /home/user/logs/&lt;/em&gt;.log /tmp/backup_logs/*
+验证
+&lt;em&gt;echo &amp;ldquo;备份完成，文件列表：&amp;rdquo;&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;ls -l /tmp/backup_logs/&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;绝对路径和相对路径的辨识&#34;&gt;绝对路径和相对路径的辨识
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;绝对路径是 “全局地址”，相对路径是 “局部地址”&lt;/strong&gt;&lt;/p&gt;
+&lt;h4 id=&#34;一实操案例对比理解&#34;&gt;一、实操案例（对比理解）
+&lt;/h4&gt;&lt;p&gt;先搭建测试目录结构，方便演示：&lt;br&gt;
+创建目录结构：/home/user → docs → note → test.txt&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir -p /home/user/docs/note&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;touch /home/user/docs/note/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;场景-1当前目录是-homeuser根出发的第-3-层&#34;&gt;场景 1：当前目录是 /home/user（根出发的第 3 层）
+&lt;/h5&gt;&lt;p&gt;先切换到当前目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd /home/user&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;用绝对路径访问 test.txt（无论在哪，绝对路径都能找到）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /home/user/docs/note/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;用相对路径访问 test.txt（从当前目录出发）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat docs/note/test.txt  # 相对路径：当前目录 → docs → note → test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;场景-2当前目录是-homeuserdocsnote目标文件同目录&#34;&gt;场景 2：当前目录是 /home/user/docs/note（目标文件同目录）
+&lt;/h5&gt;&lt;p&gt;切换目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd /home/user/docs/note&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;绝对路径（依然不变）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /home/user/docs/note/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;相对路径（最简，直接写文件名）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;场景-3当前目录是-homeuserdocs目标文件在子目录&#34;&gt;场景 3：当前目录是 /home/user/docs（目标文件在子目录）
+&lt;/h5&gt;&lt;p&gt;切换目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cd /home/user/docs&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;绝对路径（不变）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /home/user/docs/note/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;相对路径（当前目录 → note → test.txt）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat note/test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;反向相对路径（比如从 note 回到 docs）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;*cd note          # 进入 note 目录&lt;br&gt;
+*cd ..            # .. 表示「上一级目录」，回到 docs&lt;br&gt;
+*cd ~             # 快速回到用户主目录（绝对路径的快捷方式）&lt;br&gt;
+*cd .             # . 表示「当前目录」，无实际作用，仅作标识&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;二常用相对路径符号必记&#34;&gt;二、常用相对路径符号（必记）
+&lt;/h4&gt;&lt;p&gt;符号：.		，含义：当前目录	，示例：cp ./test.txt /tmp（复制当前目录的 test.txt）&lt;br&gt;
+符号：..	，含义：上一级目录	，示例：cd ..（回到上一级）&lt;br&gt;
+符号：~	，含义：用户主目录（快捷）	，示例：cd ~/docs（等价于 /home/user/docs）&lt;br&gt;
+符号：-	，含义：上一次所在目录	，示例：cd -（切换回上一次的目录）&lt;/p&gt;
+&lt;h4 id=&#34;三实战场景&#34;&gt;三、实战场景
+&lt;/h4&gt;&lt;h5 id=&#34;1-用绝对路径的场景推荐优先用&#34;&gt;1. 用绝对路径的场景（推荐优先用）
+&lt;/h5&gt;&lt;p&gt;编写脚本：脚本运行时当前目录不确定，绝对路径能保证文件找到（比如备份脚本 cp /home/user/logs/app.log /tmp/backup/）。&lt;br&gt;
+创建软链接：之前讲过，软链接用绝对路径不会失效（ln -s /home/user/docs/test.txt /tmp/test_link.txt）。&lt;br&gt;
+系统配置：配置文件中指定路径（比如 Nginx 配置 root /var/www/html;）。&lt;/p&gt;
+&lt;h5 id=&#34;2-用相对路径的场景&#34;&gt;2. 用相对路径的场景
+&lt;/h5&gt;&lt;p&gt;日常操作：当前目录层级深，简短路径更方便（比如 cd ../note 比 cd /home/user/docs/note 快）。&lt;br&gt;
+批量操作：同目录下处理多个文件（比如 cp *.txt ../backup/）。&lt;/p&gt;
+&lt;h2 id=&#34;用户密码和root用户密码切换用户的设置&#34;&gt;用户密码和root用户密码，切换用户的设置
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;3 个核心命令：&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;passwd：设置 / 修改密码&lt;br&gt;
+su：切换用户&lt;br&gt;
+sudo：临时用管理员权限&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;设置-普通用户-的密码&#34;&gt;设置 普通用户 的密码
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;passwd&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;提示输两遍新密码。（屏幕不显示密码属于正常现象）&lt;/p&gt;
+&lt;h5 id=&#34;设置-root-管理员密码&#34;&gt;设置 root 管理员密码
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;sudo passwd root&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;步骤：&lt;br&gt;
+先输你自己当前用户的密码&lt;br&gt;
+再给 root 设置密码&lt;br&gt;
+再输一遍确认&lt;/p&gt;
+&lt;h5 id=&#34;切换到-root-用户变成管理员&#34;&gt;切换到 root 用户（变成管理员）
+&lt;/h5&gt;&lt;h6 id=&#34;方式-1su-切换最常用&#34;&gt;方式 1：su 切换（最常用）
+&lt;/h6&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;su&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;然后输入 root 密码，就切换成 root 了。&lt;br&gt;
+你会看到提示符从 $ 变成 #：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$：普通用户&lt;br&gt;
+#：root 用户&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h6 id=&#34;方式-2su-加用户名切换到任意用户&#34;&gt;方式 2：su 加用户名（切换到任意用户）
+&lt;/h6&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;su - 用户名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;从-root-切回普通用户&#34;&gt;从 root 切回普通用户
+&lt;/h5&gt;&lt;p&gt;直接退出 root：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;exit&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;切换到指定用户：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;su - zhangsan&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;使用文本编辑器进行写入和保存&#34;&gt;使用文本编辑器进行写入和保存
+&lt;/h2&gt;&lt;h4 id=&#34;一最简单nano-编辑器新手首选&#34;&gt;一、最简单：nano 编辑器（新手首选）
+&lt;/h4&gt;&lt;h5 id=&#34;1-打开--新建文件&#34;&gt;1. 打开 / 新建文件
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;nano 文件名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;比如：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;nano test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-写入内容&#34;&gt;2. 写入内容
+&lt;/h5&gt;&lt;p&gt;直接打字，想写什么写什么。&lt;/p&gt;
+&lt;h5 id=&#34;3-保存退出&#34;&gt;3. 保存、退出
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;保存：按 Ctrl + O ，然后按回车确认&lt;br&gt;
+退出：按 Ctrl + X&lt;br&gt;
+如果你改了内容，按 Ctrl+X 会问你：Save modified buffer?输入 y → 回车 → 保存并退出。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;二最常用vim-vi-编辑器必须会&#34;&gt;二、最常用：vim /vi 编辑器（必须会）
+&lt;/h4&gt;&lt;h5 id=&#34;1-打开文件&#34;&gt;1. 打开文件
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;vim test.txt&lt;/em&gt;*&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-进入编辑模式才能打字&#34;&gt;2. 进入编辑模式（才能打字）
+&lt;/h5&gt;&lt;p&gt;刚打开是不能输入的，按一下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;i&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;左下角出现 &amp;ndash; INSERT &amp;ndash;，就可以打字了。&lt;/p&gt;
+&lt;h5 id=&#34;3-保存退出-1&#34;&gt;3. 保存、退出
+&lt;/h5&gt;&lt;p&gt;先按 Esc 退出编辑模式，然后输入：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;:wq&lt;/em&gt;(保存并退出)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;回车&lt;/p&gt;
+&lt;p&gt;不保存，强制退出&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;:q!&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;总结&#34;&gt;总结
+&lt;/h4&gt;&lt;h5 id=&#34;nano&#34;&gt;nano：
+&lt;/h5&gt;&lt;p&gt;打开 nano 文件名 → 直接写 → Ctrl+O保存 → Ctrl+X退出&lt;/p&gt;
+&lt;h5 id=&#34;vim&#34;&gt;vim：
+&lt;/h5&gt;&lt;p&gt;打开 vim 文件名 → 按i写 → 按Esc → 输入:wq回车（保存退出）&lt;/p&gt;
+&lt;h2 id=&#34;打包文件和压缩文件&#34;&gt;打包文件和压缩文件
+&lt;/h2&gt;&lt;p&gt;打包：把很多文件变成 1 个文件（体积不变，方便传输）—— 对应命令：tar&lt;br&gt;
+压缩：把文件变小，节省空间 —— 对应：gzip、bzip2&lt;/p&gt;
+&lt;h4 id=&#34;1打包压缩成-targz&#34;&gt;1.打包压缩成 tar.gz
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tar -zcvf  名字.tar.gz  要压缩的东西&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;2解压-targz&#34;&gt;2.解压 tar.gz
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tar -zxvf  xxx.tar.gz&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;3解压到指定目录加--c&#34;&gt;3.解压到指定目录（加 -C）
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tar -zxvf xxx.tar.gz -C /tmp&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;查看基本的日志文件&#34;&gt;查看基本的日志文件
+&lt;/h2&gt;&lt;h4 id=&#34;一查看日志的-4-个核心命令&#34;&gt;一、查看日志的 4 个核心命令
+&lt;/h4&gt;&lt;p&gt;cat：一次性看完（小文件）&lt;br&gt;
+less：分页看（大文件，最常用）&lt;br&gt;
+head：看开头&lt;br&gt;
+tail：看结尾、实时监控日志&lt;/p&gt;
+&lt;h4 id=&#34;二最基础查看日志内容&#34;&gt;二、最基础：查看日志内容
+&lt;/h4&gt;&lt;h5 id=&#34;1-cat-直接全部显示&#34;&gt;1. cat 直接全部显示
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /var/log/dmesg&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;（适合小日志，文件大就刷屏。）&lt;/p&gt;
+&lt;h5 id=&#34;2-less-分页查看最强&#34;&gt;2. less 分页查看（最强）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;less /var/log/syslog&lt;/em&gt;
+操作：&lt;br&gt;
+上下箭头：一行行看&lt;br&gt;
+空格：翻一页&lt;br&gt;
+/关键词：搜索&lt;br&gt;
+q：退出&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3-head-看前几行&#34;&gt;3. head 看前几行
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;head /var/log/syslog&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;看前 10 行：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;head -10 /var/log/syslog&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;4-tail-看最后几行最常用&#34;&gt;4. tail 看最后几行（最常用）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tail /var/log/syslog&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;看最后 20 行：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tail -20 /var/log/syslog&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;三最重要实时看日志必会&#34;&gt;三、最重要：实时看日志（必会）
+&lt;/h4&gt;&lt;p&gt;日志一直在刷新，用这个实时监控：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tail -f /var/log/syslog&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;会一直刷新，新内容自动出来&lt;br&gt;
+退出：Ctrl + C&lt;/p&gt;
+&lt;h4 id=&#34;四配合管道符过滤日志里的内容&#34;&gt;四、配合管道符：过滤日志里的内容
+&lt;/h4&gt;&lt;p&gt;只看包含 error 的日志：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;cat /var/log/syslog | grep error&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;或：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;grep error /var/log/syslog&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;实时监控 + 过滤错误：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;tail -f /var/log/syslog | grep error&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;五linux-常用系统日志位置记住这几个&#34;&gt;五、Linux 常用系统日志位置（记住这几个）
+&lt;/h4&gt;&lt;p&gt;/var/log/syslog 系统整体日志&lt;br&gt;
+/var/log/dmesg 硬件、内核日志&lt;br&gt;
+/var/log/auth.log 用户登录、认证日志&lt;br&gt;
+/var/log/messages 系统信息（CentOS）&lt;/p&gt;
+&lt;h4 id=&#34;总结-1&#34;&gt;总结
+&lt;/h4&gt;&lt;p&gt;看小日志：cat 日志文件&lt;br&gt;
+看大日志：less 日志文件&lt;br&gt;
+看最后：tail 日志文件&lt;br&gt;
+实时看日志：tail -f 日志文件&lt;br&gt;
+找错误：grep 错误关键词 日志文件&lt;/p&gt;
+&lt;h2 id=&#34;用常用的二进制文件目录给文件赋权&#34;&gt;用常用的二进制文件目录给文件赋权
+&lt;/h2&gt;&lt;h4 id=&#34;给文件赋权chmod-命令必考必会&#34;&gt;给文件赋权：chmod 命令（必考必会）
+&lt;/h4&gt;&lt;p&gt;Linux 文件有 3 种权限：&lt;br&gt;
+r 读 → 数字 4&lt;br&gt;
+w 写 → 数字 2&lt;br&gt;
+x 执行 → 数字 1&lt;/p&gt;
+&lt;p&gt;分为三类人：&lt;br&gt;
+u 文件所有者（自己）&lt;BR&gt;
+g 同组用户&lt;br&gt;
+o 其他人&lt;/p&gt;
+&lt;h4 id=&#34;最简单数字赋权最常用&#34;&gt;最简单：数字赋权（最常用）
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod 数字权限 文件名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;最常用的 3 个权限：&lt;br&gt;
+644：只读文件（文本、配置）&lt;br&gt;
+自己：读写 (6)，别人：只读 (4)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod 644 test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;755：可执行文件（脚本、二进制、命令）&lt;br&gt;
+自己：读写执行 (7)，别人：读执行 (5)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod 755 my.sh&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;777：谁都能改（不推荐，仅测试用）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;chmod 777 test.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;运行可执行文件和递归删除&#34;&gt;运行可执行文件和递归删除
+&lt;/h2&gt;&lt;h4 id=&#34;一运行可执行文件3-种常用方式&#34;&gt;一、运行可执行文件（3 种常用方式）
+&lt;/h4&gt;&lt;p&gt;可执行文件包括：二进制文件、Shell 脚本、Python 脚本等（前提是用 chmod 加了执行权限，比如 chmod 755 文件名）。&lt;/p&gt;
+&lt;h5 id=&#34;1-最简单相对路径运行最常用&#34;&gt;1. 最简单：相对路径运行（最常用）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;./文件名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;./ 表示「当前目录」，必须加！否则系统会去 /bin 等系统目录找，找不到就报错。&lt;br&gt;
+实操示例：&lt;br&gt;
+先创建一个可执行脚本（加执行权限）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;echo &amp;ldquo;echo &amp;lsquo;我是可执行文件&amp;rsquo;&amp;rdquo; &amp;gt; test.sh&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;chmod 755 test.sh&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;运行（当前目录下）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;./test.sh  # 输出：我是可执行文件&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-绝对路径运行精准适合脚本--配置&#34;&gt;2. 绝对路径运行（精准，适合脚本 / 配置）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;/完整路径/文件名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;示例：&lt;br&gt;
+假设 test.sh 在 /home/user 目录下&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;/home/user/test.sh&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3-直接运行仅系统目录下的文件&#34;&gt;3. 直接运行（仅系统目录下的文件）
+&lt;/h5&gt;&lt;p&gt;如果可执行文件在 /bin、/usr/bin 等系统默认目录里，直接敲文件名即可（不用加路径）：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls  # 等价于 /bin/ls&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;cp  # 等价于 /bin/cp&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;二递归删除删除目录--所有子文件--子目录&#34;&gt;二、递归删除（删除目录 + 所有子文件 / 子目录）
+&lt;/h4&gt;&lt;p&gt;核心命令：rm -rf（必须谨慎用！删了很难恢复）&lt;br&gt;
+-r（recursive）：递归删除（目录 + 子内容）&lt;br&gt;
+-f（force）：强制删除，无提示（避免删目录时弹一堆确认）&lt;/p&gt;
+&lt;h5 id=&#34;1-递归删除目录最常用&#34;&gt;1. 递归删除目录（最常用）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm -rf 目录名&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;实操示例：&lt;br&gt;
+先创建带内容的测试目录&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;mkdir -p test_dir/sub_dir&lt;/em&gt;&lt;br&gt;
+&lt;em&gt;touch test_dir/file1.txt test_dir/sub_dir/file2.txt&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-递归删除整个-test_dir包括子目录和文件&#34;&gt;2. 递归删除整个 test_dir（包括子目录和文件）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm -rf test_dir&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;3-验证目录已消失&#34;&gt;3. 验证：目录已消失
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;ls -l | grep test_dir  # 无输出，说明删干净了&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-递归删除指定类型文件比如所有-log-文件&#34;&gt;2. 递归删除指定类型文件（比如所有 .log 文件）
+&lt;/h5&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;rm -rf 目录名/&lt;/em&gt;.log*
+示例：&lt;br&gt;
+删除 /tmp/logs 下所有 .log 文件（包括子目录里的）
+&lt;em&gt;rm -rf /tmp/logs/&lt;/em&gt;.log*&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;使用findgrep查找flag在哪些文件中&#34;&gt;使用find、grep查找flag在哪些文件中
+&lt;/h2&gt;&lt;h4 id=&#34;一最常用全局查找含-flag-的文件&#34;&gt;一、最常用：全局查找含 flag 的文件
+&lt;/h4&gt;&lt;h5 id=&#34;1-基础命令直接用&#34;&gt;1. 基础命令（直接用）
+&lt;/h5&gt;&lt;p&gt;从根目录 / 开始，查找所有文件中包含 flag 的内容（显示文件名+匹配行）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find / -type f -exec grep -l &amp;ldquo;flag&amp;rdquo; {} ;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;2-实操示例更实用&#34;&gt;2. 实操示例（更实用）
+&lt;/h5&gt;&lt;p&gt;场景 1：只在 /home/user 目录找，排除系统目录（更快）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /home/user -type f -exec grep -l &amp;ldquo;flag&amp;rdquo; {} ;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;场景 2：显示文件名 + 具体匹配行（更直观）&lt;br&gt;
+把 -l 换成 -n（显示行号），能看到 flag 出现在文件的第几行：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /home/user -type f -exec grep -n &amp;ldquo;flag&amp;rdquo; {} ;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;输出示例：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;/home/user/test.txt:5:this is the flag: abc123&lt;br&gt;
+/home/user/note.md:10:flag=def456&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;场景 3：忽略大小写查找（比如 Flag/FLAG 也能搜到）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /home/user -type f -exec grep -il &amp;ldquo;flag&amp;rdquo; {} ;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;-i：忽略大小写。&lt;/p&gt;
+&lt;h4 id=&#34;二进阶缩小查找范围更快&#34;&gt;二、进阶：缩小查找范围（更快）
+&lt;/h4&gt;&lt;p&gt;如果知道文件类型（比如只找 .txt/.sh 文件），可以限定后缀，避免搜无关文件：&lt;br&gt;
+只找 /home/user 下的 .txt 文件，搜包含 flag 的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /home/user -type f -name &amp;ldquo;&lt;/em&gt;.txt&amp;rdquo; -exec grep -l &amp;ldquo;flag&amp;rdquo; {} ;*&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;-name &amp;ldquo;*.txt&amp;rdquo;：只匹配后缀为 .txt 的文件。&lt;/p&gt;
+&lt;h4 id=&#34;三简化写法管道符组合&#34;&gt;三、简化写法（管道符组合）
+&lt;/h4&gt;&lt;p&gt;也可以用 find 输出文件列表，再通过管道传给 grep，效果一样：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;*&lt;em&gt;find /home/user -type f | xargs grep -l &amp;ldquo;flag&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;xargs：把 find 找到的文件列表传给 grep（替代 -exec，更简洁）。&lt;/p&gt;
+&lt;h4 id=&#34;四避坑技巧&#34;&gt;四、避坑技巧
+&lt;/h4&gt;&lt;p&gt;权限不足报错：搜系统目录（如 /）时会报 Permission denied，可以加 2&amp;gt;/dev/null 屏蔽错误：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find / -type f -exec grep -l &amp;ldquo;flag&amp;rdquo; {} ; 2&amp;gt;/dev/null&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;只搜最近修改的文件：比如找 7 天内修改的文件，加 -mtime -7：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /home/user -type f -mtime -7 -exec grep -l &amp;ldquo;flag&amp;rdquo; {} ;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;避免搜大文件 / 二进制文件：可以限定文件大小（比如小于 100M），加 -size -100M：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;find /home/user -type f -size -100M -exec grep -l &amp;ldquo;flag&amp;rdquo; {} ;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;python基础已学完可勉强掌握其他网安方面的学习略&#34;&gt;python基础已学完（可勉强掌握），其他网安方面的学习略。
+&lt;/h2&gt;</description>
+        </item>
+        <item>
+        <title>使用Git&#43;hugo&#43;GitHub 0成本搭建个人博客平台</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E4%BD%BF%E7%94%A8git-hugo-github-0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0/</link>
+        <pubDate>Sat, 14 Mar 2026 14:10:28 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E4%BD%BF%E7%94%A8git-hugo-github-0%E6%88%90%E6%9C%AC%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E5%B9%B3%E5%8F%B0/</guid>
+        <description>&lt;h3 id=&#34;整体思路&#34;&gt;整体思路：
+&lt;/h3&gt;&lt;h4 id=&#34;环境准备githugo-本地创建博客--代码托管github-配置-github-pages-实现在线访问全程无需任何费用只需基础的命令行操作和-github-账号&#34;&gt;环境准备（Git+Hugo）→ 本地创建博客 → 代码托管（GitHub）→ 配置 GitHub Pages 实现在线访问。全程无需任何费用，只需基础的命令行操作和 GitHub 账号。
+&lt;/h4&gt;&lt;hr&gt;
+&lt;h3 id=&#34;1环境准备&#34;&gt;1、环境准备
+&lt;/h3&gt;&lt;h4 id=&#34;1安装-git&#34;&gt;（1）、安装 Git
+&lt;/h4&gt;&lt;p&gt;Windows：官网下载 Git for Windows，安装时默认选项即可，完成后打开 Git Bash 验证：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git &amp;ndash;version&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;输出git版本号即安装成功&lt;/p&gt;
+&lt;h4 id=&#34;2安装-hugo推荐安装_extended-版本支持更多主题&#34;&gt;（2）、安装 Hugo（推荐安装_extended 版本，支持更多主题）
+&lt;/h4&gt;&lt;p&gt;下载 Hugo Extended（选择对应 Windows 版本，如hugo_extended_0.120.0_windows-amd64.zip），解压后将hugo.exe所在文件夹路径添加到系统环境变量（如D:\hugo\bin）。
+验证：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo version     # 输出hugo版本，且包含&amp;quot;extended&amp;quot;即成功&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;3github-账号准备&#34;&gt;（3）、GitHub 账号准备
+&lt;/h4&gt;&lt;p&gt;注册 GitHub 账号（官网）&lt;/p&gt;
+&lt;h3 id=&#34;2-本地创建-hugo-博客&#34;&gt;2. 本地创建 Hugo 博客
+&lt;/h3&gt;&lt;h4 id=&#34;1初始化博客项目&#34;&gt;（1）初始化博客项目
+&lt;/h4&gt;&lt;p&gt;打开 Git Bash，选择一个本地文件夹，执行：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;进入目标文件夹&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;cd &lt;em&gt;（目标文件）&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;创建hugo博客项目（blog为项目名，可自定义）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo new site blog&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;进入项目目录&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;cd blog&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;执行后会生成 Hugo 标准目录结构，核心目录说明：&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;content/：存放博客文章（Markdown 格式）；&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;themes/：存放博客主题；&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;config.toml：博客核心配置文件（站点名称、主题、语言等）。&lt;/em&gt;&lt;/p&gt;
+&lt;h4 id=&#34;2安装-hugo-主题以主流的-loveit-为例&#34;&gt;（2）安装 Hugo 主题（以主流的 LoveIt 为例）
+&lt;/h4&gt;&lt;p&gt;&lt;em&gt;克隆主题到themes目录&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git clone &lt;a class=&#34;link&#34; href=&#34;https://github.com/dillonzq/LoveIt.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/dillonzq/LoveIt.git&lt;/a&gt; themes/LoveIt&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;复制主题示例配置（方便快速上手）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;cp themes/LoveIt/exampleSite/config.toml ./&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;*** Hugo 有大量免费主题，可在 Hugo Themes 挑选 ***&lt;/p&gt;
+&lt;h4 id=&#34;3本地创建第一篇文章并预览&#34;&gt;（3）本地创建第一篇文章并预览
+&lt;/h4&gt;&lt;p&gt;&lt;em&gt;创建第一篇文章（content/posts/ 是文章存放路径，first-post.md是文件名）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo new posts/first-post.md&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;启动本地预览服务器(-D 表示显示草稿文章)&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo server -D&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;3-关联-github-仓库代码托管&#34;&gt;3. 关联 GitHub 仓库（代码托管）
+&lt;/h3&gt;&lt;h4 id=&#34;1创建-github-仓库&#34;&gt;（1）创建 GitHub 仓库
+&lt;/h4&gt;&lt;p&gt;&lt;em&gt;仓库名必须为：你的GitHub用户名.github.io（例如：xiaoming.github.io），否则后续 Pages 无法访问；Public（必须公开）&lt;/em&gt;&lt;/p&gt;
+&lt;h4 id=&#34;2本地博客项目关联-github-仓库&#34;&gt;（2）本地博客项目关联 GitHub 仓库
+&lt;/h4&gt;&lt;p&gt;回到本地 Git Bash / 终端，在博客目录（blog/）执行：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;初始化git仓库（若未初始化）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git init&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;添加远程仓库（替换为你的仓库地址）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git remote add origin &lt;a class=&#34;link&#34; href=&#34;https://github.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/&lt;/a&gt;你的用户名/你的
+用户名.github.io.git&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;生成博客静态文件（关键：Hugo将md转为静态html）执行后会生成public/目录，存放所有静态文件&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo -D&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;进入public目录（该目录是最终要部署的内容）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;cd public&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;提交public目录到GitHub&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#public目录单独初始化git（避免嵌套仓库）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git init&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git add .&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git commit -m &amp;ldquo;first commit: hugo blog static files&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;推送到GitHub（main分支，GitHub默认分支为main）&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git branch -M main&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git push -u origin main&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;4-配置-github-pages实现在线访问&#34;&gt;4. 配置 GitHub Pages（实现在线访问）
+&lt;/h3&gt;&lt;p&gt;&lt;em&gt;进入 GitHub 仓库页面 → 点击「Settings」→ 左侧栏「Pages」；&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;「Build and deployment」→「Source」选择「Deploy from a branch」；&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;「Branch」选择「main」，「Folder」选择「/(root)」，点击「Save」；&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;等待 1-2 分钟，页面会显示「Your site is live at https:// 你的用户名.github.io/」，访问该地址即可看到在线博客。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&#34;5-后续维护发布新文章&#34;&gt;5. 后续维护（发布新文章）
+&lt;/h3&gt;&lt;p&gt;每次写新文章后，重复以下步骤即可更新在线博客：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;本地创建新文章&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo new posts/新文章.md&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;编辑文章后，重新生成静态文件&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;hugo -D&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;进入public目录，提交并推送&lt;/em&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;cd public&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git add .&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git commit -m &amp;ldquo;add new post: 新文章标题&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git push origin main&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;至此你成功的搭建了一个个人博客&#34;&gt;至此你成功的搭建了一个个人博客。
+&lt;/h3&gt;</description>
+        </item>
+        <item>
         <title>归档</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一、什么是 XSS Cross-Site Scripting（跨站脚本攻击） 攻击者往网页里注入恶意 JavaScript 代码，让浏览器执行 浏览器无法区分是“正常代码”还是“恶意代码”，就会">
+<title>Cross-Site Scripting（XSS）详解</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/cross-site-scriptingxss%E8%AF%A6%E8%A7%A3/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Cross-Site Scripting（XSS）详解">
+<meta property='og:description' content="一、什么是 XSS Cross-Site Scripting（跨站脚本攻击） 攻击者往网页里注入恶意 JavaScript 代码，让浏览器执行 浏览器无法区分是“正常代码”还是“恶意代码”，就会">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/cross-site-scriptingxss%E8%AF%A6%E8%A7%A3/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-16T15:55:12&#43;08:00'/><meta property='article:modified_time' content='2026-03-16T15:55:12&#43;08:00'/>
+<meta name="twitter:title" content="Cross-Site Scripting（XSS）详解">
+<meta name="twitter:description" content="一、什么是 XSS Cross-Site Scripting（跨站脚本攻击） 攻击者往网页里注入恶意 JavaScript 代码，让浏览器执行 浏览器无法区分是“正常代码”还是“恶意代码”，就会">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一什么是-xss">一、什么是 XSS</a></li>
+    <li><a href="#二xss-能做什么危害">二、XSS 能做什么（危害）</a></li>
+    <li><a href="#三xss-三大类型">三、XSS 三大类型</a>
+      <ol>
+        <li><a href="#1-反射型-xss非持久型">1. 反射型 XSS（非持久型）</a></li>
+        <li><a href="#2-存储型-xss持久型最危险">2. 存储型 XSS（持久型，最危险）</a></li>
+        <li><a href="#3-dom-型-xss">3. DOM 型 XSS</a></li>
+      </ol>
+    </li>
+    <li><a href="#四xss-根本原因">四、XSS 根本原因</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#1-后端对输出到-html-的内容做转义编码">1. 后端：对输出到 HTML 的内容做<strong>转义（编码）</strong></a></li>
+    <li><a href="#2-永远不要信任用户输入">2. 永远不要信任用户输入</a></li>
+    <li><a href="#3-前端避免危险操作">3. 前端避免危险操作</a></li>
+    <li><a href="#4-使用-cookie-httponly最重要防护之一">4. 使用 Cookie HttpOnly（最重要防护之一）</a></li>
+    <li><a href="#5-csp内容安全策略">5. CSP（内容安全策略）</a></li>
+    <li><a href="#6-验证码referer-校验token">6. 验证码、Referer 校验、Token</a></li>
+    <li><a href="#7-使用成熟框架">7. 使用成熟框架</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/cross-site-scriptingxss%E8%AF%A6%E8%A7%A3/">Cross-Site Scripting（XSS）详解</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-16</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="一什么是-xss">一、什么是 XSS
+</h2><p><strong>Cross-Site Scripting（跨站脚本攻击）</strong><br></p>
+<blockquote>
+<ul>
+<li>攻击者<strong>往网页里注入恶意 JavaScript 代码</strong>，让浏览器执行<br></li>
+<li>浏览器无法区分是“正常代码”还是“恶意代码”，就会直接运行<br></li>
+<li>本质原因：<strong>用户输入未经过滤，直接输出到页面 / 存入数据库</strong></li>
+</ul>
+</blockquote>
+<h2 id="二xss-能做什么危害">二、XSS 能做什么（危害）
+</h2><ul>
+<li>偷取 Cookie、Session，<strong>冒充用户登录</strong><br></li>
+<li>劫持账号、发帖、删帖、转账<br></li>
+<li>监听用户操作、跳转到钓鱼网站<br></li>
+<li>获取用户浏览器信息、内网信息</li>
+</ul>
+<h2 id="三xss-三大类型">三、XSS 三大类型
+</h2><h3 id="1-反射型-xss非持久型">1. 反射型 XSS（非持久型）
+</h3><ul>
+<li>恶意代码放在 <strong>URL 参数</strong>里<br></li>
+<li>诱导用户点开链接，代码直接在页面执行<br></li>
+<li>常见场景：搜索框、URL 传参直接显示</li>
+</ul>
+<p>例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://xxx.com/search?keyword=&lt;script&gt;stealCookie()&lt;/script&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-存储型-xss持久型最危险">2. 存储型 XSS（持久型，最危险）
+</h3><ul>
+<li>恶意代码<strong>存入数据库</strong><br></li>
+<li>所有访问该页面的用户都会中招<br></li>
+<li>常见场景：评论、留言、昵称、个人简介</li>
+</ul>
+<h3 id="3-dom-型-xss">3. DOM 型 XSS
+</h3><ul>
+<li>漏洞出在<strong>前端 JS 直接处理用户输入</strong>，修改页面 DOM<br></li>
+<li>数据不经过后端、不进数据库，纯前端漏洞</li>
+</ul>
+<p>例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">content</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="四xss-根本原因">四、XSS 根本原因
+</h2><ol>
+<li><strong>信任用户输入</strong>：任何输入都可能是恶意的<br></li>
+<li><strong>未编码、未过滤直接渲染</strong><br></li>
+<li>前端使用 <code>innerHTML</code>、<code>document.write</code> 等危险操作</li>
+</ol>
+<h1 id="五xss-解决方法最实用最全">五、XSS 解决方法（最实用、最全）
+</h1><h2 id="1-后端对输出到-html-的内容做转义编码">1. 后端：对输出到 HTML 的内容做<strong>转义（编码）</strong>
+</h2><p>把特殊字符换成实体，浏览器只会显示，不会执行：</p>
+<blockquote>
+<ul>
+<li><code>&lt;</code> → <code>&amp;lt;</code></li>
+<li><code>&gt;</code> → <code>&amp;gt;</code></li>
+<li><code>&quot;</code> → <code>&amp;quot;</code></li>
+<li><code>'</code> → <code>&amp;#x27;</code></li>
+<li><code>&amp;</code> → <code>&amp;amp;</code></li>
+</ul>
+</blockquote>
+<p>只要<strong>输出到 HTML 前统一转义</strong>，绝大多数 XSS 直接堵住。</p>
+<h2 id="2-永远不要信任用户输入">2. 永远不要信任用户输入
+</h2><ul>
+<li>对输入做<strong>白名单过滤</strong>（只允许合法内容）<br></li>
+<li>禁止/过滤：<code>&lt;script&gt;、javascript:、onclick、onload</code> 等</li>
+</ul>
+<h2 id="3-前端避免危险操作">3. 前端避免危险操作
+</h2><ul>
+<li>尽量用 <code>textContent</code>，<strong>不用 <code>innerHTML</code></strong><br></li>
+<li>不用 <code>eval()</code>、<code>setTimeout(字符串)</code> 执行用户输入</li>
+</ul>
+<h2 id="4-使用-cookie-httponly最重要防护之一">4. 使用 Cookie HttpOnly（最重要防护之一）
+</h2><p>设置 Cookie 时加上 <code>HttpOnly</code>：<br></p>
+<ul>
+<li>JS 无法通过 <code>document.cookie</code> 读取<br></li>
+<li>即使有 XSS，也偷不走 Cookie</li>
+</ul>
+<h2 id="5-csp内容安全策略">5. CSP（内容安全策略）
+</h2><p>HTTP 头：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Content-Security-Policy: default-src &#39;self&#39;; script-src &#39;self&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>作用：</p>
+<ul>
+<li>只允许信任域名加载 JS<br></li>
+<li>禁止内联脚本、禁止 eval<br></li>
+<li>是目前<strong>最强的 XSS 防护手段之一</strong></li>
+</ul>
+<h2 id="6-验证码referer-校验token">6. 验证码、Referer 校验、Token
+</h2><p>防止攻击者构造恶意链接批量利用。</p>
+<h2 id="7-使用成熟框架">7. 使用成熟框架
+</h2><p>Vue、React、Angular <strong>默认对插值内容转义</strong>，天然防大部分 XSS。<br>
+只有你刻意用 <code>v-html</code>、<code>dangerouslySetInnerHTML</code> 才会有风险。</p>
+<hr>
+<h1 id="六最简总结">六、最简总结
+</h1><ol>
+<li><strong>XSS = 注入恶意 JS 让浏览器执行</strong><br></li>
+<li>分三类：<strong>反射、存储、DOM</strong>，存储型最危险<br></li>
+<li>根治方案：<br>
+<ul>
+<li>输入<strong>白名单过滤</strong><br></li>
+<li>输出<strong>HTML 转义</strong><br></li>
+<li>Cookie <strong>HttpOnly</strong><br></li>
+<li>开启 <strong>CSP</strong><br></li>
+<li>前端少用 <code>innerHTML</code></li>
+</ul>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
