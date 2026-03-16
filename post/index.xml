@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on Loyal</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/post/</link>
+        <description>Recent content in Posts on Loyal</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Loyal</copyright>
+        <lastBuildDate>Mon, 16 Mar 2026 15:55:12 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" />
+    </channel>
+</rss>
