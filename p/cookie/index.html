@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="简介 Cookie 并不是它的原意“甜饼”的意思, 而是一个保存在客户机中的简单的文本文件, 这个文件与特定的 Web 文档关联在一起, 保存了该客户机访问这个Web 文">
+<title>Cookie</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/cookie/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Cookie">
+<meta property='og:description' content="简介 Cookie 并不是它的原意“甜饼”的意思, 而是一个保存在客户机中的简单的文本文件, 这个文件与特定的 Web 文档关联在一起, 保存了该客户机访问这个Web 文">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/cookie/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-18T20:37:02&#43;08:00'/><meta property='article:modified_time' content='2026-03-18T20:37:02&#43;08:00'/>
+<meta name="twitter:title" content="Cookie">
+<meta name="twitter:description" content="简介 Cookie 并不是它的原意“甜饼”的意思, 而是一个保存在客户机中的简单的文本文件, 这个文件与特定的 Web 文档关联在一起, 保存了该客户机访问这个Web 文">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#组成">组成</a></li>
+    <li><a href="#安全威胁">安全威胁</a>
+      <ol>
+        <li><a href="#cookie捕获重放">Cookie捕获/重放</a></li>
+        <li><a href="#恶意-cookies">恶意 Cookies</a></li>
+        <li><a href="#会话定置">会话定置</a></li>
+        <li><a href="#csrf攻击">CSRF攻击</a></li>
+      </ol>
+    </li>
+    <li><a href="#安全防护">安全防护</a>
+      <ol>
+        <li><a href="#web服务器端防护">Web服务器端防护</a></li>
+        <li><a href="#客户端浏览器防护">客户端浏览器防护</a></li>
+        <li><a href="#主机的安全防护">主机的安全防护</a></li>
+      </ol>
+    </li>
+    <li><a href="#认证机制">认证机制</a></li>
+    <li><a href="#实例">实例</a>
+      <ol>
+        <li><a href="#设置">设置</a></li>
+        <li><a href="#写入与读取">写入与读取</a>
+          <ol>
+            <li><a href="#注释">注释</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/cookie/">Cookie</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-18</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="简介">简介
+</h2><p>Cookie 并不是它的原意“甜饼”的意思, 而是一个<strong>保存在客户机中的简单的文本文件</strong>, 这个文件与特定的 Web 文档关联在一起, 保存了该客户机访问这个Web 文档时的信息, 当客户机再次访问这个 Web 文档时这些信息可供该文档使用。由于“Cookie”具有可以保存在客户机上的神奇特性, 因此它可以帮助我们实现<strong>记录用户个人信息的功能</strong>, 而这一切都不必使用复杂的CGI等程序 。<br></p>
+<p>举例来说, 一个 Web 站点可能会为每一个访问者产生一个唯一的ID, 然后以 Cookie 文件的形式<strong>保存在每个用户的机器上</strong>。如果使用浏览器访问 Web, 会看到所有保存在硬盘上的 Cookie。在这个文件夹里每一个文件都是一个由“名/值”对组成的文本文件,另外还有一个文件保存有所有对应的 Web 站点的信息。在这里的每个 Cookie 文件都是一个简单而又普通的文本文件。透过文件名, 就可以看到是哪个 Web 站点在机器上放置了Cookie(当然站点信息在文件里也有保存)。<br></p>
+<p>所谓“cookie”数据是指某些网站为了<strong>辨别用户身份，储存在用户本地终端上的数据（通常经过加密），由用户客户端计算机暂时或永久保存的信息</strong>。<br></p>
+<p><strong>通俗来讲就是指缓存数据，包括用户名、密码、注册账户、手机号等公民个人信息。</strong></p>
+<h2 id="组成">组成
+</h2><p>Cookie是一段不超过4KB的小型文本数据，由一个名称（Name）、一个值（Value）和其它几个用于控制Cookie有效期、安全性、使用范围的可选属性组成。其中：<br></p>
+<p>(1)Name/Value：设置Cookie的名称及相对应的值，对于认证Cookie，Value值包括Web服务器所提供的访问令牌 。<br></p>
+<p>(2)Expires属性：设置Cookie的生存期。有两种存储类型的Cookie：会话性与持久性。Expires属性缺省时，为会话性Cookie，仅保存在客户端内存中，并在用户关闭浏览器时失效；持久性Cookie会保存在用户的硬盘中，直至生存期到或用户直接在网页中单击“注销”等按钮结束会话时才会失效 。<br></p>
+<p>(3)Path属性：定义了Web站点上可以访问该Cookie的目录 。<br></p>
+<p>(4)Domain属性：指定了可以访问该 Cookie 的 Web 站点或域。Cookie 机制并未遵循严格的同源策略，允许一个子域可以设置或获取其父域的 Cookie。当需要实现单点登录方案时，Cookie 的上述特性非常有用，然而也增加了 Cookie受攻击的危险，比如攻击者可以借此发动会话定置攻击。因而，浏览器禁止在 Domain 属性中设置.org、.com 等通用顶级域名、以及在国家及地区顶级域下注册的二级域名，以减小攻击发生的范围 。<br></p>
+<p>(5)Secure属性：指定是否使用HTTPS安全协议发送Cookie。使用HTTPS安全协议，可以保护Cookie在浏览器和Web服务器间的传输过程中不被窃取和篡改。该方法也可用于Web站点的身份鉴别，即在HTTPS的连接建立阶段，浏览器会检查Web网站的SSL证书的有效性。但是基于兼容性的原因（比如有些网站使用自签署的证书）在检测到SSL证书无效时，浏览器并不会立即终止用户的连接请求，而是显示安全风险信息，用户仍可以选择继续访问该站点。由于许多用户缺乏安全意识，因而仍可能连接到Pharming攻击所伪造的网站。<br></p>
+<p>(6)HTTPOnly 属性 ：用于防止客户端脚本通过document.cookie属性访问Cookie，有助于保护Cookie不被跨站脚本攻击窃取或篡改。但是，HTTPOnly的应用仍存在局限性，一些浏览器可以阻止客户端脚本对Cookie的读操作，但允许写操作；此外大多数浏览器仍允许通过XMLHTTP对象读取HTTP响应中的Set-Cookie头 。<br></p>
+<h2 id="安全威胁">安全威胁
+</h2><h3 id="cookie捕获重放">Cookie捕获/重放
+</h3><p>攻击者可以通过木马等恶意程序，或使用跨站脚本【注释1】攻击等手段偷窃存放在用户硬盘或内存中的Cookie。借助网络攻击手段，包括在不安全的局域网中被动地监听网络通信；通过攻击网络用户的路由器，或通过搭建恶意的无线路由器等手法，控制路由基础设施，将网络流量重定向到攻击者控制的主机；发动DNSPharming(域欺骗)攻击，通过DNS缓存中毒、DNS应答欺骗、或修改用户端的本地域名解析文件等方法攻击DNS系统，导致用户对合法网站的访问请求被重定向到恶意网站等等，同样可能窃取Cookie。对于捕获到的认证Cookie，攻击者往往会猜测其中的访问令牌，试图获取会话ID、用户名与口令、用户角色、时间戳等敏感信息；或者直接重放该Cookie，假冒受害者的身份发动攻击。</p>
+<h3 id="恶意-cookies">恶意 Cookies
+</h3><p>Cookies 是文本文件， 一般情况下认为它不会造成安全威胁。 但是，如果在 Cookies 中通过特殊标记语言，引入可执行代码，就很可能给用户造成严重的安全隐患。HTML 为区别普通文本和标记语言，用符号“&lt;&gt;”来指示HTML 代码。 这些 HTML 代码或者定义 Web 网页格式，或者引入 Web 浏览器可执行代码段。 Web 服务 器可以使用Cookies 信息创建动态网页。假使 Cookies 包含可执行恶意代码段，那么在显示合成有该 Cookies 的网页时，就会自动执行这段恶意代码。当然，恶意代码能否真正造成危害，还取决于Web 站点的安全配置策略。</p>
+<h3 id="会话定置">会话定置
+</h3><p>会话定置(Session Fixation)攻击是指，攻击者向受害者主机注入自己控制的认证Cookie等信息，使得受害者以攻击者的身份登录网站，从而窃取受害者的会话信息。注入Cookie的方法包括：使用跨站脚本或木马等恶意程序；或伪造与合法网站同域的站点，并利用各种方法欺骗用户访问该仿冒网站，从而通过HTTP响应中的Set-Cookie头将攻击者拥有的该域Cookie发送给用户等 。</p>
+<h3 id="csrf攻击">CSRF攻击
+</h3><p>跨站请求伪造（Cross-Site Request Forgery，简称CSRF）是指，攻击者可能利用网页中的恶意代码强迫受害者浏览器向被攻击的Web站点发送伪造的请求，篡夺受害者的认证Cookie等身份信息，从而假冒受害者对目标站点执行指定的操作。Firefox、Opera等浏览器使用单进程机制，多个窗口或标签使用同一个进程，共享Cookie等会话数据。IE则混合使用单进程与多进程模式，一个窗口中的多个标签，以及使用“Ctrl+N” 或单击网页中的链接打开的新窗口使用同一进程，共享会话数据；只有直接运行IE可执行程序打开窗口时，才会创建新的进程。Chrome虽然使用多进程机制，然而经测试发现，其不同的窗口或标签之间仍会共享会话数据，除非使用隐身访问方式。因而，用户同时打开多个浏览器窗口或标签访问互联网资源时，就为CSRF攻击篡夺用户的会话Cookie创造了条件。另外，如果一个Web站点提供持久化Cookie，则CSRF攻击将更直接、更容易。</p>
+<h2 id="安全防护">安全防护
+</h2><h3 id="web服务器端防护">Web服务器端防护
+</h3><p>通过Cookie在客户端与服务器端进行交互，最终实现对用户身份的认证，Cookie成了用户整个身份的代替，其安全性决定了整个系统的安全性，Cookie的安全性问题主要有以下几方面:<br>
+（1）Cookie被用户非法篡改，如<strong>篡改其中的expire项，可将Cookie的有效期延长</strong>；篡改path项可使用户能够访问服务器上不被授权的内容；或修改domain项，使用户能够访问不被授权的服务器从而获得合法用户的信息等;<br>
+（2）被非法用户非法截获，然后在有限期内重放，则非法用户将享有合法用户的合法权益，可能会损害网站方的利益;<br>
+（3）若Cookie被服务器加密，而非法用户通过强力攻击或其他手段获得了相应的加密密钥，则非法用户可以伪造任何合法Cookie，从而可以访问合法用户的所有个性化信息，甚至是账户信息等 。<br>
+面对诸如此类的攻击手段，有必要从服务器端对Cookie进行安全设计，保护措施主要有:<br>
+（1）加入MAC以进行完整性校验;<br>
+（2）防止非法用户非法截获后的重放，可以让用户对相关信息进行数字签名，加强有效性验证;<br>
+（3）对Cookie本身进行随机密钥加密，保证Cookie本身的信息安全 。</p>
+<h3 id="客户端浏览器防护">客户端浏览器防护
+</h3><p>客户端浏览器为了保证本地的Cookie安全，采取了对不同访问网站的统一Cookie加密，在相应的系统目录下，只可看见一个与Cookie相关的加密文件，而且其中的Cookie文件，已被浏览器加密，用户不可见，在用户访问特定站点的时候，可由浏览器对cookies文件进行调用并进行解密，将特定站点的Cookie发送到指定的站点服务器中，实现对用户的Cookie的认证 。</p>
+<h3 id="主机的安全防护">主机的安全防护
+</h3><p>在原有的服务器端以及客户端对Cookie的安全性控制下，鉴于不同的客户端浏览器对站点的Cookie控制相互独立，可以采取在客户端浏览器对产生的Cookie文件进行基于主机特征的安全性认证，即在浏览器产生Cookie加密文件时，在Cookie文件中加入一段主机的特征，生成一个双层加密的新的Cookie文件；在调用Cookie的时候，通过对Cookie文件进行主机特征的匹配，选择对内层的文件进行解密调用 。<br>
+然后，对嵌套了主机序列号的内层密文进行二次加密；内层加密保证对源Cookie内容的加密，保证Cookie信息的不可见，外层加密保证对主机特征的保护，以避免对主机特征的替换，通过对Cookie加入主机特征，以及两次对Cookie加密，可以在原有的防护机制下，为Cookie提供更加安全的保护 。</p>
+<h2 id="认证机制">认证机制
+</h2><p>在 Web认证中 ,因为HTTP协议本身的局限，必须采用其他技术将相关认证标记以某种方式持续传送，以免客户从一个页面跳转至另一个页面时重新输入认证信息。基于Cookie的认证过程，主要由以下三个阶段组成：<br>
+1.发布Cookie。当用户试图访问某Web站点中需要认证的资源时，Web服务器会检查用户是否提供了认证Cookie，如果没有，则将用户重定向到登录页面。在用户成功登录后，Web服务器会产生认证Cookie，并通过HTTP响应中的Set-Cookie头发送给客户端，用于对用户随后的请求进行检查和验证，接着将用户重定向到初始请求的资源 。<br>
+2.检索Cookie。在用户随后的访问请求中，客户端浏览器检索Path和Domain等属性与用户请求资源相匹配的Cookie，并将找到的Cookie通过HTTP请求中的Cookie头提交给Web服务器 。<br>
+3.验证CookieWeb服务器提取客户端浏览器递交的Cookie，验证其中的访问令牌。若合法，则将访问请求的资源发送给客户端浏览器；反之则拒绝用户的访问请求。Cookie 认证技术简化了用户访问 Web 网站资源的过程，即用户只需在初次登录网站时输入身份信息进行认证，随后便可以访问被授权的所有站点资源，不再需要重复手工提交身份信息 。<br></p>
+<h2 id="实例">实例
+</h2><p>由于Cookies是我们浏览的网站传输到用户计算机硬盘中的文本文件或内存中的数据，因此它在硬盘中存放的位置与使用的操作系统和浏览器密切相关。在Windows 9X系统计算机中，Cookies文件的存放位置为C:\Windows\Cookies，在Windows NT/2000/XP的计算机中，Cookies文件的存放位置为C:\Documentsand Settings\用户名\Cookies。硬盘中的Cookies文件可以被Web浏览器读取，它的命令格式为：用户名@网站地址[数字].txt。 要注意的是：硬盘中的Cookies属于文本文件，不是程序 。</p>
+<h3 id="设置">设置
+</h3><p>可以在IE的“工具/Internet选项”的“常规”选项卡中，选择“设置/ 查看文件”，查看所有保存到电脑里Cookies。这些文件通常是以user@domain格式命名的，user是本地用户名，domain是所访问的网站的域名。如果使用NetsCape浏览器，则存放在“C:\PROGRAMFILES\NETSCAPE\USERS\”里面，与IE不同的是，NETSCAPE是使用一个Cookie文件记录所有网站的Cookies。可对Cookie进行适当设置：打开“工具/Internet选项”中的“隐私”选项卡（注意该设置只在IE6.0中存在，其他版本IE可以单击“工具/Internet选项”|“安全”标签中的“自定义级别”按钮，进行简单调整），调整Cookie的安全级别。通常情况，可以调整到“中高”或者“高”的位置。多数的论坛站点需要使用Cookie信息，如果从来不去这些地方，可以将安全级调到“阻止所有Cookies”；如果只是为了禁止个别网站的Cookie，可以单击“编辑”按钮，将要屏蔽的网站添加到列表中。在“高级”按钮选项中，可以对第一方Cookie和第三方的Cookie进行设置，第一方Cookie是正在浏览的网站的Cookie，第三方Cookie是非正在浏览的网站发送的Cookie ，通常要对第三方Cookie选择“拒绝”。如果需要保存Cookie，可以使用IE的“导入导出”功能，打开“文件/导入导出”，按提示操作即可 。</p>
+<h3 id="写入与读取">写入与读取
+</h3><p>Cookies集合是附属于Response对象及Request对象的数据集合，使用时需要在前面加上Response或Request。用于给客户机发送Cookies的语法通常为：<br>
+&lt; %Response.cookies(“Cookies名称”)=数据% &gt; <br>
+当给不存在的Cookies集合设置时，就会在客户机创建，如果该Cookies己存在，则会被代替。由于Cookies 是作为HTTP传输的头信息的一部分发给客户机的，所以向客户机发送Cookies的代码一般放在发送给浏览器的HTML 文件的标记之前。如果用户要读取Cookies，则必须使用Request对象的Cookies集合，其使用方法是：<br>
+&lt; %efg=request.cookies(“abc”) (将cookies对象abc的值赋给efg)% &gt; <br>
+需要注意的是，只有在服务器未被下载任何数据给浏览器前，浏览器才能与Server进行Cookies集合的数据交换，一旦浏览器开始接收Server所下载的数据，Cookies的数据交换则停止，为了避免错误，要在程序和前面加上response.Buffer=True <br></p>
+<h4 id="注释">注释
+</h4><p>注释1：跨站脚本 = XSS。<br></p>
+<p>什么是跨站脚本（XSS）<br>
+攻击者往网页里偷偷注入恶意 JavaScript 代码，让浏览器自动执行，从而偷数据、搞破坏。</p>
+<p>核心原理<br>
+正常网页：服务器 → 给你发安全的 HTML/CSS/JS<br>
+XSS 攻击：攻击者 → 把一段恶意 JS塞进网页（评论、输入框、URL）→ 你打开时浏览器以为是正常代码，直接执行。<br></p>
+<p>它能干嘛？<br>
+偷走你的 Cookie、登录凭证 → 直接盗号<br>
+窃取你的输入内容（账号密码、银行卡）<br>
+冒充你发消息、删帖、改资料<br>
+跳转到钓鱼网站、弹窗广告<br>
+控制你的页面，做任何前端能做的事</p>
+<p>最常见的 3 种 XSS<br>
+存储型 XSS（最危险）恶意代码被存到数据库里，所有访问这个页面的人都会中招。例：在论坛评论里写恶意代码，所有人看评论都被攻击。<br>
+反射型 XSS<br>
+恶意代码放在链接里，你点了才执行。例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://xxx.com/search?key=&lt;script&gt;偷cookie&lt;/script&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>DOM 型 XSS不经过服务器，直接在前端页面解析时触发。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
