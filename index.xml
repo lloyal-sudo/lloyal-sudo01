@@ -7,7 +7,311 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Thu, 19 Mar 2026 20:24:48 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 20 Mar 2026 22:15:47 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux命令全解速记版</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/linux%E5%91%BD%E4%BB%A4%E5%85%A8%E8%A7%A3%E9%80%9F%E8%AE%B0%E7%89%88/</link>
+        <pubDate>Fri, 20 Mar 2026 22:15:47 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/linux%E5%91%BD%E4%BB%A4%E5%85%A8%E8%A7%A3%E9%80%9F%E8%AE%B0%E7%89%88/</guid>
+        <description>&lt;h2 id=&#34;一文件与目录&#34;&gt;一、文件与目录
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ls&lt;/code&gt;        列出文件
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-l&lt;/code&gt; 详细 &lt;code&gt;-a&lt;/code&gt; 隐藏 &lt;code&gt;-h&lt;/code&gt; 易读 &lt;code&gt;-t&lt;/code&gt; 按时间 &lt;code&gt;-r&lt;/code&gt; 倒序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cd&lt;/code&gt;        切换目录
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cd ..&lt;/code&gt; 上一级 &lt;code&gt;cd ~&lt;/code&gt; 家目录 &lt;code&gt;cd -&lt;/code&gt; 回到上一次目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pwd&lt;/code&gt;       显示当前路径&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mkdir&lt;/code&gt;     创建目录
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mkdir -p&lt;/code&gt; 递归多级&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rmdir&lt;/code&gt;     删除空目录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;touch&lt;/code&gt;     创建空文件/改时间&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cp&lt;/code&gt;        复制
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cp -r&lt;/code&gt; 递归目录 &lt;code&gt;-i&lt;/code&gt; 提示覆盖 &lt;code&gt;-p&lt;/code&gt; 保留权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mv&lt;/code&gt;        移动/重命名&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rm&lt;/code&gt;        删除（慎用）
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-r&lt;/code&gt; 目录 &lt;code&gt;-f&lt;/code&gt; 强制 &lt;code&gt;-i&lt;/code&gt; 询问&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;二文件查看与编辑&#34;&gt;二、文件查看与编辑
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;cat&lt;/code&gt;       查看全文&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tac&lt;/code&gt;       倒着看&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;more&lt;/code&gt;      分页往下&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;less&lt;/code&gt;      上下翻页、搜索（/关键词）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;head&lt;/code&gt;      看开头
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;head -n 20&lt;/code&gt; 前20行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tail&lt;/code&gt;      看结尾
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;tail -n 20&lt;/code&gt; 后20行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tail -f&lt;/code&gt; 实时刷新日志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nl&lt;/code&gt;        带行号显示&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;od&lt;/code&gt;        二进制查看&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vim/vi&lt;/code&gt;    编辑器
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;i&lt;/code&gt; 编辑 &lt;code&gt;esc&lt;/code&gt; 退出编辑&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;:w&lt;/code&gt; 保存 &lt;code&gt;:q&lt;/code&gt; 退出 &lt;code&gt;:wq&lt;/code&gt; 保存退出 &lt;code&gt;:q!&lt;/code&gt; 强制不保存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;三文件查找与搜索&#34;&gt;三、文件查找与搜索
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;which&lt;/code&gt;     找命令路径&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;whereis&lt;/code&gt;   找命令、源码、帮助&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;locate&lt;/code&gt;    快速查找文件（需数据库）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;find&lt;/code&gt;      精准查找
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;find / -name 文件名&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;find / -type f&lt;/code&gt; 只找文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;find / -size +100M&lt;/code&gt; 大于100M&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;find / -user root&lt;/code&gt; 属主root&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;find / -mtime -7&lt;/code&gt; 7天内修改&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;grep&lt;/code&gt;      过滤内容
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-i&lt;/code&gt; 忽略大小写 &lt;code&gt;-v&lt;/code&gt; 反选 &lt;code&gt;-n&lt;/code&gt; 显示行号 &lt;code&gt;-c&lt;/code&gt; 统计行数 &lt;code&gt;-r&lt;/code&gt; 递归搜目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;awk&lt;/code&gt;       列截取、统计&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sed&lt;/code&gt;       替换、删除行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;四权限用户组&#34;&gt;四、权限、用户、组
+&lt;/h2&gt;&lt;h3 id=&#34;权限&#34;&gt;权限
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;chmod&lt;/code&gt;     修改权限
+&lt;ul&gt;
+&lt;li&gt;数字：&lt;code&gt;777、755、644&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;符号：&lt;code&gt;u+x、g-w、a=r&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;chown&lt;/code&gt;     改属主/属组
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;chown user:group file&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;chgrp&lt;/code&gt;     改属组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;umask&lt;/code&gt;     默认权限掩码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;用户组&#34;&gt;用户/组
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;whoami&lt;/code&gt;    我是谁&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;who&lt;/code&gt;       谁在线&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;w&lt;/code&gt;         详细在线用户&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;useradd&lt;/code&gt;   新建用户&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;userdel -r&lt;/code&gt; 删除用户并删家目录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;usermod&lt;/code&gt;   修改用户&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;groupadd&lt;/code&gt;  建组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;groupdel&lt;/code&gt;  删组&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;passwd&lt;/code&gt;    改密码&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;id&lt;/code&gt;        查看uid、gid&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;su&lt;/code&gt;        切换用户&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo&lt;/code&gt;      临时root权限&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;五磁盘与挂载&#34;&gt;五、磁盘与挂载
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;df -h&lt;/code&gt;     磁盘使用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;du -sh&lt;/code&gt;    目录大小&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;du -sh *&lt;/code&gt;  看每个文件/目录大小&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lsblk&lt;/code&gt;     磁盘列表&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;blkid&lt;/code&gt;     查看UUID&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mount&lt;/code&gt;     挂载&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;umount&lt;/code&gt;    卸载&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fdisk&lt;/code&gt;     磁盘分区（MBR）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;parted&lt;/code&gt;    分区（GPT）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mkfs.ext4&lt;/code&gt; 格式化ext4&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mkfs.xfs&lt;/code&gt;  格式化xfs&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fsck&lt;/code&gt;      磁盘检查修复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;六进程与系统资源&#34;&gt;六、进程与系统资源
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ps&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ps aux&lt;/code&gt; 所有进程&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ps -ef&lt;/code&gt; 完整格式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;top&lt;/code&gt;       实时进程&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;htop&lt;/code&gt;      增强版top&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;uptime&lt;/code&gt;    运行时间、负载&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;free -h&lt;/code&gt;   内存&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;kill PID&lt;/code&gt;  结束进程&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;kill -9 PID&lt;/code&gt; 强制杀&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;killall&lt;/code&gt;   按名字杀&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkill&lt;/code&gt;     按名字杀&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bg&lt;/code&gt;        后台挂起&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fg&lt;/code&gt;        切前台&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;jobs&lt;/code&gt;      后台任务&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nohup&lt;/code&gt;     后台挂机运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;七压缩解压&#34;&gt;七、压缩解压
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;tar&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;压缩：&lt;code&gt;tar -zcvf xxx.tar.gz 目录&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解压：&lt;code&gt;tar -zxvf xxx.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;-C&lt;/code&gt; 指定解压目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zip&lt;/code&gt;       压缩zip&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unzip&lt;/code&gt;     解压zip&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gzip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gunzip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bzip2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bunzip2&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;xz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unxz&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;八网络命令你之前缺的很多在这&#34;&gt;八、网络命令（你之前缺的很多在这）
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ip addr&lt;/code&gt;   看IP&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ifconfig&lt;/code&gt;  旧版IP&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ip route&lt;/code&gt;  路由&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ping&lt;/code&gt;      通断测试&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;telnet IP 端口&lt;/code&gt; 测端口&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ssh 用户名@IP&lt;/code&gt; 远程登录&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;scp&lt;/code&gt;       跨机传文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sftp&lt;/code&gt;      安全传输&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;netstat -tulnp&lt;/code&gt; 看端口&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ss -tulnp&lt;/code&gt; 更快查端口&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ss -s&lt;/code&gt;     网络统计&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nslookup&lt;/code&gt;  解析域名&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dig&lt;/code&gt;       详细DNS&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;host&lt;/code&gt;      域名解析&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;curl&lt;/code&gt;      请求网页/接口&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;wget&lt;/code&gt;      下载文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ethtool&lt;/code&gt;   网卡信息&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;traceroute&lt;/code&gt; 追踪路由&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mtr&lt;/code&gt;       综合ping+路由&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;firewall-cmd&lt;/code&gt; 防火墙（CentOS7+）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ufw&lt;/code&gt;       防火墙（Ubuntu）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;iptables&lt;/code&gt;  防火墙规则&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;九系统服务日志&#34;&gt;九、系统、服务、日志
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;uname -a&lt;/code&gt;  内核信息&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cat /etc/os-release&lt;/code&gt; 系统版本&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;date&lt;/code&gt;      时间&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;timedatectl&lt;/code&gt; 时间时区&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hostname&lt;/code&gt;  主机名&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;reboot&lt;/code&gt;    重启&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;halt&lt;/code&gt;      关机&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;shutdown -h now&lt;/code&gt; 立刻关机&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;history&lt;/code&gt;   历史命令&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;clear&lt;/code&gt;     清屏&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;alias&lt;/code&gt;     别名&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unalias&lt;/code&gt;   取消别名&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;服务管理&#34;&gt;服务管理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;systemctl start 服务&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;systemctl stop 服务&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;systemctl restart 服务&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;systemctl status 服务&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;systemctl enable 服务&lt;/code&gt; 开机自启&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;systemctl disable 服务&lt;/code&gt; 关闭自启&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;日志&#34;&gt;日志
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dmesg&lt;/code&gt;     内核日志&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;journalctl&lt;/code&gt; 系统日志
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-f&lt;/code&gt; 实时 &lt;code&gt;-u&lt;/code&gt; 看某个服务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十io重定向管道&#34;&gt;十、IO、重定向、管道
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;         覆盖重定向&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt;        追加&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;         输入重定向&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;|&lt;/code&gt;         管道&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;xargs&lt;/code&gt;     传参&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tee&lt;/code&gt;       同时输出到文件+屏幕&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十一磁盘文件高级&#34;&gt;十一、磁盘、文件高级
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ln&lt;/code&gt;        链接
+&lt;ul&gt;
+&lt;li&gt;软链接：&lt;code&gt;ln -s&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;diff&lt;/code&gt;      对比文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;md5sum&lt;/code&gt;    校验md5&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sha256sum&lt;/code&gt; 校验sha256&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dd&lt;/code&gt;        拷贝镜像、磁盘&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十二性能监控&#34;&gt;十二、性能、监控
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;iostat&lt;/code&gt;    IO性能&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;iotop&lt;/code&gt;     IO进程top&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vmstat&lt;/code&gt;    虚拟内存、CPU&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sar&lt;/code&gt;       系统统计&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mpstat&lt;/code&gt;    CPU统计&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十三软件包管理&#34;&gt;十三、软件包管理
+&lt;/h2&gt;&lt;h3 id=&#34;centosrhel&#34;&gt;CentOS/RHEL
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;yum install&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;yum remove&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;yum update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;yum search&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dnf&lt;/code&gt;        新版yum&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ubuntudebian&#34;&gt;Ubuntu/Debian
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;apt update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apt upgrade&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apt install&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;apt remove&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十四shell-基础常用&#34;&gt;十四、shell 基础常用
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;echo&lt;/code&gt;      打印&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;export&lt;/code&gt;    环境变量&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;env&lt;/code&gt;       环境变量&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;set&lt;/code&gt;       变量&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;wc&lt;/code&gt;        统计行、单词、字节&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sort&lt;/code&gt;      排序&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;uniq&lt;/code&gt;      去重&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cut&lt;/code&gt;       截取列&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tee&lt;/code&gt;       双向输出&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;split&lt;/code&gt;     分割文件&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;paste&lt;/code&gt;     合并行&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>反射型 XSS（POST 型）详解</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%8F%8D%E5%B0%84%E5%9E%8B-xsspost-%E5%9E%8B%E8%AF%A6%E8%A7%A3/</link>
         <pubDate>Thu, 19 Mar 2026 20:24:48 +0800</pubDate>

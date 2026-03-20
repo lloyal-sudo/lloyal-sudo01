@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一、文件与目录 ls 列出文件 -l 详细 -a 隐藏 -h 易读 -t 按时间 -r 倒序 cd 切换目录 cd .. 上一级 cd ~ 家目录 cd - 回到上一次目录 pwd 显示当前路径 mkdir 创建目录 mkdir -p 递归多级">
+<title>Linux命令全解速记版</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/linux%E5%91%BD%E4%BB%A4%E5%85%A8%E8%A7%A3%E9%80%9F%E8%AE%B0%E7%89%88/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="Linux命令全解速记版">
+<meta property='og:description' content="一、文件与目录 ls 列出文件 -l 详细 -a 隐藏 -h 易读 -t 按时间 -r 倒序 cd 切换目录 cd .. 上一级 cd ~ 家目录 cd - 回到上一次目录 pwd 显示当前路径 mkdir 创建目录 mkdir -p 递归多级">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/linux%E5%91%BD%E4%BB%A4%E5%85%A8%E8%A7%A3%E9%80%9F%E8%AE%B0%E7%89%88/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-20T22:15:47&#43;08:00'/><meta property='article:modified_time' content='2026-03-20T22:15:47&#43;08:00'/>
+<meta name="twitter:title" content="Linux命令全解速记版">
+<meta name="twitter:description" content="一、文件与目录 ls 列出文件 -l 详细 -a 隐藏 -h 易读 -t 按时间 -r 倒序 cd 切换目录 cd .. 上一级 cd ~ 家目录 cd - 回到上一次目录 pwd 显示当前路径 mkdir 创建目录 mkdir -p 递归多级">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一文件与目录">一、文件与目录</a></li>
+    <li><a href="#二文件查看与编辑">二、文件查看与编辑</a></li>
+    <li><a href="#三文件查找与搜索">三、文件查找与搜索</a></li>
+    <li><a href="#四权限用户组">四、权限、用户、组</a>
+      <ol>
+        <li><a href="#权限">权限</a></li>
+        <li><a href="#用户组">用户/组</a></li>
+      </ol>
+    </li>
+    <li><a href="#五磁盘与挂载">五、磁盘与挂载</a></li>
+    <li><a href="#六进程与系统资源">六、进程与系统资源</a></li>
+    <li><a href="#七压缩解压">七、压缩解压</a></li>
+    <li><a href="#八网络命令你之前缺的很多在这">八、网络命令（你之前缺的很多在这）</a></li>
+    <li><a href="#九系统服务日志">九、系统、服务、日志</a>
+      <ol>
+        <li><a href="#服务管理">服务管理</a></li>
+        <li><a href="#日志">日志</a></li>
+      </ol>
+    </li>
+    <li><a href="#十io重定向管道">十、IO、重定向、管道</a></li>
+    <li><a href="#十一磁盘文件高级">十一、磁盘、文件高级</a></li>
+    <li><a href="#十二性能监控">十二、性能、监控</a></li>
+    <li><a href="#十三软件包管理">十三、软件包管理</a>
+      <ol>
+        <li><a href="#centosrhel">CentOS/RHEL</a></li>
+        <li><a href="#ubuntudebian">Ubuntu/Debian</a></li>
+      </ol>
+    </li>
+    <li><a href="#十四shell-基础常用">十四、shell 基础常用</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/linux%E5%91%BD%E4%BB%A4%E5%85%A8%E8%A7%A3%E9%80%9F%E8%AE%B0%E7%89%88/">Linux命令全解速记版</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-20</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="一文件与目录">一、文件与目录
+</h2><ul>
+<li><code>ls</code>        列出文件
+<ul>
+<li><code>-l</code> 详细 <code>-a</code> 隐藏 <code>-h</code> 易读 <code>-t</code> 按时间 <code>-r</code> 倒序</li>
+</ul>
+</li>
+<li><code>cd</code>        切换目录
+<ul>
+<li><code>cd ..</code> 上一级 <code>cd ~</code> 家目录 <code>cd -</code> 回到上一次目录</li>
+</ul>
+</li>
+<li><code>pwd</code>       显示当前路径</li>
+<li><code>mkdir</code>     创建目录
+<ul>
+<li><code>mkdir -p</code> 递归多级</li>
+</ul>
+</li>
+<li><code>rmdir</code>     删除空目录</li>
+<li><code>touch</code>     创建空文件/改时间</li>
+<li><code>cp</code>        复制
+<ul>
+<li><code>cp -r</code> 递归目录 <code>-i</code> 提示覆盖 <code>-p</code> 保留权限</li>
+</ul>
+</li>
+<li><code>mv</code>        移动/重命名</li>
+<li><code>rm</code>        删除（慎用）
+<ul>
+<li><code>-r</code> 目录 <code>-f</code> 强制 <code>-i</code> 询问</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="二文件查看与编辑">二、文件查看与编辑
+</h2><ul>
+<li><code>cat</code>       查看全文</li>
+<li><code>tac</code>       倒着看</li>
+<li><code>more</code>      分页往下</li>
+<li><code>less</code>      上下翻页、搜索（/关键词）</li>
+<li><code>head</code>      看开头
+<ul>
+<li><code>head -n 20</code> 前20行</li>
+</ul>
+</li>
+<li><code>tail</code>      看结尾
+<ul>
+<li><code>tail -n 20</code> 后20行</li>
+<li><code>tail -f</code> 实时刷新日志</li>
+</ul>
+</li>
+<li><code>nl</code>        带行号显示</li>
+<li><code>od</code>        二进制查看</li>
+<li><code>vim/vi</code>    编辑器
+<ul>
+<li><code>i</code> 编辑 <code>esc</code> 退出编辑</li>
+<li><code>:w</code> 保存 <code>:q</code> 退出 <code>:wq</code> 保存退出 <code>:q!</code> 强制不保存</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="三文件查找与搜索">三、文件查找与搜索
+</h2><ul>
+<li><code>which</code>     找命令路径</li>
+<li><code>whereis</code>   找命令、源码、帮助</li>
+<li><code>locate</code>    快速查找文件（需数据库）</li>
+<li><code>find</code>      精准查找
+<ul>
+<li><code>find / -name 文件名</code></li>
+<li><code>find / -type f</code> 只找文件</li>
+<li><code>find / -size +100M</code> 大于100M</li>
+<li><code>find / -user root</code> 属主root</li>
+<li><code>find / -mtime -7</code> 7天内修改</li>
+</ul>
+</li>
+<li><code>grep</code>      过滤内容
+<ul>
+<li><code>-i</code> 忽略大小写 <code>-v</code> 反选 <code>-n</code> 显示行号 <code>-c</code> 统计行数 <code>-r</code> 递归搜目录</li>
+</ul>
+</li>
+<li><code>awk</code>       列截取、统计</li>
+<li><code>sed</code>       替换、删除行</li>
+</ul>
+<hr>
+<h2 id="四权限用户组">四、权限、用户、组
+</h2><h3 id="权限">权限
+</h3><ul>
+<li><code>chmod</code>     修改权限
+<ul>
+<li>数字：<code>777、755、644</code></li>
+<li>符号：<code>u+x、g-w、a=r</code></li>
+</ul>
+</li>
+<li><code>chown</code>     改属主/属组
+<ul>
+<li><code>chown user:group file</code></li>
+</ul>
+</li>
+<li><code>chgrp</code>     改属组</li>
+<li><code>umask</code>     默认权限掩码</li>
+</ul>
+<h3 id="用户组">用户/组
+</h3><ul>
+<li><code>whoami</code>    我是谁</li>
+<li><code>who</code>       谁在线</li>
+<li><code>w</code>         详细在线用户</li>
+<li><code>useradd</code>   新建用户</li>
+<li><code>userdel -r</code> 删除用户并删家目录</li>
+<li><code>usermod</code>   修改用户</li>
+<li><code>groupadd</code>  建组</li>
+<li><code>groupdel</code>  删组</li>
+<li><code>passwd</code>    改密码</li>
+<li><code>id</code>        查看uid、gid</li>
+<li><code>su</code>        切换用户</li>
+<li><code>sudo</code>      临时root权限</li>
+</ul>
+<hr>
+<h2 id="五磁盘与挂载">五、磁盘与挂载
+</h2><ul>
+<li><code>df -h</code>     磁盘使用</li>
+<li><code>du -sh</code>    目录大小</li>
+<li><code>du -sh *</code>  看每个文件/目录大小</li>
+<li><code>lsblk</code>     磁盘列表</li>
+<li><code>blkid</code>     查看UUID</li>
+<li><code>mount</code>     挂载</li>
+<li><code>umount</code>    卸载</li>
+<li><code>fdisk</code>     磁盘分区（MBR）</li>
+<li><code>parted</code>    分区（GPT）</li>
+<li><code>mkfs.ext4</code> 格式化ext4</li>
+<li><code>mkfs.xfs</code>  格式化xfs</li>
+<li><code>fsck</code>      磁盘检查修复</li>
+</ul>
+<hr>
+<h2 id="六进程与系统资源">六、进程与系统资源
+</h2><ul>
+<li><code>ps</code>
+<ul>
+<li><code>ps aux</code> 所有进程</li>
+<li><code>ps -ef</code> 完整格式</li>
+</ul>
+</li>
+<li><code>top</code>       实时进程</li>
+<li><code>htop</code>      增强版top</li>
+<li><code>uptime</code>    运行时间、负载</li>
+<li><code>free -h</code>   内存</li>
+<li><code>kill PID</code>  结束进程</li>
+<li><code>kill -9 PID</code> 强制杀</li>
+<li><code>killall</code>   按名字杀</li>
+<li><code>pkill</code>     按名字杀</li>
+<li><code>bg</code>        后台挂起</li>
+<li><code>fg</code>        切前台</li>
+<li><code>jobs</code>      后台任务</li>
+<li><code>nohup</code>     后台挂机运行</li>
+</ul>
+<hr>
+<h2 id="七压缩解压">七、压缩解压
+</h2><ul>
+<li><code>tar</code>
+<ul>
+<li>压缩：<code>tar -zcvf xxx.tar.gz 目录</code></li>
+<li>解压：<code>tar -zxvf xxx.tar.gz</code></li>
+<li><code>-C</code> 指定解压目录</li>
+</ul>
+</li>
+<li><code>zip</code>       压缩zip</li>
+<li><code>unzip</code>     解压zip</li>
+<li><code>gzip</code></li>
+<li><code>gunzip</code></li>
+<li><code>bzip2</code></li>
+<li><code>bunzip2</code></li>
+<li><code>xz</code></li>
+<li><code>unxz</code></li>
+</ul>
+<hr>
+<h2 id="八网络命令你之前缺的很多在这">八、网络命令（你之前缺的很多在这）
+</h2><ul>
+<li><code>ip addr</code>   看IP</li>
+<li><code>ifconfig</code>  旧版IP</li>
+<li><code>ip route</code>  路由</li>
+<li><code>ping</code>      通断测试</li>
+<li><code>telnet IP 端口</code> 测端口</li>
+<li><code>ssh 用户名@IP</code> 远程登录</li>
+<li><code>scp</code>       跨机传文件</li>
+<li><code>sftp</code>      安全传输</li>
+<li><code>netstat -tulnp</code> 看端口</li>
+<li><code>ss -tulnp</code> 更快查端口</li>
+<li><code>ss -s</code>     网络统计</li>
+<li><code>nslookup</code>  解析域名</li>
+<li><code>dig</code>       详细DNS</li>
+<li><code>host</code>      域名解析</li>
+<li><code>curl</code>      请求网页/接口</li>
+<li><code>wget</code>      下载文件</li>
+<li><code>ethtool</code>   网卡信息</li>
+<li><code>traceroute</code> 追踪路由</li>
+<li><code>mtr</code>       综合ping+路由</li>
+<li><code>firewall-cmd</code> 防火墙（CentOS7+）</li>
+<li><code>ufw</code>       防火墙（Ubuntu）</li>
+<li><code>iptables</code>  防火墙规则</li>
+</ul>
+<hr>
+<h2 id="九系统服务日志">九、系统、服务、日志
+</h2><ul>
+<li><code>uname -a</code>  内核信息</li>
+<li><code>cat /etc/os-release</code> 系统版本</li>
+<li><code>date</code>      时间</li>
+<li><code>timedatectl</code> 时间时区</li>
+<li><code>hostname</code>  主机名</li>
+<li><code>reboot</code>    重启</li>
+<li><code>halt</code>      关机</li>
+<li><code>shutdown -h now</code> 立刻关机</li>
+<li><code>history</code>   历史命令</li>
+<li><code>clear</code>     清屏</li>
+<li><code>alias</code>     别名</li>
+<li><code>unalias</code>   取消别名</li>
+</ul>
+<h3 id="服务管理">服务管理
+</h3><ul>
+<li><code>systemctl start 服务</code></li>
+<li><code>systemctl stop 服务</code></li>
+<li><code>systemctl restart 服务</code></li>
+<li><code>systemctl status 服务</code></li>
+<li><code>systemctl enable 服务</code> 开机自启</li>
+<li><code>systemctl disable 服务</code> 关闭自启</li>
+</ul>
+<h3 id="日志">日志
+</h3><ul>
+<li><code>dmesg</code>     内核日志</li>
+<li><code>journalctl</code> 系统日志
+<ul>
+<li><code>-f</code> 实时 <code>-u</code> 看某个服务</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="十io重定向管道">十、IO、重定向、管道
+</h2><ul>
+<li><code>&gt;</code>         覆盖重定向</li>
+<li><code>&gt;&gt;</code>        追加</li>
+<li><code>&lt;</code>         输入重定向</li>
+<li><code>|</code>         管道</li>
+<li><code>xargs</code>     传参</li>
+<li><code>tee</code>       同时输出到文件+屏幕</li>
+</ul>
+<hr>
+<h2 id="十一磁盘文件高级">十一、磁盘、文件高级
+</h2><ul>
+<li><code>ln</code>        链接
+<ul>
+<li>软链接：<code>ln -s</code></li>
+</ul>
+</li>
+<li><code>diff</code>      对比文件</li>
+<li><code>md5sum</code>    校验md5</li>
+<li><code>sha256sum</code> 校验sha256</li>
+<li><code>dd</code>        拷贝镜像、磁盘</li>
+</ul>
+<hr>
+<h2 id="十二性能监控">十二、性能、监控
+</h2><ul>
+<li><code>iostat</code>    IO性能</li>
+<li><code>iotop</code>     IO进程top</li>
+<li><code>vmstat</code>    虚拟内存、CPU</li>
+<li><code>sar</code>       系统统计</li>
+<li><code>mpstat</code>    CPU统计</li>
+</ul>
+<hr>
+<h2 id="十三软件包管理">十三、软件包管理
+</h2><h3 id="centosrhel">CentOS/RHEL
+</h3><ul>
+<li><code>yum install</code></li>
+<li><code>yum remove</code></li>
+<li><code>yum update</code></li>
+<li><code>yum search</code></li>
+<li><code>dnf</code>        新版yum</li>
+</ul>
+<h3 id="ubuntudebian">Ubuntu/Debian
+</h3><ul>
+<li><code>apt update</code></li>
+<li><code>apt upgrade</code></li>
+<li><code>apt install</code></li>
+<li><code>apt remove</code></li>
+</ul>
+<hr>
+<h2 id="十四shell-基础常用">十四、shell 基础常用
+</h2><ul>
+<li><code>echo</code>      打印</li>
+<li><code>export</code>    环境变量</li>
+<li><code>env</code>       环境变量</li>
+<li><code>set</code>       变量</li>
+<li><code>wc</code>        统计行、单词、字节</li>
+<li><code>sort</code>      排序</li>
+<li><code>uniq</code>      去重</li>
+<li><code>cut</code>       截取列</li>
+<li><code>tee</code>       双向输出</li>
+<li><code>split</code>     分割文件</li>
+<li><code>paste</code>     合并行</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
