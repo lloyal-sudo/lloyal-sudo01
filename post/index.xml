@@ -11463,7 +11463,7 @@ username or password is not exists&lt;br&gt;&lt;/li&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;查看网络配置信息&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;ip addr
+&lt;p&gt;ip addr&lt;br&gt;
 ipconfig&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;查看进程&lt;/p&gt;
