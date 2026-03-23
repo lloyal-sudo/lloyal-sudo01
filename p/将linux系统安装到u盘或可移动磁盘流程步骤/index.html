@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="按照 准备工具 🛠️ -&gt; 制作启动介质 🗂️ -&gt; 安装系统 💻 -&gt; post-install配置 🚀 四个阶段来执行。 为了确保成功率，我以最通用的 Windows 主机 + Vento">
+<title>将Linux系统安装到U盘或可移动磁盘流程步骤</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%B0%86linux%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%88%B0u%E7%9B%98%E6%88%96%E5%8F%AF%E7%A7%BB%E5%8A%A8%E7%A3%81%E7%9B%98%E6%B5%81%E7%A8%8B%E6%AD%A5%E9%AA%A4/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="将Linux系统安装到U盘或可移动磁盘流程步骤">
+<meta property='og:description' content="按照 准备工具 🛠️ -&gt; 制作启动介质 🗂️ -&gt; 安装系统 💻 -&gt; post-install配置 🚀 四个阶段来执行。 为了确保成功率，我以最通用的 Windows 主机 + Vento">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%B0%86linux%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%88%B0u%E7%9B%98%E6%88%96%E5%8F%AF%E7%A7%BB%E5%8A%A8%E7%A3%81%E7%9B%98%E6%B5%81%E7%A8%8B%E6%AD%A5%E9%AA%A4/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-23T21:49:12&#43;08:00'/><meta property='article:modified_time' content='2026-03-23T21:49:12&#43;08:00'/>
+<meta name="twitter:title" content="将Linux系统安装到U盘或可移动磁盘流程步骤">
+<meta name="twitter:description" content="按照 准备工具 🛠️ -&gt; 制作启动介质 🗂️ -&gt; 安装系统 💻 -&gt; post-install配置 🚀 四个阶段来执行。 为了确保成功率，我以最通用的 Windows 主机 + Vento">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#第一阶段极致准备工作-0-风险">第一阶段：极致准备工作 (0% 风险)</a></li>
+        <li><a href="#第二阶段制作启动-u-盘-10-风险">第二阶段：制作启动 U 盘 (10% 风险)</a></li>
+        <li><a href="#第三阶段进入安装界面-30-风险">第三阶段：进入安装界面 (30% 风险)</a></li>
+        <li><a href="#第四阶段系统安装详解-50-风险">第四阶段：系统安装详解 (50% 风险)</a></li>
+        <li><a href="#第五阶段post-install-配置-100-完成">第五阶段：Post-install 配置 (100% 完成)</a></li>
+      </ol>
+    </li>
+    <li><a href="#单盘启动模式"><strong>“单盘启动模式”</strong>。</a>
+      <ol>
+        <li><a href="#一什么是单盘启动">一、什么是“单盘启动”？</a></li>
+        <li><a href="#二操作核心步骤windows-环境">二、操作核心步骤（Windows 环境）</a>
+          <ol>
+            <li><a href="#1-准备工作">1. 准备工作</a></li>
+            <li><a href="#2-制作单盘启动系统以-ventoy-为例">2. 制作单盘启动系统（以 Ventoy 为例）</a></li>
+          </ol>
+        </li>
+        <li><a href="#三如何使用单盘启动">三、如何使用（单盘启动）</a></li>
+        <li><a href="#四关键注意事项">四、关键注意事项</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/%E5%B0%86linux%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%88%B0u%E7%9B%98%E6%88%96%E5%8F%AF%E7%A7%BB%E5%8A%A8%E7%A3%81%E7%9B%98%E6%B5%81%E7%A8%8B%E6%AD%A5%E9%AA%A4/">将Linux系统安装到U盘或可移动磁盘流程步骤</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-23</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>按照 <strong>准备工具 🛠️ -&gt; 制作启动介质 🗂️ -&gt; 安装系统 💻 -&gt;  post-install配置 🚀</strong> 四个阶段来执行。</p>
+<p>为了确保成功率，我以最通用的 <strong>Windows 主机 + Ventoy（多系统管理神器）</strong> 为例。</p>
+<hr>
+<h3 id="第一阶段极致准备工作-0-风险">第一阶段：极致准备工作 (0% 风险)
+</h3><p>这一步最关键，决定了后面会不会“变砖”。</p>
+<ol>
+<li>
+<p><strong>磁盘容量确认</strong></p>
+<ul>
+<li><strong>U盘 (安装介质)</strong>：至少 <strong>8GB</strong>，建议 <strong>16GB+</strong>。</li>
+<li><strong>移动硬盘/U盘 (系统目标)</strong>：
+<ul>
+<li><strong>最低要求</strong>：<strong>20GB</strong>（仅命令行系统）。</li>
+<li><strong>推荐要求</strong>：<strong>64GB</strong>（如果想装图形界面、开发环境和各种工具）。</li>
+</ul>
+</li>
+<li>⚠️ <strong>警告</strong>：目标盘所有数据将被<strong>彻底清除</strong>，请先备份。</li>
+</ul>
+</li>
+<li>
+<p><strong>下载必备工具</strong></p>
+<ol>
+<li><strong>CentOS 镜像</strong>：确认你的 <code>CentOS-Stream-10-latest-x86_64-dvd1.iso</code> 下载完整。</li>
+<li><strong>Ventoy2Disk</strong>（下载地址：<a class="link" href="https://www.ventoy.net/"  target="_blank" rel="noopener"
+    >ventoy.net</a>）：这是比 Rufus 更好的工具，制作好后，U盘还能存其他文件，且支持直接放多个 ISO 启动。</li>
+<li><strong>校验工具</strong>（可选）：Windows 自带 PowerShell，用于验证镜像是否损坏。</li>
+</ol>
+</li>
+<li>
+<p><strong>验证镜像完整性 (必做)</strong></p>
+<ul>
+<li>打开 <strong>PowerShell</strong>，进入你放 ISO 文件的目录，执行命令：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Get-FileHash</span> <span class="n">-Path</span> <span class="p">.\</span><span class="nb">CentOS-Stream</span><span class="p">-</span><span class="mf">10</span><span class="n">-latest-x86_64-dvd1</span><span class="p">.</span><span class="py">iso</span> <span class="n">-Algorithm</span> <span class="n">SHA256</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>对比生成的哈希值与官网提供的 SHA256 值。<strong>不一致会导致安装失败，必须重新下载。</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>整理目标盘</strong></p>
+<ul>
+<li>将准备好的 <strong>大容量移动磁盘 (U盘/SSD)</strong> 插入电脑。</li>
+<li>打开 <strong>“此电脑”</strong>，记住它的盘符（例如 <code>E:</code> 或 <code>F:</code>），后续安装时千万别选错！</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="第二阶段制作启动-u-盘-10-风险">第二阶段：制作启动 U 盘 (10% 风险)
+</h3><p>使用 Ventoy，傻瓜式操作，容错率极高。</p>
+<ol>
+<li>
+<p><strong>运行 Ventoy</strong></p>
+<ul>
+<li>解压下载的 Ventoy，运行其中的 <code>Ventoy2Disk.exe</code>。</li>
+<li><strong>设备 (Device)</strong>：选择你的<strong>小容量 U 盘</strong>（注意：不要选错成目标移动硬盘！）。</li>
+</ul>
+</li>
+<li>
+<p><strong>配置参数</strong></p>
+<ul>
+<li><strong>分区类型</strong>：
+<ul>
+<li>如果你的电脑是近5年买的，选 <strong>GPT</strong>。</li>
+<li>如果是很老的电脑，选 <strong>MBR</strong>。</li>
+</ul>
+</li>
+<li><strong>其他默认</strong>，不要动 Secure Boot 相关。</li>
+</ul>
+</li>
+<li>
+<p><strong>写入启动项</strong></p>
+<ul>
+<li>点击 <strong>「安装」</strong>。</li>
+<li>等待进度条走完，U盘会自动弹出。这时候 U 盘里只有几个 Ventoy 的引导文件，空间还很大。</li>
+</ul>
+</li>
+<li>
+<p><strong>放入镜像</strong></p>
+<ul>
+<li>重新插入 U 盘。</li>
+<li>把下载好的 <code>CentOS-Stream-10...iso</code> 文件<strong>直接拖拽</strong>到 U 盘的根目录下。</li>
+<li>✅ <strong>完成！</strong> 你的 U 盘现在就是一个万能系统启动盘了。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="第三阶段进入安装界面-30-风险">第三阶段：进入安装界面 (30% 风险)
+</h3><p>这里最容易出错的是“从U盘启动”。</p>
+<ol>
+<li>
+<p><strong>插入介质</strong></p>
+<ul>
+<li>把 <strong>Ventoy U 盘</strong> 插在电脑上。</li>
+<li>把 <strong>目标移动硬盘</strong> 也插在电脑上（最好插在主机背面的 USB 3.0 接口，速度快）。</li>
+</ul>
+</li>
+<li>
+<p><strong>设置启动顺序</strong></p>
+<ul>
+<li>重启电脑。</li>
+<li>开机瞬间疯狂按 <strong>启动项快捷键</strong>（台式机通常是 F12、F11 或 Esc；笔记本通常是 F2、F10）。</li>
+<li>在启动菜单里，选择 <strong>UEFI USB Key</strong> 相关的选项。</li>
+</ul>
+</li>
+<li>
+<p><strong>选择启动项</strong></p>
+<ul>
+<li>进入 Ventoy 界面后，会列出 U 盘里的 ISO 文件。</li>
+<li>用方向键选中 <code>CentOS-Stream-10...iso</code>，按回车。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="第四阶段系统安装详解-50-风险">第四阶段：系统安装详解 (50% 风险)
+</h3><p>这是最细化的步骤，跟着做就行。</p>
+<ol>
+<li>
+<p><strong>语言与键盘</strong></p>
+<ul>
+<li>推荐选 <strong>English - English (United States)</strong>（环境变量更标准，少坑）。</li>
+<li>点击 <strong>Continue</strong>（继续）。</li>
+</ul>
+</li>
+<li>
+<p><strong>进入安装摘要界面</strong></p>
+<ul>
+<li>屏幕中间会有一个大的 <strong>&ldquo;INSTALLATION SUMMARY&rdquo;</strong>。</li>
+<li>这里有 <strong>3 个地方</strong>必须配置，其余默认即可。</li>
+</ul>
+</li>
+<li>
+<p><strong>关键配置 1：安装目标 (重中之重！)</strong></p>
+<ul>
+<li>点击 **<strong>Installation Destination</strong> (安装目的地)。</li>
+<li><strong>选择磁盘</strong>：在列表中找到你的 <strong>移动硬盘</strong>（通常显示为 128GB/500GB 的外部磁盘）。</li>
+<li><strong>勾选</strong>它。</li>
+<li><strong>Other Storage Options (其他存储选项)</strong> -&gt; 选择 <strong>Custom (Manual partitioning)</strong> (手动分区)。</li>
+<li>点击 <strong>Done</strong> (完成)。</li>
+</ul>
+</li>
+<li>
+<p><strong>关键配置 2：手动分区 (核心难点)</strong></p>
+<ul>
+<li>进入分区界面，点击 <strong>+</strong> 号新建挂载点。</li>
+<li>我们需要建 3 个分区：
+<ul>
+<li><strong>1. 引导分区 (EFI)</strong>
+<ul>
+<li><code>Mount Point</code>: 选择 <code>/boot/efi</code></li>
+<li><code>Desired Capacity</code>: 输入 <code>600</code> (单位MB)</li>
+<li>点击 <code>Add Mount Point</code></li>
+</ul>
+</li>
+<li><strong>2. 交换分区 (Swap)</strong>
+<ul>
+<li><code>Mount Point</code>: 选择 <code>swap</code></li>
+<li><code>Desired Capacity</code>: 输入 <code>16384</code> (单位MB，即16GB，物理内存8G以上建议固定给16G)</li>
+<li>点击 <code>Add Mount Point</code></li>
+</ul>
+</li>
+<li><strong>3. 根分区 (Root)</strong>
+<ul>
+<li><code>Mount Point</code>: 输入 <code>/</code></li>
+<li><code>Desired Capacity</code>: 保持为空，直接点击 <code>Add Mount Point</code> (它会自动吃掉剩下所有空间)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>✅ 检查左侧列表：有 <code>/boot/efi</code>, <code>swap</code>, <code>/</code> 三个条目。</li>
+<li>点击 <strong>Done</strong>。</li>
+<li>弹出摘要框，点击 <strong>Accept Changes</strong> (接受更改)。</li>
+</ul>
+</li>
+<li>
+<p><strong>关键配置 3：网络与主机名</strong></p>
+<ul>
+<li>回到主菜单，点击 <strong>Network &amp; Host Name</strong> (网络和主机名)。</li>
+<li>选中 <code>Ethernet</code> (以太网)，点击右上角的 <strong>ON</strong> (打开)。</li>
+<li>确保能获取到 IP 地址（显示 192.168.x.x），这样安装完就能上网更新软件。</li>
+<li>点击 <strong>Done</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>开始安装</strong></p>
+<ul>
+<li>所有配置变红的地方都消失后，点击右上角的 <strong>Begin Installation</strong> (开始安装)。</li>
+</ul>
+</li>
+<li>
+<p><strong>设置用户密码</strong></p>
+<ul>
+<li>安装过程中，会有 <strong>Root Password</strong> (根密码) 和 <strong>Create User</strong> (创建用户) 两个环节。</li>
+<li><strong>Root Password</strong>：设置强密码（记得住的，比如 <code>Admin@123456</code>）。</li>
+<li><strong>Create User</strong>：创建一个日常使用的普通用户。</li>
+<li>耐心等待进度条走完。</li>
+</ul>
+</li>
+<li>
+<p><strong>重启系统</strong></p>
+<ul>
+<li>点击 <strong>Reboot System</strong> (重启系统)。</li>
+<li>重启时，拔掉 Ventoy U 盘。</li>
+<li>系统会从你的 <strong>移动硬盘</strong> 启动 CentOS Stream 10。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="第五阶段post-install-配置-100-完成">第五阶段：Post-install 配置 (100% 完成)
+</h3><p>首次启动可能需要 1-2 分钟，请耐心等待。</p>
+<ol>
+<li>
+<p><strong>登录系统</strong></p>
+<ul>
+<li>输入你刚才创建的用户名和密码登录。</li>
+</ul>
+</li>
+<li>
+<p><strong>联网验证</strong></p>
+<ul>
+<li>尝试上网：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ping www.baidu.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>如果通了，说明环境完美。</li>
+</ul>
+</li>
+<li>
+<p><strong>更新系统</strong></p>
+<ul>
+<li>这是最后一步，确保系统最新：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo dnf update -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>等待命令执行完毕（可能需要几分钟）。</li>
+</ul>
+</li>
+</ol>
+<p>🎉 <strong>恭喜！你现在拥有了一个完美的 CentOS Stream 10 移动系统！</strong></p>
+<h2 id="单盘启动模式"><strong>“单盘启动模式”</strong>。
+</h2><h3 id="一什么是单盘启动">一、什么是“单盘启动”？
+</h3><p>简单说，就是你把 <strong>CentOS-Stream-10-latest-x86_64-dvd1.iso</strong> 直接“写入”到你的可移动磁盘里，让它变成一个<strong>可直接启动的系统盘</strong>。</p>
+<p><strong>核心区别：</strong></p>
+<ul>
+<li><strong>之前的方案</strong>：U盘做引导盘 + 移动磁盘存系统（两个盘）。</li>
+<li><strong>现在的方案</strong>：<strong>只插一个盘</strong>，它既是引导盘，也是系统盘（一个盘搞定）。</li>
+</ul>
+<hr>
+<h3 id="二操作核心步骤windows-环境">二、操作核心步骤（Windows 环境）
+</h3><p>我们用 <strong>Ventoy</strong> 或 <strong>Rufus</strong> 工具，直接把 ISO 写入磁盘。</p>
+<h4 id="1-准备工作">1. 准备工作
+</h4><ul>
+<li><strong>可移动磁盘</strong>：建议 <strong>≥32GB</strong>（U盘或移动SSD均可）。</li>
+<li><strong>数据备份</strong>：磁盘内所有数据将被<strong>彻底清除</strong>，请先备份！</li>
+<li><strong>工具</strong>：下载 <a class="link" href="https://www.ventoy.net/"  target="_blank" rel="noopener"
+    >Ventoy</a> 或 <a class="link" href="https://rufus.ie/"  target="_blank" rel="noopener"
+    >Rufus</a>。</li>
+</ul>
+<h4 id="2-制作单盘启动系统以-ventoy-为例">2. 制作单盘启动系统（以 Ventoy 为例）
+</h4><ol>
+<li>打开 <strong>Ventoy2Disk.exe</strong>。</li>
+<li><strong>设备 (Device)</strong>：选择你的<strong>可移动磁盘</strong>（注意：不要选错成电脑硬盘！）。</li>
+<li><strong>分区类型</strong>：
+<ul>
+<li>电脑较新（近5年）：选 <strong>GPT</strong>。</li>
+<li>电脑很老：选 <strong>MBR</strong>。</li>
+</ul>
+</li>
+<li>点击 <strong>「安装」</strong>，等待完成。</li>
+<li>把下载好的 <code>CentOS-Stream-10-latest-x86_64-dvd1.iso</code> <strong>直接拖拽</strong>到这个磁盘里。</li>
+<li>✅ <strong>完成！</strong> 现在你只有这一个盘，但它已经是一个能启动 Linux 的系统盘了。</li>
+</ol>
+<hr>
+<h3 id="三如何使用单盘启动">三、如何使用（单盘启动）
+</h3><ol>
+<li><strong>只插这一个可移动磁盘</strong> 到任意电脑。</li>
+<li>重启电脑，开机狂按 <strong>启动项快捷键</strong>（F12/F11/Esc 等）。</li>
+<li>在启动菜单里，选择 <strong>UEFI USB Key</strong> 或 <strong>USB Hard Disk</strong> 相关选项（取决于磁盘格式）。</li>
+<li>电脑会直接从这个U盘里的 CentOS 系统启动。</li>
+<li>进入安装界面后，<strong>安装目的地</strong> 依然选择这个<strong>可移动磁盘</strong>，并完成分区（参考之前给你的 <code>/boot/efi</code> + <code>swap</code> + <code>/</code> 方案）。</li>
+<li>安装完成，重启。<strong>依然只插这个盘</strong>，即可进入你的 CentOS 系统。</li>
+</ol>
+<hr>
+<h3 id="四关键注意事项">四、关键注意事项
+</h3><ol>
+<li><strong>磁盘容量</strong>：
+<ul>
+<li>用 U 盘做系统盘：建议 <strong>32GB 以上</strong>，体验更好（安装后系统+软件占用约20GB+）。</li>
+<li>用 <strong>移动SSD</strong> 做系统盘：体验最佳，速度快，寿命长。</li>
+</ul>
+</li>
+<li><strong>启动模式</strong>：
+<ul>
+<li>制作时的分区类型（GPT/MBR）必须与电脑的启动模式（UEFI/Legacy）匹配，否则无法启动。</li>
+</ul>
+</li>
+<li><strong>性能提醒</strong>：
+<ul>
+<li>用普通 U 盘做系统盘，日常办公、学习编程、搭建靶场<strong>完全够用</strong>。但如果进行大量文件读写或复杂编译，速度会比电脑内置硬盘慢一些。</li>
+</ul>
+</li>
+</ol>
+<hr>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
