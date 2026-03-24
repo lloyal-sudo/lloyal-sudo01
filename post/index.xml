@@ -7,7 +7,249 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Mon, 23 Mar 2026 21:49:12 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 24 Mar 2026 09:04:18 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>阶段1：网络安全筑基</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B51%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AD%91%E5%9F%BA/</link>
+        <pubDate>Tue, 24 Mar 2026 09:04:18 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B51%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AD%91%E5%9F%BA/</guid>
+        <description>&lt;p&gt;知识结构图&lt;/p&gt;
+&lt;h2 id=&#34;一网络安全导论&#34;&gt;一、网络安全导论
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;网络安全行业简介
+&lt;ul&gt;
+&lt;li&gt;历史&lt;/li&gt;
+&lt;li&gt;重要事件&lt;/li&gt;
+&lt;li&gt;网络安全证书与赛事&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;网络安全意识与法律法规
+&lt;ul&gt;
+&lt;li&gt;安全意识&lt;/li&gt;
+&lt;li&gt;安全运营、运维、模型&lt;/li&gt;
+&lt;li&gt;案例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;网络安全管理概述
+&lt;ul&gt;
+&lt;li&gt;企业需求&lt;/li&gt;
+&lt;li&gt;行业前景&lt;/li&gt;
+&lt;li&gt;岗位剖析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;二操作系统基础&#34;&gt;二、操作系统基础
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;操作系统简介
+&lt;ul&gt;
+&lt;li&gt;操作系统定义、历史、功能、分类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;windows-系统&#34;&gt;Windows 系统
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Windows 系统日志
+&lt;ul&gt;
+&lt;li&gt;系统日志、安全日志、应用程序日志&lt;/li&gt;
+&lt;li&gt;案例分析：RDP爆破&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Windows 用户与组管理
+&lt;ul&gt;
+&lt;li&gt;管理员账户、标准账户、来宾账户&lt;/li&gt;
+&lt;li&gt;文件/文件夹的权限设置&lt;/li&gt;
+&lt;li&gt;安全后门：隐藏用户与影子用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Windows 进程与端口
+&lt;ul&gt;
+&lt;li&gt;任务管理器&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PCLinter&lt;/code&gt;/&lt;code&gt;userassistview&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Windows 系统安全
+&lt;ul&gt;
+&lt;li&gt;Windows Defender 防病毒配置&lt;/li&gt;
+&lt;li&gt;Windows经典漏洞&lt;code&gt;MS17-010&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Goby漏洞扫描&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;linux-系统&#34;&gt;Linux 系统
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Linux 常见发行版
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Debian&lt;/code&gt;/&lt;code&gt;Realhat&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Ubuntu&lt;/code&gt;/&lt;code&gt;CentOS&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Kali&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linux 系统日志
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;syslog&lt;/code&gt;/&lt;code&gt;rsyslog&lt;/code&gt; 日志系统&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;auditd&lt;/code&gt; 审计工具（监控文件修改、命令执行，如 &lt;code&gt;监控/etc/passwd&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;SSH爆破分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linux 用户与文件管理
+&lt;ul&gt;
+&lt;li&gt;用户与用户组配置详解&lt;/li&gt;
+&lt;li&gt;后门用户筛查
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sudo&lt;/code&gt; 权限提权&lt;/li&gt;
+&lt;li&gt;超级用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;进程/端口/计划任务/启动项
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ps&lt;/code&gt;、&lt;code&gt;netstat&lt;/code&gt;与ss&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SysVinit&lt;/code&gt; 系统&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;chkconfig&lt;/code&gt;与&lt;code&gt;sysv-rc-conf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;systemctl&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linux 安全加固
+&lt;ul&gt;
+&lt;li&gt;SSH 安全配置&lt;/li&gt;
+&lt;li&gt;Linux 防火墙配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;三网络安全基础&#34;&gt;三、网络安全基础
+&lt;/h2&gt;&lt;h3 id=&#34;计算机网络基础&#34;&gt;计算机网络基础
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;计算机网络基础&lt;/li&gt;
+&lt;li&gt;OSI 与 TCP/IP 网络模型&lt;/li&gt;
+&lt;li&gt;TCP/IP 协议栈安全
+&lt;ul&gt;
+&lt;li&gt;SYN Flood 攻击&lt;/li&gt;
+&lt;li&gt;ARP 欺骗原理&lt;/li&gt;
+&lt;li&gt;DNS 污染与劫持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;网络攻击与防护
+&lt;ul&gt;
+&lt;li&gt;DDoS 攻击：SYN Flood与UDP Flood&lt;/li&gt;
+&lt;li&gt;VPN 安全：SSL VPN 与 IPsec VPN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;网络流量分析
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ping&lt;/code&gt; telnet（连通性测试）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;traceroute&lt;/code&gt;（路径跟踪）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;netstat&lt;/code&gt;（查看网络连接）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Wireshark&lt;/code&gt; 与 &lt;code&gt;Tcpdump&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;HTTP 与 HTTPS
+&lt;ul&gt;
+&lt;li&gt;HTTP 协议深度解析&lt;/li&gt;
+&lt;li&gt;Cookie 与 Session 安全机制&lt;/li&gt;
+&lt;li&gt;防范跨域配置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BurpSuite&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;拦截与重放&lt;/li&gt;
+&lt;li&gt;零元购逻辑漏洞实践&lt;/li&gt;
+&lt;li&gt;小程序爬虫&lt;/li&gt;
+&lt;li&gt;浏览器代理配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;交换机与路由器
+&lt;ul&gt;
+&lt;li&gt;DNS、域名、URL、CDN 与代理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;四web-安全基础&#34;&gt;四、WEB 安全基础
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Web 基础
+&lt;ul&gt;
+&lt;li&gt;Web 构成组件
+&lt;ul&gt;
+&lt;li&gt;Web 服务器与 Web 容器&lt;/li&gt;
+&lt;li&gt;Web 开发框架&lt;/li&gt;
+&lt;li&gt;Web 应用与发展里程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Web 访问流程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Web 服务器安全配置
+&lt;ul&gt;
+&lt;li&gt;Apache 安全配置&lt;/li&gt;
+&lt;li&gt;Nginx 安全配置&lt;/li&gt;
+&lt;li&gt;web 服务器漏洞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Web 前端
+&lt;ul&gt;
+&lt;li&gt;HTML/CSS/JS 基础&lt;/li&gt;
+&lt;li&gt;AI生成QQ 邮箱钓鱼网站实战&lt;/li&gt;
+&lt;li&gt;HTML 安全风险：
+&lt;ul&gt;
+&lt;li&gt;危险标签（执行js、嵌入恶意页面）&lt;/li&gt;
+&lt;li&gt;危险属性（&lt;code&gt;onclick/onload&lt;/code&gt; 事件）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;JS 安全风险：XSS 漏洞演示与简单防御&lt;/li&gt;
+&lt;li&gt;前端安全机制（CSP、SameSite Cookie）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Web 后端
+&lt;ul&gt;
+&lt;li&gt;PHP 基础
+&lt;ul&gt;
+&lt;li&gt;PHPStudy与宝塔&lt;/li&gt;
+&lt;li&gt;PHP 基础语法&lt;/li&gt;
+&lt;li&gt;PHP 魔术方法与反序列化&lt;/li&gt;
+&lt;li&gt;PHP 包装流与 &lt;code&gt;php.ini&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Python 基础
+&lt;ul&gt;
+&lt;li&gt;Python 基础语法&lt;/li&gt;
+&lt;li&gt;Python 魔术方法与反序列化&lt;/li&gt;
+&lt;li&gt;Python 给脸调试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;五数据库安全基础&#34;&gt;五、数据库安全基础
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;数据库简介
+&lt;ul&gt;
+&lt;li&gt;数据库基础概念&lt;/li&gt;
+&lt;li&gt;常用数据库与管理工具&lt;/li&gt;
+&lt;li&gt;数据库权限体系与安全配置&lt;/li&gt;
+&lt;li&gt;数据库审计与备份恢复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据库安全
+&lt;ul&gt;
+&lt;li&gt;SQL的CRUD（增删改查）&lt;/li&gt;
+&lt;li&gt;SQL 注入漏洞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;六阶段一收获&#34;&gt;六、阶段一收获
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;证书：NISP 一级&lt;/li&gt;
+&lt;li&gt;就业定位：安全初级工程师&lt;/li&gt;
+&lt;li&gt;技术对标：综合年收入 10w 左右&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>将Linux系统安装到U盘或可移动磁盘流程步骤</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E5%B0%86linux%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85%E5%88%B0u%E7%9B%98%E6%88%96%E5%8F%AF%E7%A7%BB%E5%8A%A8%E7%A3%81%E7%9B%98%E6%B5%81%E7%A8%8B%E6%AD%A5%E9%AA%A4/</link>
         <pubDate>Mon, 23 Mar 2026 21:49:12 +0800</pubDate>
