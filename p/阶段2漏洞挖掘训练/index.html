@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="知识架构 一、情报收集 基本信息收集 搜索引擎技术 技术栈识别 关联资产发现 效率工具（Bulk URL Opener插件-批量URL打开） 域名信息收集 域名枚举">
+<title>阶段2：漏洞挖掘训练</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B52%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E8%AE%AD%E7%BB%83/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="阶段2：漏洞挖掘训练">
+<meta property='og:description' content="知识架构 一、情报收集 基本信息收集 搜索引擎技术 技术栈识别 关联资产发现 效率工具（Bulk URL Opener插件-批量URL打开） 域名信息收集 域名枚举">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B52%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E8%AE%AD%E7%BB%83/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-24T09:41:32&#43;08:00'/><meta property='article:modified_time' content='2026-03-24T09:41:32&#43;08:00'/>
+<meta name="twitter:title" content="阶段2：漏洞挖掘训练">
+<meta name="twitter:description" content="知识架构 一、情报收集 基本信息收集 搜索引擎技术 技术栈识别 关联资产发现 效率工具（Bulk URL Opener插件-批量URL打开） 域名信息收集 域名枚举">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一情报收集">一、情报收集</a></li>
+    <li><a href="#二弱口令与口令爆破">二、弱口令与口令爆破</a></li>
+    <li><a href="#三sql注入基础">三、SQL注入基础</a></li>
+    <li><a href="#四xss漏洞">四、XSS漏洞</a></li>
+    <li><a href="#五csrfssrf漏洞">五、CSRF&amp;SSRF漏洞</a></li>
+    <li><a href="#六xxe漏洞">六、XXE漏洞</a></li>
+    <li><a href="#七文件上传读取包含漏洞">七、文件上传/读取/包含漏洞</a></li>
+    <li><a href="#八rce漏洞">八、RCE漏洞</a></li>
+    <li><a href="#九逻辑漏洞">九、逻辑漏洞</a></li>
+    <li><a href="#十反序列化漏洞">十、反序列化漏洞</a></li>
+    <li><a href="#十一src漏洞挖掘分享">十一、SRC漏洞挖掘分享</a></li>
+    <li><a href="#二阶段的目标与收获">二阶段的目标与收获</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/%E9%98%B6%E6%AE%B52%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E8%AE%AD%E7%BB%83/">阶段2：漏洞挖掘训练</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-24</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>知识架构</p>
+<h2 id="一情报收集">一、情报收集
+</h2><ul>
+<li>基本信息收集
+<ul>
+<li>搜索引擎技术</li>
+<li>技术栈识别</li>
+<li>关联资产发现</li>
+<li>效率工具（Bulk URL Opener插件-批量URL打开）</li>
+</ul>
+</li>
+<li>域名信息收集
+<ul>
+<li>域名枚举工具</li>
+<li>在线收集平台</li>
+<li>高级域名技术</li>
+</ul>
+</li>
+<li>端口信息收集
+<ul>
+<li>端口扫描工具</li>
+<li>端口分析技术（端口查看命令与常见端口知识）</li>
+<li>指纹识别</li>
+<li>综合扫描插件（NexusScan-漏洞和端口扫描）</li>
+</ul>
+</li>
+<li>web整站信息收集
+<ul>
+<li>目录扫描工具
+<ul>
+<li>DirBuster -OWASP图形化目录扫描</li>
+<li>御剑 -中文目录扫描工具</li>
+<li>Dirb -命令行目录扫描</li>
+<li>dir_scanner -自定义脚本扫描</li>
+<li>webdirscan -灵活命令行扫描</li>
+</ul>
+</li>
+<li>综合扫描工具
+<ul>
+<li>Uniscan-gui -图形化多功能扫描</li>
+<li>wwwscan -综合信息收集</li>
+<li>BrupSuite -专业web安全测试
+-AWVS -商业扫漏工具</li>
+</ul>
+</li>
+<li>用户枚举工具
+<ul>
+<li>Apache-Users-Apache用户枚举</li>
+</ul>
+</li>
+<li>自动化收集平台
+<ul>
+<li>oneforall</li>
+<li>小程序抓包工具</li>
+<li>无影</li>
+<li>水泽</li>
+</ul>
+</li>
+<li>资产梳理技术
+<ul>
+<li>自动化信息收集实战</li>
+<li>资产发现与整理</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="二弱口令与口令爆破">二、弱口令与口令爆破
+</h2><ul>
+<li>弱口令基本概念
+<ul>
+<li>弱口令概述</li>
+<li>弱口令分类、危害</li>
+<li>常见弱口令</li>
+<li>账号收集</li>
+<li>口令破解方式解析</li>
+</ul>
+</li>
+<li>口令爆破
+<ul>
+<li>常见弱口令爆破工具</li>
+<li>弱口令破解</li>
+</ul>
+</li>
+<li>爆破实战
+<ul>
+<li>字典生成</li>
+<li>Word密码破解实战</li>
+<li>ZIP密码破解实战</li>
+<li>hydra暴力破解</li>
+<li>爆破的防御</li>
+</ul>
+</li>
+</ul>
+<h2 id="三sql注入基础">三、SQL注入基础
+</h2><ul>
+<li>SQL注入基础
+<ul>
+<li>SQL注入简介与危害</li>
+<li>SQL注入原理</li>
+<li>SQL注入快速实战</li>
+</ul>
+</li>
+<li>SQL注入进阶
+<ul>
+<li>SQL注入分类与请求方式</li>
+<li>基于函数报错的注入实战</li>
+<li>无回显盲注实战</li>
+<li>union手工注入实战</li>
+<li>SQl注入绕过实战</li>
+<li>宽字节与二次注入实战</li>
+<li>SQL堆叠查询实战</li>
+</ul>
+</li>
+<li>SQL注入高阶
+<ul>
+<li>fuzz模糊测试实战</li>
+<li>SQLMmap工具介绍与应用</li>
+<li>SQLMap绕过实战</li>
+<li>SQL注入防护实战</li>
+</ul>
+</li>
+<li>数据库加固</li>
+</ul>
+<h2 id="四xss漏洞">四、XSS漏洞
+</h2><ul>
+<li>XSS漏洞利用与防护
+<ul>
+<li>XSS简介及危害</li>
+<li>XSS分类
+<ul>
+<li>反射性（get&amp;post）</li>
+<li>存储型</li>
+<li>DOM</li>
+</ul>
+</li>
+<li>同源策略概述</li>
+<li>HTML过滤</li>
+<li>HTTP-Olny</li>
+<li>X-Frame</li>
+</ul>
+</li>
+<li>XSS绕过方法与修复技巧
+<ul>
+<li>编码绕过实战</li>
+<li>利用HTML属性绕过实战</li>
+<li>长度限制绕过实战</li>
+<li>CSS跨站解析实战</li>
+</ul>
+</li>
+</ul>
+<h2 id="五csrfssrf漏洞">五、CSRF&amp;SSRF漏洞
+</h2><ul>
+<li>CSRF漏洞利用
+<ul>
+<li>CSRF简介
+<ul>
+<li>cookie</li>
+<li>session</li>
+</ul>
+</li>
+<li>CSRF攻击前提条件</li>
+<li>CSRF攻击原理解读</li>
+<li>CSRF攻击类型分析</li>
+</ul>
+</li>
+<li>CSRF漏洞基础
+<ul>
+<li>CSRF漏洞复现实战</li>
+<li>CSRF漏洞防御实战</li>
+</ul>
+</li>
+<li>SSRF漏洞基础
+<ul>
+<li>SSRF简介、危害分析</li>
+<li>SSRF成因分析</li>
+<li>SSRF漏洞挖掘技巧</li>
+</ul>
+</li>
+<li>SSRF漏洞实战
+<ul>
+<li>伪协议内网探针</li>
+<li>SSRF漏洞利用实战</li>
+<li>SSRF漏洞防御实战</li>
+</ul>
+</li>
+</ul>
+<h2 id="六xxe漏洞">六、XXE漏洞
+</h2><p>（后面补充）</p>
+<h2 id="七文件上传读取包含漏洞">七、文件上传/读取/包含漏洞
+</h2><ul>
+<li>任意文件上传漏洞
+<ul>
+<li>漏洞概述及流程、检测原理</li>
+<li>文件上传漏洞的产生与危害</li>
+<li>文件上传漏洞实战
+<ul>
+<li><code>MIME TYPE</code>绕过</li>
+<li>gitimagesize绕过</li>
+<li>黑名单绕过</li>
+<li>上传白名单绕过</li>
+<li>时间竞争条件绕或</li>
+</ul>
+</li>
+<li>编辑器漏洞文件上传实战</li>
+<li>解析漏洞（IIS、Apache、Nginx、等解析漏洞分析与防御实战）</li>
+<li>Waf绕过实战
+<ul>
+<li>数据溢出实战</li>
+<li>fuzz实战</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文件包含&amp;下载读取漏洞
+<ul>
+<li>漏洞概述、利用条件和危害</li>
+<li>常见脚本语言伪协议解读</li>
+<li>文件包含漏洞修复与防御实战</li>
+<li>文件下载/读取漏洞利用实战</li>
+</ul>
+</li>
+</ul>
+<h2 id="八rce漏洞">八、RCE漏洞
+</h2><ul>
+<li>RCE基础
+<ul>
+<li>RCE简介与危害</li>
+<li>RCE漏洞原理分析</li>
+<li>命令执行函数</li>
+<li>漏洞点</li>
+</ul>
+</li>
+<li>RCE漏洞利用
+<ul>
+<li>WebShell实战
+<ul>
+<li>哥斯拉</li>
+<li>蚁剑</li>
+<li>冰蝎</li>
+</ul>
+</li>
+<li>RCE漏洞防御实战</li>
+</ul>
+</li>
+</ul>
+<h2 id="九逻辑漏洞">九、逻辑漏洞
+</h2><ul>
+<li>逻辑漏洞概述</li>
+<li>验证机制问题
+<ul>
+<li>无效的防重放措施</li>
+<li>无效的登陆失败处理</li>
+<li>任意用户密码重置</li>
+<li>忘记密码漏洞</li>
+</ul>
+</li>
+<li>权限控制问题
+<ul>
+<li>未授权访问</li>
+<li>水平越权与垂直越权</li>
+<li>业务逻辑漏洞</li>
+</ul>
+</li>
+</ul>
+<h2 id="十反序列化漏洞">十、反序列化漏洞
+</h2><ul>
+<li>反序列化漏洞基础
+<ul>
+<li>序列化与反序列化</li>
+<li>反序列化漏洞原理</li>
+<li>反序列化漏洞危害</li>
+</ul>
+</li>
+<li>漏洞利用与防御
+<ul>
+<li>PHP反序列化</li>
+<li>魔法函数</li>
+<li>反序列化漏洞利用实战</li>
+<li>反序列化漏洞防御实战</li>
+</ul>
+</li>
+</ul>
+<h2 id="十一src漏洞挖掘分享">十一、SRC漏洞挖掘分享
+</h2><ul>
+<li>SRC漏洞挖掘平台</li>
+<li>漏洞挖掘技巧</li>
+<li>漏洞挖掘经验分享</li>
+</ul>
+<h2 id="二阶段的目标与收获">二阶段的目标与收获
+</h2><ul>
+<li>项目
+<ul>
+<li>漏洞挖掘</li>
+<li>安全检查</li>
+</ul>
+</li>
+<li>证书：CISP-PTE</li>
+<li>就业岗位
+<ul>
+<li>安全服务工程师</li>
+<li>安全运营工程师</li>
+<li>渗透测试工程师</li>
+<li>安全研究员</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

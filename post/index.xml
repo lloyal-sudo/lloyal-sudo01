@@ -7,7 +7,322 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Tue, 24 Mar 2026 09:04:18 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 24 Mar 2026 09:41:32 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>阶段2：漏洞挖掘训练</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B52%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E8%AE%AD%E7%BB%83/</link>
+        <pubDate>Tue, 24 Mar 2026 09:41:32 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B52%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E8%AE%AD%E7%BB%83/</guid>
+        <description>&lt;p&gt;知识架构&lt;/p&gt;
+&lt;h2 id=&#34;一情报收集&#34;&gt;一、情报收集
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;基本信息收集
+&lt;ul&gt;
+&lt;li&gt;搜索引擎技术&lt;/li&gt;
+&lt;li&gt;技术栈识别&lt;/li&gt;
+&lt;li&gt;关联资产发现&lt;/li&gt;
+&lt;li&gt;效率工具（Bulk URL Opener插件-批量URL打开）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;域名信息收集
+&lt;ul&gt;
+&lt;li&gt;域名枚举工具&lt;/li&gt;
+&lt;li&gt;在线收集平台&lt;/li&gt;
+&lt;li&gt;高级域名技术&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;端口信息收集
+&lt;ul&gt;
+&lt;li&gt;端口扫描工具&lt;/li&gt;
+&lt;li&gt;端口分析技术（端口查看命令与常见端口知识）&lt;/li&gt;
+&lt;li&gt;指纹识别&lt;/li&gt;
+&lt;li&gt;综合扫描插件（NexusScan-漏洞和端口扫描）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;web整站信息收集
+&lt;ul&gt;
+&lt;li&gt;目录扫描工具
+&lt;ul&gt;
+&lt;li&gt;DirBuster -OWASP图形化目录扫描&lt;/li&gt;
+&lt;li&gt;御剑 -中文目录扫描工具&lt;/li&gt;
+&lt;li&gt;Dirb -命令行目录扫描&lt;/li&gt;
+&lt;li&gt;dir_scanner -自定义脚本扫描&lt;/li&gt;
+&lt;li&gt;webdirscan -灵活命令行扫描&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;综合扫描工具
+&lt;ul&gt;
+&lt;li&gt;Uniscan-gui -图形化多功能扫描&lt;/li&gt;
+&lt;li&gt;wwwscan -综合信息收集&lt;/li&gt;
+&lt;li&gt;BrupSuite -专业web安全测试
+-AWVS -商业扫漏工具&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;用户枚举工具
+&lt;ul&gt;
+&lt;li&gt;Apache-Users-Apache用户枚举&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自动化收集平台
+&lt;ul&gt;
+&lt;li&gt;oneforall&lt;/li&gt;
+&lt;li&gt;小程序抓包工具&lt;/li&gt;
+&lt;li&gt;无影&lt;/li&gt;
+&lt;li&gt;水泽&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;资产梳理技术
+&lt;ul&gt;
+&lt;li&gt;自动化信息收集实战&lt;/li&gt;
+&lt;li&gt;资产发现与整理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二弱口令与口令爆破&#34;&gt;二、弱口令与口令爆破
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;弱口令基本概念
+&lt;ul&gt;
+&lt;li&gt;弱口令概述&lt;/li&gt;
+&lt;li&gt;弱口令分类、危害&lt;/li&gt;
+&lt;li&gt;常见弱口令&lt;/li&gt;
+&lt;li&gt;账号收集&lt;/li&gt;
+&lt;li&gt;口令破解方式解析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;口令爆破
+&lt;ul&gt;
+&lt;li&gt;常见弱口令爆破工具&lt;/li&gt;
+&lt;li&gt;弱口令破解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;爆破实战
+&lt;ul&gt;
+&lt;li&gt;字典生成&lt;/li&gt;
+&lt;li&gt;Word密码破解实战&lt;/li&gt;
+&lt;li&gt;ZIP密码破解实战&lt;/li&gt;
+&lt;li&gt;hydra暴力破解&lt;/li&gt;
+&lt;li&gt;爆破的防御&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三sql注入基础&#34;&gt;三、SQL注入基础
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;SQL注入基础
+&lt;ul&gt;
+&lt;li&gt;SQL注入简介与危害&lt;/li&gt;
+&lt;li&gt;SQL注入原理&lt;/li&gt;
+&lt;li&gt;SQL注入快速实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SQL注入进阶
+&lt;ul&gt;
+&lt;li&gt;SQL注入分类与请求方式&lt;/li&gt;
+&lt;li&gt;基于函数报错的注入实战&lt;/li&gt;
+&lt;li&gt;无回显盲注实战&lt;/li&gt;
+&lt;li&gt;union手工注入实战&lt;/li&gt;
+&lt;li&gt;SQl注入绕过实战&lt;/li&gt;
+&lt;li&gt;宽字节与二次注入实战&lt;/li&gt;
+&lt;li&gt;SQL堆叠查询实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SQL注入高阶
+&lt;ul&gt;
+&lt;li&gt;fuzz模糊测试实战&lt;/li&gt;
+&lt;li&gt;SQLMmap工具介绍与应用&lt;/li&gt;
+&lt;li&gt;SQLMap绕过实战&lt;/li&gt;
+&lt;li&gt;SQL注入防护实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;数据库加固&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四xss漏洞&#34;&gt;四、XSS漏洞
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;XSS漏洞利用与防护
+&lt;ul&gt;
+&lt;li&gt;XSS简介及危害&lt;/li&gt;
+&lt;li&gt;XSS分类
+&lt;ul&gt;
+&lt;li&gt;反射性（get&amp;amp;post）&lt;/li&gt;
+&lt;li&gt;存储型&lt;/li&gt;
+&lt;li&gt;DOM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;同源策略概述&lt;/li&gt;
+&lt;li&gt;HTML过滤&lt;/li&gt;
+&lt;li&gt;HTTP-Olny&lt;/li&gt;
+&lt;li&gt;X-Frame&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;XSS绕过方法与修复技巧
+&lt;ul&gt;
+&lt;li&gt;编码绕过实战&lt;/li&gt;
+&lt;li&gt;利用HTML属性绕过实战&lt;/li&gt;
+&lt;li&gt;长度限制绕过实战&lt;/li&gt;
+&lt;li&gt;CSS跨站解析实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五csrfssrf漏洞&#34;&gt;五、CSRF&amp;amp;SSRF漏洞
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;CSRF漏洞利用
+&lt;ul&gt;
+&lt;li&gt;CSRF简介
+&lt;ul&gt;
+&lt;li&gt;cookie&lt;/li&gt;
+&lt;li&gt;session&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CSRF攻击前提条件&lt;/li&gt;
+&lt;li&gt;CSRF攻击原理解读&lt;/li&gt;
+&lt;li&gt;CSRF攻击类型分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CSRF漏洞基础
+&lt;ul&gt;
+&lt;li&gt;CSRF漏洞复现实战&lt;/li&gt;
+&lt;li&gt;CSRF漏洞防御实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SSRF漏洞基础
+&lt;ul&gt;
+&lt;li&gt;SSRF简介、危害分析&lt;/li&gt;
+&lt;li&gt;SSRF成因分析&lt;/li&gt;
+&lt;li&gt;SSRF漏洞挖掘技巧&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SSRF漏洞实战
+&lt;ul&gt;
+&lt;li&gt;伪协议内网探针&lt;/li&gt;
+&lt;li&gt;SSRF漏洞利用实战&lt;/li&gt;
+&lt;li&gt;SSRF漏洞防御实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;六xxe漏洞&#34;&gt;六、XXE漏洞
+&lt;/h2&gt;&lt;p&gt;（后面补充）&lt;/p&gt;
+&lt;h2 id=&#34;七文件上传读取包含漏洞&#34;&gt;七、文件上传/读取/包含漏洞
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;任意文件上传漏洞
+&lt;ul&gt;
+&lt;li&gt;漏洞概述及流程、检测原理&lt;/li&gt;
+&lt;li&gt;文件上传漏洞的产生与危害&lt;/li&gt;
+&lt;li&gt;文件上传漏洞实战
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;MIME TYPE&lt;/code&gt;绕过&lt;/li&gt;
+&lt;li&gt;gitimagesize绕过&lt;/li&gt;
+&lt;li&gt;黑名单绕过&lt;/li&gt;
+&lt;li&gt;上传白名单绕过&lt;/li&gt;
+&lt;li&gt;时间竞争条件绕或&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编辑器漏洞文件上传实战&lt;/li&gt;
+&lt;li&gt;解析漏洞（IIS、Apache、Nginx、等解析漏洞分析与防御实战）&lt;/li&gt;
+&lt;li&gt;Waf绕过实战
+&lt;ul&gt;
+&lt;li&gt;数据溢出实战&lt;/li&gt;
+&lt;li&gt;fuzz实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;文件包含&amp;amp;下载读取漏洞
+&lt;ul&gt;
+&lt;li&gt;漏洞概述、利用条件和危害&lt;/li&gt;
+&lt;li&gt;常见脚本语言伪协议解读&lt;/li&gt;
+&lt;li&gt;文件包含漏洞修复与防御实战&lt;/li&gt;
+&lt;li&gt;文件下载/读取漏洞利用实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;八rce漏洞&#34;&gt;八、RCE漏洞
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;RCE基础
+&lt;ul&gt;
+&lt;li&gt;RCE简介与危害&lt;/li&gt;
+&lt;li&gt;RCE漏洞原理分析&lt;/li&gt;
+&lt;li&gt;命令执行函数&lt;/li&gt;
+&lt;li&gt;漏洞点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RCE漏洞利用
+&lt;ul&gt;
+&lt;li&gt;WebShell实战
+&lt;ul&gt;
+&lt;li&gt;哥斯拉&lt;/li&gt;
+&lt;li&gt;蚁剑&lt;/li&gt;
+&lt;li&gt;冰蝎&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RCE漏洞防御实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;九逻辑漏洞&#34;&gt;九、逻辑漏洞
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;逻辑漏洞概述&lt;/li&gt;
+&lt;li&gt;验证机制问题
+&lt;ul&gt;
+&lt;li&gt;无效的防重放措施&lt;/li&gt;
+&lt;li&gt;无效的登陆失败处理&lt;/li&gt;
+&lt;li&gt;任意用户密码重置&lt;/li&gt;
+&lt;li&gt;忘记密码漏洞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;权限控制问题
+&lt;ul&gt;
+&lt;li&gt;未授权访问&lt;/li&gt;
+&lt;li&gt;水平越权与垂直越权&lt;/li&gt;
+&lt;li&gt;业务逻辑漏洞&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;十反序列化漏洞&#34;&gt;十、反序列化漏洞
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;反序列化漏洞基础
+&lt;ul&gt;
+&lt;li&gt;序列化与反序列化&lt;/li&gt;
+&lt;li&gt;反序列化漏洞原理&lt;/li&gt;
+&lt;li&gt;反序列化漏洞危害&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;漏洞利用与防御
+&lt;ul&gt;
+&lt;li&gt;PHP反序列化&lt;/li&gt;
+&lt;li&gt;魔法函数&lt;/li&gt;
+&lt;li&gt;反序列化漏洞利用实战&lt;/li&gt;
+&lt;li&gt;反序列化漏洞防御实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;十一src漏洞挖掘分享&#34;&gt;十一、SRC漏洞挖掘分享
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;SRC漏洞挖掘平台&lt;/li&gt;
+&lt;li&gt;漏洞挖掘技巧&lt;/li&gt;
+&lt;li&gt;漏洞挖掘经验分享&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二阶段的目标与收获&#34;&gt;二阶段的目标与收获
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;项目
+&lt;ul&gt;
+&lt;li&gt;漏洞挖掘&lt;/li&gt;
+&lt;li&gt;安全检查&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;证书：CISP-PTE&lt;/li&gt;
+&lt;li&gt;就业岗位
+&lt;ul&gt;
+&lt;li&gt;安全服务工程师&lt;/li&gt;
+&lt;li&gt;安全运营工程师&lt;/li&gt;
+&lt;li&gt;渗透测试工程师&lt;/li&gt;
+&lt;li&gt;安全研究员&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>阶段1：网络安全筑基</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B51%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AD%91%E5%9F%BA/</link>
         <pubDate>Tue, 24 Mar 2026 09:04:18 +0800</pubDate>
