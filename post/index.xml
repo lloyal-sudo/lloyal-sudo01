@@ -7,7 +7,209 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Tue, 24 Mar 2026 09:41:32 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 24 Mar 2026 11:13:08 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>阶段3：渗透测试工程师</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B53%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88/</link>
+        <pubDate>Tue, 24 Mar 2026 11:13:08 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B53%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88/</guid>
+        <description>&lt;p&gt;学习路径构架&lt;/p&gt;
+&lt;h2 id=&#34;一网络安全渗透测试&#34;&gt;一、网络安全渗透测试
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;网络安全渗透测试概念简介&lt;/li&gt;
+&lt;li&gt;网站安全渗透测试的执行标准
+&lt;ul&gt;
+&lt;li&gt;需求交流阶段&lt;/li&gt;
+&lt;li&gt;情报搜集阶段&lt;/li&gt;
+&lt;li&gt;威胁建模阶段&lt;/li&gt;
+&lt;li&gt;漏洞分析阶段&lt;/li&gt;
+&lt;li&gt;漏洞利用阶段&lt;/li&gt;
+&lt;li&gt;后渗透攻击阶段&lt;/li&gt;
+&lt;li&gt;报告阶段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;渗透测试的常用工具&lt;/li&gt;
+&lt;li&gt;渗透测试报告的编写
+&lt;ul&gt;
+&lt;li&gt;渗透测试报告的目的&lt;/li&gt;
+&lt;li&gt;报告的内容摘要&lt;/li&gt;
+&lt;li&gt;报告包含的范围&lt;/li&gt;
+&lt;li&gt;安全交付渗透测试报告&lt;/li&gt;
+&lt;li&gt;渗透测试报告应包含的内容&lt;/li&gt;
+&lt;li&gt;总结&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二漏洞扫描&#34;&gt;二、漏洞扫描
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Appscan安装配置及扫描&lt;/li&gt;
+&lt;li&gt;Goby安装配置及扫描&lt;/li&gt;
+&lt;li&gt;AWVS安装配置及扫描&lt;/li&gt;
+&lt;li&gt;Nessus安装配置及扫描&lt;/li&gt;
+&lt;li&gt;Wpscan/ThinkPhpGUI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三漏洞利用实战&#34;&gt;三、漏洞利用实战
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;MSF完美升级及目录结构解读&lt;/li&gt;
+&lt;li&gt;MSF命令实操&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-网络服务器攻击渗透实战&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-浏览器攻击渗透实战&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-应用word软件渗透实战&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-利用samba服务器漏洞入侵Linux主机实战&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-&lt;code&gt;Bash shellshock&lt;/code&gt;(破壳)实战&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-PHP  CGI漏洞利用实战&lt;/li&gt;
+&lt;li&gt;MSF渗透测试-Distcc后门漏洞实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四渗透测试实战&#34;&gt;四、渗透测试实战
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;电商系统渗透测试实战
+&lt;ul&gt;
+&lt;li&gt;电商系统项目环境搭建&lt;/li&gt;
+&lt;li&gt;信息收集
+&lt;ul&gt;
+&lt;li&gt;Web服务系统指纹识别&lt;/li&gt;
+&lt;li&gt;IP与端口nmap扫描&lt;/li&gt;
+&lt;li&gt;dirsearch目录扫描&lt;/li&gt;
+&lt;li&gt;服务器信息与CMS指纹识别&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;系统漏洞探针
+&lt;ul&gt;
+&lt;li&gt;Goby漏扫实战&lt;/li&gt;
+&lt;li&gt;Nessus高级扫描
+&lt;ul&gt;
+&lt;li&gt;CVE与微软MS漏洞列表&lt;/li&gt;
+&lt;li&gt;CVSS通用漏洞评分标准&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;漏洞利用
+&lt;ul&gt;
+&lt;li&gt;Exploit/1377day/CNDV与Seebug等漏洞平台检索&lt;/li&gt;
+&lt;li&gt;searchsploit漏洞信息收集与EXP运用&lt;/li&gt;
+&lt;li&gt;msf漏洞利用和测试&lt;/li&gt;
+&lt;li&gt;MS17-010漏洞利用实践&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Web应用漏洞探针
+&lt;ul&gt;
+&lt;li&gt;CMS指纹识别whatcms/whatweb&lt;/li&gt;
+&lt;li&gt;CMS与框架扫漏工具Wpscan/ThinkPhpGUI&lt;/li&gt;
+&lt;li&gt;AWVS漏洞扫描实战&lt;/li&gt;
+&lt;li&gt;自动化的SQL注入工具SQLMap实战&lt;/li&gt;
+&lt;li&gt;XSS漏洞利用工具Beef实战&lt;/li&gt;
+&lt;li&gt;人工漏洞探查实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;渗透报告标准与编写&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;渗透测试工具python开发实战
+&lt;ul&gt;
+&lt;li&gt;TCP代理开发实战&lt;/li&gt;
+&lt;li&gt;POC开发实战&lt;/li&gt;
+&lt;li&gt;Exp工具编写实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五内网渗透实战&#34;&gt;五、内网渗透实战
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;域渗透
+&lt;ul&gt;
+&lt;li&gt;域渗透基础&lt;/li&gt;
+&lt;li&gt;域控与域控定位&lt;/li&gt;
+&lt;li&gt;无凭证渗透域控&lt;/li&gt;
+&lt;li&gt;哈希攻击&lt;/li&gt;
+&lt;li&gt;黄金票据与利用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;隧道与代理
+&lt;ul&gt;
+&lt;li&gt;端口转发技术&lt;/li&gt;
+&lt;li&gt;隧道代理&lt;/li&gt;
+&lt;li&gt;防火墙突破&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;横向移动
+&lt;ul&gt;
+&lt;li&gt;PTH哈希传递&lt;/li&gt;
+&lt;li&gt;PTT票据传递
+&lt;ul&gt;
+&lt;li&gt;MS14-068漏洞生成票据实战&lt;/li&gt;
+&lt;li&gt;kekeo生成票据实战&lt;/li&gt;
+&lt;li&gt;mimiakatz利用的历史遗留票据实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;权限维持
+&lt;ul&gt;
+&lt;li&gt;注册表自启动&lt;/li&gt;
+&lt;li&gt;注册服务自启动&lt;/li&gt;
+&lt;li&gt;域控后门，万能钥匙&lt;/li&gt;
+&lt;li&gt;黄金白银票据，隐藏账户的利用实战&lt;/li&gt;
+&lt;li&gt;自启动，映像劫持实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;后渗透
+&lt;ul&gt;
+&lt;li&gt;Metasploit后渗透实战&lt;/li&gt;
+&lt;li&gt;痕迹清理概述&lt;/li&gt;
+&lt;li&gt;Windows痕迹清理&lt;/li&gt;
+&lt;li&gt;Linux痕迹清理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;六权限提升实战&#34;&gt;六、权限提升实战
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Windows提权实战
+&lt;ul&gt;
+&lt;li&gt;用户和用户组权限&lt;/li&gt;
+&lt;li&gt;提全流程、补丁查询与可写目录&lt;/li&gt;
+&lt;li&gt;权限提升
+&lt;ul&gt;
+&lt;li&gt;MS09-0120（俗称巴西烤肉）提权&lt;/li&gt;
+&lt;li&gt;烂土豆提权实战&lt;/li&gt;
+&lt;li&gt;MS14_058提权&lt;/li&gt;
+&lt;li&gt;msf提权实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;系统服务权限配置错误提权实战&lt;/li&gt;
+&lt;li&gt;本地dll劫持提权实战&lt;/li&gt;
+&lt;li&gt;2003mof提权实战&lt;/li&gt;
+&lt;li&gt;数据库提权实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linux提权实战
+&lt;ul&gt;
+&lt;li&gt;脏牛内核溢出提权实战&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Linux SUID&lt;/code&gt;提权实战&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LInux passwd&lt;/code&gt;提权实战&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Linux sodu&lt;/code&gt;提权实战&lt;/li&gt;
+&lt;li&gt;计划任务反弹shell提权实战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;阶段三收获&#34;&gt;阶段三收获
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;项目
+&lt;ul&gt;
+&lt;li&gt;渗透测试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;证书：CISP-PTE&lt;/li&gt;
+&lt;li&gt;就业岗位
+&lt;ul&gt;
+&lt;li&gt;应急响应工程师&lt;/li&gt;
+&lt;li&gt;代码审计工程师&lt;/li&gt;
+&lt;li&gt;安全漏洞研究员&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>阶段2：漏洞挖掘训练</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B52%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E8%AE%AD%E7%BB%83/</link>
         <pubDate>Tue, 24 Mar 2026 09:41:32 +0800</pubDate>
