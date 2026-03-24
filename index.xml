@@ -7,7 +7,134 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Tue, 24 Mar 2026 11:13:08 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 24 Mar 2026 17:04:51 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>阶段4：HVV红队高维攻击</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B54hvv%E7%BA%A2%E9%98%9F%E9%AB%98%E7%BB%B4%E6%94%BB%E5%87%BB/</link>
+        <pubDate>Tue, 24 Mar 2026 17:04:51 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B54hvv%E7%BA%A2%E9%98%9F%E9%AB%98%E7%BB%B4%E6%94%BB%E5%87%BB/</guid>
+        <description>&lt;h2 id=&#34;一社会工程学与精准打击&#34;&gt;一、社会工程学与精准打击
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;情报搜集与攻击准备
+&lt;ul&gt;
+&lt;li&gt;多维情报搜集：从社工库到目标画像&lt;/li&gt;
+&lt;li&gt;钓鱼基础设施搭建：网站克隆与邮件伪造&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;武器化载荷制作
+&lt;ul&gt;
+&lt;li&gt;office武器化：与DDE攻击实战&lt;/li&gt;
+&lt;li&gt;电子文档陷阱：CHM与电子载荷投递&lt;/li&gt;
+&lt;li&gt;系统快捷方式攻击：LNK与HTA载荷伪装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;C2基础设施操控：CobaltStrike高阶战术
+&lt;ul&gt;
+&lt;li&gt;目标环境感知
+&lt;ul&gt;
+&lt;li&gt;存活主机探测——&amp;gt;[内网存活主机发现与拓扑绘制]&lt;/li&gt;
+&lt;li&gt;端口/进程扫描——&amp;gt;[服务端口扫描与进程信息收集]&lt;/li&gt;
+&lt;li&gt;Beacon浏览探测模块——&amp;gt;[网络共享与域环境信息浏览]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;目标控制与交互-图形化远程控制与文件系统操作&lt;/li&gt;
+&lt;li&gt;隐蔽通道构建
+&lt;ul&gt;
+&lt;li&gt;CS代理转发——&amp;gt;[多层代理搭建与流量转发技术]&lt;/li&gt;
+&lt;li&gt;MSF与CS联动实战——&amp;gt;[工具生态联动：MSF会话注入CS]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;权限维持与扩展
+&lt;ul&gt;
+&lt;li&gt;CS后门攻击实践——&amp;gt;[持久化后门生成与投递技术]&lt;/li&gt;
+&lt;li&gt;CS插件安装与使用——&amp;gt;[功能扩展：Aggressor脚本与插件生态]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二基础免杀&#34;&gt;二、基础免杀
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;对抗静态查杀：核心免杀思路与代码混淆技术&lt;/li&gt;
+&lt;li&gt;对抗行为检测：载荷打包与生成器技术&lt;/li&gt;
+&lt;li&gt;载荷变形艺术：加花、加壳与特征码定位修改&lt;/li&gt;
+&lt;li&gt;现代免杀武器库
+&lt;ul&gt;
+&lt;li&gt;跨平台载荷生成框架：Manjusak&lt;/li&gt;
+&lt;li&gt;高强度综合免杀工具：掩日&lt;/li&gt;
+&lt;li&gt;一站式在线免杀：潮汐平台&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三免杀进阶&#34;&gt;三、免杀进阶
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;高级免杀战术：从原理到bypass
+&lt;ul&gt;
+&lt;li&gt;特征码分离——&amp;gt;战术1：特征码定位与分离&lt;/li&gt;
+&lt;li&gt;脏数据干扰——&amp;gt;战术2：插入脏数据干扰检测引擎&lt;/li&gt;
+&lt;li&gt;混淆加密——&amp;gt;战术3：多层混淆与加密&lt;/li&gt;
+&lt;li&gt;拆分关键字——&amp;gt;战术4：敏感函数与关键字拆分&lt;/li&gt;
+&lt;li&gt;二次开发——&amp;gt;战术5：开源工具二次开发&lt;/li&gt;
+&lt;li&gt;固有特征修改——&amp;gt;战术6：修改固有特征以实现免杀&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对抗命令行监控：命令混淆与关键字拆分技术
+&lt;ul&gt;
+&lt;li&gt;干扰词插入&lt;/li&gt;
+&lt;li&gt;等价替换&lt;/li&gt;
+&lt;li&gt;分割HTTP等网络特征&lt;/li&gt;
+&lt;li&gt;方法名拆分&lt;/li&gt;
+&lt;li&gt;语法干扰&lt;/li&gt;
+&lt;li&gt;自动化工具：使用Ladon等工具进行命令混淆&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;对抗内存查杀-Shellcode分离与加载技术
+&lt;ul&gt;
+&lt;li&gt;文本分离免杀Shellcode战&lt;/li&gt;
+&lt;li&gt;远程协议分离免杀Shellcode战&lt;/li&gt;
+&lt;li&gt;加载器分离免杀战&lt;/li&gt;
+&lt;li&gt;远程协议分离免杀Shellcode战&lt;/li&gt;
+&lt;li&gt;管道分离免杀shellcode战&lt;/li&gt;
+&lt;li&gt;图片隐写免杀shellcode战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四操作系统入侵实战&#34;&gt;四、操作系统入侵实战
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;SSH服务入口爆破与隐藏后门用户植入&lt;/li&gt;
+&lt;li&gt;MSF木马植入与系统持久化驻留&lt;/li&gt;
+&lt;li&gt;内核级隐藏：Rootkit后门部署与痕迹消除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五红队渗透实战指南&#34;&gt;五、红队渗透实战指南
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;战术筹备
+&lt;ul&gt;
+&lt;li&gt;快速打点&lt;/li&gt;
+&lt;li&gt;GameBox密码修改&lt;/li&gt;
+&lt;li&gt;源码备份&lt;/li&gt;
+&lt;li&gt;数据库备份&lt;/li&gt;
+&lt;li&gt;IP与端口探测&lt;/li&gt;
+&lt;li&gt;flag自动提交脚本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;渗透与持久化实践
+&lt;ul&gt;
+&lt;li&gt;Shell隐藏会话管理&lt;/li&gt;
+&lt;li&gt;Shell载荷混淆与免杀&lt;/li&gt;
+&lt;li&gt;内存码与进程注入&lt;/li&gt;
+&lt;li&gt;反溯源与干扰技术&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;HVV行动全解析
+&lt;ul&gt;
+&lt;li&gt;攻防规则与得分要点&lt;/li&gt;
+&lt;li&gt;作战复盘与日报撰写&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>阶段3：渗透测试工程师</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E9%98%B6%E6%AE%B53%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88/</link>
         <pubDate>Tue, 24 Mar 2026 11:13:08 +0800</pubDate>
