@@ -7,7 +7,260 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Loyal</copyright>
-        <lastBuildDate>Tue, 24 Mar 2026 18:43:58 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 26 Mar 2026 17:29:47 +0800</lastBuildDate><atom:link href="https://lloyal-sudo.github.io/lloyal-sudo01/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CTF Web赛道，HTTP协议请求方式及解题思路</title>
+        <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/ctf-web%E8%B5%9B%E9%81%93http%E5%8D%8F%E8%AE%AE%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%8F%8A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/</link>
+        <pubDate>Thu, 26 Mar 2026 17:29:47 +0800</pubDate>
+        
+        <guid>https://lloyal-sudo.github.io/lloyal-sudo01/p/ctf-web%E8%B5%9B%E9%81%93http%E5%8D%8F%E8%AE%AE%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%8F%8A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/</guid>
+        <description>&lt;h2 id=&#34;http协议请求方式&#34;&gt;HTTP协议请求方式
+&lt;/h2&gt;&lt;p&gt;在CTF的Web赛道中，&lt;strong&gt;HTTP协议请求方式&lt;/strong&gt;不仅是基础，更是挖掘漏洞、绕过限制的关键钥匙。它不仅仅是GET与POST的区别，更包含了请求头、请求方法、状态码等一系列攻防逻辑。&lt;/p&gt;
+&lt;h3 id=&#34;一-核心请求方法-request-methods&#34;&gt;一、 核心请求方法 (Request Methods)
+&lt;/h3&gt;&lt;p&gt;在CTF解题中，最常用的方法远不止标准的GET和POST，许多漏洞源于对请求方法的处理不当。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;方法&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;全称&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;核心作用与CTF考点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;GET&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;GET&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;最常用。&lt;strong&gt;考点&lt;/strong&gt;：参数注入（XSS、SQLi）、页面缓存、敏感信息暴露在URL。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;POST&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;POST&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;提交数据。&lt;strong&gt;考点&lt;/strong&gt;：表单绕过、文件上传、Cookie注入、Referer欺骗。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;HEAD&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;HEAD&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;只请求头部，无主体。&lt;strong&gt;考点&lt;/strong&gt;：绕过敏感路由检测、目录扫描。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;PUT&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;PUT&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;上传文件。&lt;strong&gt;考点&lt;/strong&gt;：WebDAV漏洞、任意文件上传（若服务器配置不当）。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;DELETE&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;DELETE&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;删除文件。&lt;strong&gt;考点&lt;/strong&gt;：未授权访问导致的文件删除。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;OPTIONS&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;OPTIONS&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;查看服务器支持的方法。&lt;strong&gt;考点&lt;/strong&gt;：CORS跨域配置错误、敏感HTTP头泄露。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;CONNECT&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;CONNECT&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;用于代理隧道。&lt;strong&gt;考点&lt;/strong&gt;：HTTP代理绕过访问限制。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;&lt;strong&gt;TRACE&lt;/strong&gt;&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;TRACE&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;回显服务器收到的请求。&lt;strong&gt;考点&lt;/strong&gt;：&lt;strong&gt;XST (跨站追踪)&lt;/strong&gt; 漏洞，窃取Cookie。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;二-关键请求头-request-headers&#34;&gt;二、 关键请求头 (Request Headers)
+&lt;/h3&gt;&lt;p&gt;头部信息往往是服务器解析逻辑的关键，也是CTF出题的高频“陷阱”区。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Host&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：指定目标主机名和端口。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CTF考点&lt;/strong&gt;：&lt;strong&gt;Host头攻击&lt;/strong&gt;、绕过CDN获取真实IP、虚拟主机路由绕过。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Referer&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：来源页面。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CTF考点&lt;/strong&gt;：&lt;strong&gt;CSRF防御绕过&lt;/strong&gt;、防盗链原理、水平越权（检查来源是否为站内）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;User-Agent (UA)&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：客户端身份标识。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CTF考点&lt;/strong&gt;：&lt;strong&gt;文件上传MIME类型绕过&lt;/strong&gt;（伪装成image/jpeg）、UA头注入、反爬取限制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cookie&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：维持会话状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CTF考点&lt;/strong&gt;：&lt;strong&gt;Session劫持&lt;/strong&gt;、SQL注入（Cookie注入）、反序列化漏洞（Cookie中存储恶意对象）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;X-Forwarded-For (XFF)&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：标识客户端真实IP（通过代理访问时）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CTF考点&lt;/strong&gt;：&lt;strong&gt;IP白名单绕过&lt;/strong&gt;（例如伪造XFF为127.0.0.1访问后台）、SSRF漏洞利用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Content-Type&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作用&lt;/strong&gt;：请求体的数据格式。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CTF考点&lt;/strong&gt;：&lt;strong&gt;MIME绕过&lt;/strong&gt;、&lt;strong&gt;JSON解析漏洞&lt;/strong&gt;、多部分表单数据（multipart/form-data）上传。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;三-http请求流程与状态码&#34;&gt;三、 HTTP请求流程与状态码
+&lt;/h3&gt;&lt;p&gt;深入理解请求生命周期有助于分析漏洞成因。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;请求流程&lt;/strong&gt;：
+&lt;code&gt;建立TCP连接 -&amp;gt; 发送HTTP请求 -&amp;gt; 服务器处理 -&amp;gt; 返回HTTP响应 -&amp;gt; 关闭连接&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关键状态码&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;3xx (重定向)&lt;/strong&gt;：&lt;code&gt;302 Found&lt;/code&gt; (常见于登录绕过)、&lt;code&gt;301 Moved Permanently&lt;/code&gt; (URL跳转漏洞)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;4xx (客户端错误)&lt;/strong&gt;：&lt;code&gt;403 Forbidden&lt;/code&gt; (核心考点：目录遍历禁止、IP限制、文件类型限制)、&lt;code&gt;401 Unauthorized&lt;/code&gt; (基本认证绕过)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;5xx (服务器错误)&lt;/strong&gt;：&lt;code&gt;500 Internal Server Error&lt;/code&gt; (&lt;strong&gt;代码执行漏洞&lt;/strong&gt;、SQL语法错误、模板注入报错)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;四-ctf实战中的请求构造&#34;&gt;四、 CTF实战中的请求构造
+&lt;/h3&gt;&lt;p&gt;在解题时，你需要熟练掌握如何修改请求，最常用的工具是 &lt;strong&gt;Burp Suite&lt;/strong&gt; 或 &lt;strong&gt;Postman&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;示例：构造一个绕过限制的POST请求&lt;/strong&gt;
+假设你需要上传一个.php文件但服务器限制了后缀，你可以修改请求如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nf&#34;&gt;POST&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;/upload&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;HTTP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1.1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Host&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;target.com&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;User-Agent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Content-Type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Referer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;http://target.com/upload_page&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Cookie&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l&#34;&gt;PHPSESSID=abc123def456&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;------WebKitFormBoundary7MA4YWxkTrZu0gW
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Content-Disposition: form-data; name=&amp;#34;file&amp;#34;; filename=&amp;#34;shell.jpg&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Content-Type: image/jpeg  &amp;lt;!-- 伪装成图片类型绕过前端检测 --&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;?php phpinfo(); ?&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;------WebKitFormBoundary7MA4YWxkTrZu0gW--
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;总结&lt;/strong&gt;
+在Web前置学习中，&lt;strong&gt;将HTTP请求的每一个部分都视为潜在的攻击向量&lt;/strong&gt;是关键。从最基础的GET/POST，到隐蔽的XFF、Referer，再到容易被忽视的TRACE方法，理解它们的工作原理和安全风险，是你攻克CTF Web题目的坚实地基。&lt;/p&gt;
+&lt;h2 id=&#34;解题思路&#34;&gt;解题思路
+&lt;/h2&gt;&lt;p&gt;解决CTF中Web题型的核心逻辑，是**“摸清通信规则 -&amp;gt; 寻找异常入口 -&amp;gt; 构造恶意 payload”**。针对你刚才关注的HTTP协议相关题目，这里有一套清晰、可执行的解题步骤。&lt;/p&gt;
+&lt;h3 id=&#34;一-前置准备理清通信边界&#34;&gt;一、 前置准备：理清通信边界
+&lt;/h3&gt;&lt;p&gt;在动手之前，先明确你和目标服务器之间的“对话规则”。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;分析请求包&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;工具&lt;/strong&gt;：使用 &lt;strong&gt;Burp Suite&lt;/strong&gt; 的代理功能拦截流量，或直接在浏览器开发者工具的Network面板查看。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关键观察点&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;请求方法&lt;/strong&gt;：是GET、POST，还是更少见的PUT/DELETE/OPTIONS？（常考点：方法覆盖）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;请求头&lt;/strong&gt;：&lt;code&gt;Host&lt;/code&gt;、&lt;code&gt;Referer&lt;/code&gt;、&lt;code&gt;User-Agent&lt;/code&gt;、&lt;code&gt;Cookie&lt;/code&gt;、&lt;code&gt;X-Forwarded-For&lt;/code&gt; 等是否被服务器校验？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据位置&lt;/strong&gt;：参数是在URL（GET）、消息体（POST），还是在Cookie中？&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Content-Type&lt;/strong&gt;：是&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;、&lt;code&gt;multipart/form-data&lt;/code&gt;（文件上传）还是&lt;code&gt;application/json&lt;/code&gt;？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;判断目标类型&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SQL注入&lt;/strong&gt;：参数可能导致数据库报错或布尔变化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;XSS&lt;/strong&gt;：输入是否被浏览器解析。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文件上传&lt;/strong&gt;：存在上传入口。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;反序列化/SSTI&lt;/strong&gt;：Cookie或POST数据中存在看似随机的字符串（极可能是序列化对象）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;二-核心步骤寻找漏洞与利用&#34;&gt;二、 核心步骤：寻找漏洞与利用
+&lt;/h3&gt;&lt;p&gt;这是解题的主体，按以下逻辑逐步推进。&lt;/p&gt;
+&lt;h4 id=&#34;1-信息收集与指纹识别&#34;&gt;1. 信息收集与指纹识别
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;扫描目录&lt;/strong&gt;：使用 &lt;code&gt;dirsearch&lt;/code&gt; 或 &lt;code&gt;Burp Suite Scanner&lt;/code&gt; 扫描常见敏感文件（&lt;code&gt;robots.txt&lt;/code&gt;、&lt;code&gt;phpinfo.php&lt;/code&gt;、&lt;code&gt;/.git/&lt;/code&gt;、&lt;code&gt;/backup.zip&lt;/code&gt;）。
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;命令示例&lt;/em&gt;：&lt;code&gt;dirsearch -u http://target.com -e php -f txt&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看源码&lt;/strong&gt;：点击页面查看源代码，寻找注释、隐藏字段、JavaScript中的硬编码（如密钥、管理员路径）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-漏洞探测与触发&#34;&gt;2. 漏洞探测与触发
+&lt;/h4&gt;&lt;p&gt;针对不同的入口点，尝试构造恶意输入：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;HTTP头注入&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;在&lt;code&gt;User-Agent&lt;/code&gt;或&lt;code&gt;Referer&lt;/code&gt;中尝试插入&lt;code&gt;\n&lt;/code&gt;（换行符）和恶意头，如 &lt;code&gt;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\nX-Forwarded-For: 127.0.0.1&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目的&lt;/strong&gt;：绕过IP限制、伪造身份、或在服务器响应中注入内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;参数污染&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;在URL或POST数据中，对同一个参数传递多个值，例如 &lt;code&gt;id=1&amp;amp;id=2&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目的&lt;/strong&gt;：利用服务器解析逻辑的差异（如PHP的&lt;code&gt;_GET&lt;/code&gt;数组会被后一个值覆盖）来绕过过滤。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文件上传绕过&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;前端校验绕过&lt;/strong&gt;：直接修改Burp请求中的文件名和Content-Type。例如，将&lt;code&gt;shell.php&lt;/code&gt;改为&lt;code&gt;shell.jpg.php&lt;/code&gt;，Content-Type改为&lt;code&gt;image/jpeg&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;路径穿越&lt;/strong&gt;：在文件名中插入&lt;code&gt;../&lt;/code&gt;，例如将文件上传为&lt;code&gt;../../shell.php&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-构造-payload-进行攻击&#34;&gt;3. 构造 Payload 进行攻击
+&lt;/h4&gt;&lt;p&gt;根据探测到的漏洞类型，编写具体的攻击代码：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SQL注入 Payload&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;布尔盲注&lt;/strong&gt;：&lt;code&gt;id=1&#39; AND ASCII(SUBSTRING(DATABASE(),1,1))&amp;gt;100--+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;联合查询&lt;/strong&gt;：&lt;code&gt;id=-1&#39; UNION SELECT 1,2,DATABASE()--+&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;XSS Payload&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;反射型：&lt;code&gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;存储型：在评论或输入框中直接注入。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;反序列化/SSTI Payload&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;这是较复杂的题型。需要先理解序列化格式，然后构造恶意对象。&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;SSTI示例（Python Jinja2模板）&lt;/em&gt;：&lt;code&gt;{{ config.__class__.__import__(&#39;os&#39;).popen(&#39;whoami&#39;).read() }}&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;三-实战演练以http头绕过为例&#34;&gt;三、 实战演练：以HTTP头绕过为例
+&lt;/h3&gt;&lt;p&gt;假设题目是“通过HTTP头绕过访问限制，获取管理员Flag”。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;拦截请求&lt;/strong&gt;：发现访问后台&lt;code&gt;/admin&lt;/code&gt;返回403禁止访问。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分析请求&lt;/strong&gt;：查看请求头，发现没有&lt;code&gt;X-Forwarded-For&lt;/code&gt;字段。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;猜测漏洞&lt;/strong&gt;：服务器可能通过该头来识别本地请求。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;构造攻击&lt;/strong&gt;：在Burp中添加请求头 &lt;code&gt;X-Forwarded-For: 127.0.0.1&lt;/code&gt;，然后重新发送。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;获取结果&lt;/strong&gt;：如果配置不当，服务器会认为你是本地请求，从而返回管理员页面或Flag。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;四-总结与避坑&#34;&gt;四、 总结与避坑
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;耐心是关键&lt;/strong&gt;：Web题往往需要多次尝试，不要因为一次失败就放弃。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;关注细节&lt;/strong&gt;：服务器返回的任何一个字符（如403、500、空页面）都可能是解题的线索。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;工具辅助&lt;/strong&gt;：熟练使用Burp Suite、SQLMap、Dirsearch等工具，可以极大提高效率，但也要理解手工分析的逻辑。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>竞赛：CTF夺旗赛突击</title>
         <link>https://lloyal-sudo.github.io/lloyal-sudo01/p/%E7%AB%9E%E8%B5%9Bctf%E5%A4%BA%E6%97%97%E8%B5%9B%E7%AA%81%E5%87%BB/</link>
         <pubDate>Tue, 24 Mar 2026 18:43:58 +0800</pubDate>

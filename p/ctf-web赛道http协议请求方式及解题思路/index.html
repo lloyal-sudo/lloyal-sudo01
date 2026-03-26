@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="HTTP协议请求方式 在CTF的Web赛道中，HTTP协议请求方式不仅是基础，更是挖掘漏洞、绕过限制的关键钥匙。它不仅仅是GET与POST的区">
+<title>CTF Web赛道，HTTP协议请求方式及解题思路</title>
+
+<link rel='canonical' href='https://lloyal-sudo.github.io/lloyal-sudo01/p/ctf-web%E8%B5%9B%E9%81%93http%E5%8D%8F%E8%AE%AE%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%8F%8A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/'>
+
+<link rel="stylesheet" href="/lloyal-sudo01/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="CTF Web赛道，HTTP协议请求方式及解题思路">
+<meta property='og:description' content="HTTP协议请求方式 在CTF的Web赛道中，HTTP协议请求方式不仅是基础，更是挖掘漏洞、绕过限制的关键钥匙。它不仅仅是GET与POST的区">
+<meta property='og:url' content='https://lloyal-sudo.github.io/lloyal-sudo01/p/ctf-web%E8%B5%9B%E9%81%93http%E5%8D%8F%E8%AE%AE%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%8F%8A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/'>
+<meta property='og:site_name' content='Loyal'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-03-26T17:29:47&#43;08:00'/><meta property='article:modified_time' content='2026-03-26T17:29:47&#43;08:00'/>
+<meta name="twitter:title" content="CTF Web赛道，HTTP协议请求方式及解题思路">
+<meta name="twitter:description" content="HTTP协议请求方式 在CTF的Web赛道中，HTTP协议请求方式不仅是基础，更是挖掘漏洞、绕过限制的关键钥匙。它不仅仅是GET与POST的区">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/lloyal-sudo01/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/lloyal-sudo01/img/avatar_hu6173231718797166606.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">👻</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/lloyal-sudo01">Loyal</a></h1>
+            <h2 class="site-description">欢迎来到我的网站！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/lloyal-sudo01/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/en/" >English</option>
+                                
+                                    <option value="https://lloyal-sudo.github.io/lloyal-sudo01/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#http协议请求方式">HTTP协议请求方式</a>
+      <ol>
+        <li><a href="#一-核心请求方法-request-methods">一、 核心请求方法 (Request Methods)</a></li>
+        <li><a href="#二-关键请求头-request-headers">二、 关键请求头 (Request Headers)</a></li>
+        <li><a href="#三-http请求流程与状态码">三、 HTTP请求流程与状态码</a></li>
+        <li><a href="#四-ctf实战中的请求构造">四、 CTF实战中的请求构造</a></li>
+      </ol>
+    </li>
+    <li><a href="#解题思路">解题思路</a>
+      <ol>
+        <li><a href="#一-前置准备理清通信边界">一、 前置准备：理清通信边界</a></li>
+        <li><a href="#二-核心步骤寻找漏洞与利用">二、 核心步骤：寻找漏洞与利用</a>
+          <ol>
+            <li><a href="#1-信息收集与指纹识别">1. 信息收集与指纹识别</a></li>
+            <li><a href="#2-漏洞探测与触发">2. 漏洞探测与触发</a></li>
+            <li><a href="#3-构造-payload-进行攻击">3. 构造 Payload 进行攻击</a></li>
+          </ol>
+        </li>
+        <li><a href="#三-实战演练以http头绕过为例">三、 实战演练：以HTTP头绕过为例</a></li>
+        <li><a href="#四-总结与避坑">四、 总结与避坑</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/lloyal-sudo01/p/ctf-web%E8%B5%9B%E9%81%93http%E5%8D%8F%E8%AE%AE%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E5%8F%8A%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF/">CTF Web赛道，HTTP协议请求方式及解题思路</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-03-26</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="http协议请求方式">HTTP协议请求方式
+</h2><p>在CTF的Web赛道中，<strong>HTTP协议请求方式</strong>不仅是基础，更是挖掘漏洞、绕过限制的关键钥匙。它不仅仅是GET与POST的区别，更包含了请求头、请求方法、状态码等一系列攻防逻辑。</p>
+<h3 id="一-核心请求方法-request-methods">一、 核心请求方法 (Request Methods)
+</h3><p>在CTF解题中，最常用的方法远不止标准的GET和POST，许多漏洞源于对请求方法的处理不当。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th style="text-align:left">方法</th>
+<th style="text-align:left">全称</th>
+<th style="text-align:left">核心作用与CTF考点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>GET</strong></td>
+<td style="text-align:left">GET</td>
+<td style="text-align:left">最常用。<strong>考点</strong>：参数注入（XSS、SQLi）、页面缓存、敏感信息暴露在URL。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>POST</strong></td>
+<td style="text-align:left">POST</td>
+<td style="text-align:left">提交数据。<strong>考点</strong>：表单绕过、文件上传、Cookie注入、Referer欺骗。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>HEAD</strong></td>
+<td style="text-align:left">HEAD</td>
+<td style="text-align:left">只请求头部，无主体。<strong>考点</strong>：绕过敏感路由检测、目录扫描。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>PUT</strong></td>
+<td style="text-align:left">PUT</td>
+<td style="text-align:left">上传文件。<strong>考点</strong>：WebDAV漏洞、任意文件上传（若服务器配置不当）。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>DELETE</strong></td>
+<td style="text-align:left">DELETE</td>
+<td style="text-align:left">删除文件。<strong>考点</strong>：未授权访问导致的文件删除。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>OPTIONS</strong></td>
+<td style="text-align:left">OPTIONS</td>
+<td style="text-align:left">查看服务器支持的方法。<strong>考点</strong>：CORS跨域配置错误、敏感HTTP头泄露。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>CONNECT</strong></td>
+<td style="text-align:left">CONNECT</td>
+<td style="text-align:left">用于代理隧道。<strong>考点</strong>：HTTP代理绕过访问限制。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>TRACE</strong></td>
+<td style="text-align:left">TRACE</td>
+<td style="text-align:left">回显服务器收到的请求。<strong>考点</strong>：<strong>XST (跨站追踪)</strong> 漏洞，窃取Cookie。</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="二-关键请求头-request-headers">二、 关键请求头 (Request Headers)
+</h3><p>头部信息往往是服务器解析逻辑的关键，也是CTF出题的高频“陷阱”区。</p>
+<ol>
+<li><strong>Host</strong>
+<ul>
+<li><strong>作用</strong>：指定目标主机名和端口。</li>
+<li><strong>CTF考点</strong>：<strong>Host头攻击</strong>、绕过CDN获取真实IP、虚拟主机路由绕过。</li>
+</ul>
+</li>
+<li><strong>Referer</strong>
+<ul>
+<li><strong>作用</strong>：来源页面。</li>
+<li><strong>CTF考点</strong>：<strong>CSRF防御绕过</strong>、防盗链原理、水平越权（检查来源是否为站内）。</li>
+</ul>
+</li>
+<li><strong>User-Agent (UA)</strong>
+<ul>
+<li><strong>作用</strong>：客户端身份标识。</li>
+<li><strong>CTF考点</strong>：<strong>文件上传MIME类型绕过</strong>（伪装成image/jpeg）、UA头注入、反爬取限制。</li>
+</ul>
+</li>
+<li><strong>Cookie</strong>
+<ul>
+<li><strong>作用</strong>：维持会话状态。</li>
+<li><strong>CTF考点</strong>：<strong>Session劫持</strong>、SQL注入（Cookie注入）、反序列化漏洞（Cookie中存储恶意对象）。</li>
+</ul>
+</li>
+<li><strong>X-Forwarded-For (XFF)</strong>
+<ul>
+<li><strong>作用</strong>：标识客户端真实IP（通过代理访问时）。</li>
+<li><strong>CTF考点</strong>：<strong>IP白名单绕过</strong>（例如伪造XFF为127.0.0.1访问后台）、SSRF漏洞利用。</li>
+</ul>
+</li>
+<li><strong>Content-Type</strong>
+<ul>
+<li><strong>作用</strong>：请求体的数据格式。</li>
+<li><strong>CTF考点</strong>：<strong>MIME绕过</strong>、<strong>JSON解析漏洞</strong>、多部分表单数据（multipart/form-data）上传。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三-http请求流程与状态码">三、 HTTP请求流程与状态码
+</h3><p>深入理解请求生命周期有助于分析漏洞成因。</p>
+<ul>
+<li><strong>请求流程</strong>：
+<code>建立TCP连接 -&gt; 发送HTTP请求 -&gt; 服务器处理 -&gt; 返回HTTP响应 -&gt; 关闭连接</code></li>
+<li><strong>关键状态码</strong>：
+<ul>
+<li><strong>3xx (重定向)</strong>：<code>302 Found</code> (常见于登录绕过)、<code>301 Moved Permanently</code> (URL跳转漏洞)。</li>
+<li><strong>4xx (客户端错误)</strong>：<code>403 Forbidden</code> (核心考点：目录遍历禁止、IP限制、文件类型限制)、<code>401 Unauthorized</code> (基本认证绕过)。</li>
+<li><strong>5xx (服务器错误)</strong>：<code>500 Internal Server Error</code> (<strong>代码执行漏洞</strong>、SQL语法错误、模板注入报错)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="四-ctf实战中的请求构造">四、 CTF实战中的请求构造
+</h3><p>在解题时，你需要熟练掌握如何修改请求，最常用的工具是 <strong>Burp Suite</strong> 或 <strong>Postman</strong>。</p>
+<p><strong>示例：构造一个绕过限制的POST请求</strong>
+假设你需要上传一个.php文件但服务器限制了后缀，你可以修改请求如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/upload</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">target.com</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Type</span><span class="o">:</span> <span class="l">multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW</span>
+</span></span><span class="line"><span class="cl"><span class="n">Referer</span><span class="o">:</span> <span class="l">http://target.com/upload_page</span>
+</span></span><span class="line"><span class="cl"><span class="n">Cookie</span><span class="o">:</span> <span class="l">PHPSESSID=abc123def456</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">------WebKitFormBoundary7MA4YWxkTrZu0gW
+</span></span><span class="line"><span class="cl">Content-Disposition: form-data; name=&#34;file&#34;; filename=&#34;shell.jpg&#34;
+</span></span><span class="line"><span class="cl">Content-Type: image/jpeg  &lt;!-- 伪装成图片类型绕过前端检测 --&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;?php phpinfo(); ?&gt;
+</span></span><span class="line"><span class="cl">------WebKitFormBoundary7MA4YWxkTrZu0gW--
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>总结</strong>
+在Web前置学习中，<strong>将HTTP请求的每一个部分都视为潜在的攻击向量</strong>是关键。从最基础的GET/POST，到隐蔽的XFF、Referer，再到容易被忽视的TRACE方法，理解它们的工作原理和安全风险，是你攻克CTF Web题目的坚实地基。</p>
+<h2 id="解题思路">解题思路
+</h2><p>解决CTF中Web题型的核心逻辑，是**“摸清通信规则 -&gt; 寻找异常入口 -&gt; 构造恶意 payload”**。针对你刚才关注的HTTP协议相关题目，这里有一套清晰、可执行的解题步骤。</p>
+<h3 id="一-前置准备理清通信边界">一、 前置准备：理清通信边界
+</h3><p>在动手之前，先明确你和目标服务器之间的“对话规则”。</p>
+<ol>
+<li>
+<p><strong>分析请求包</strong></p>
+<ul>
+<li><strong>工具</strong>：使用 <strong>Burp Suite</strong> 的代理功能拦截流量，或直接在浏览器开发者工具的Network面板查看。</li>
+<li><strong>关键观察点</strong>：
+<ul>
+<li><strong>请求方法</strong>：是GET、POST，还是更少见的PUT/DELETE/OPTIONS？（常考点：方法覆盖）</li>
+<li><strong>请求头</strong>：<code>Host</code>、<code>Referer</code>、<code>User-Agent</code>、<code>Cookie</code>、<code>X-Forwarded-For</code> 等是否被服务器校验？</li>
+<li><strong>数据位置</strong>：参数是在URL（GET）、消息体（POST），还是在Cookie中？</li>
+<li><strong>Content-Type</strong>：是<code>application/x-www-form-urlencoded</code>、<code>multipart/form-data</code>（文件上传）还是<code>application/json</code>？</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>判断目标类型</strong></p>
+<ul>
+<li><strong>SQL注入</strong>：参数可能导致数据库报错或布尔变化。</li>
+<li><strong>XSS</strong>：输入是否被浏览器解析。</li>
+<li><strong>文件上传</strong>：存在上传入口。</li>
+<li><strong>反序列化/SSTI</strong>：Cookie或POST数据中存在看似随机的字符串（极可能是序列化对象）。</li>
+</ul>
+</li>
+</ol>
+<h3 id="二-核心步骤寻找漏洞与利用">二、 核心步骤：寻找漏洞与利用
+</h3><p>这是解题的主体，按以下逻辑逐步推进。</p>
+<h4 id="1-信息收集与指纹识别">1. 信息收集与指纹识别
+</h4><ul>
+<li><strong>扫描目录</strong>：使用 <code>dirsearch</code> 或 <code>Burp Suite Scanner</code> 扫描常见敏感文件（<code>robots.txt</code>、<code>phpinfo.php</code>、<code>/.git/</code>、<code>/backup.zip</code>）。
+<ul>
+<li><em>命令示例</em>：<code>dirsearch -u http://target.com -e php -f txt</code></li>
+</ul>
+</li>
+<li><strong>查看源码</strong>：点击页面查看源代码，寻找注释、隐藏字段、JavaScript中的硬编码（如密钥、管理员路径）。</li>
+</ul>
+<h4 id="2-漏洞探测与触发">2. 漏洞探测与触发
+</h4><p>针对不同的入口点，尝试构造恶意输入：</p>
+<ul>
+<li><strong>HTTP头注入</strong>：
+<ul>
+<li>在<code>User-Agent</code>或<code>Referer</code>中尝试插入<code>\n</code>（换行符）和恶意头，如 <code>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\nX-Forwarded-For: 127.0.0.1</code>。</li>
+<li><strong>目的</strong>：绕过IP限制、伪造身份、或在服务器响应中注入内容。</li>
+</ul>
+</li>
+<li><strong>参数污染</strong>：
+<ul>
+<li>在URL或POST数据中，对同一个参数传递多个值，例如 <code>id=1&amp;id=2</code>。</li>
+<li><strong>目的</strong>：利用服务器解析逻辑的差异（如PHP的<code>_GET</code>数组会被后一个值覆盖）来绕过过滤。</li>
+</ul>
+</li>
+<li><strong>文件上传绕过</strong>：
+<ul>
+<li><strong>前端校验绕过</strong>：直接修改Burp请求中的文件名和Content-Type。例如，将<code>shell.php</code>改为<code>shell.jpg.php</code>，Content-Type改为<code>image/jpeg</code>。</li>
+<li><strong>路径穿越</strong>：在文件名中插入<code>../</code>，例如将文件上传为<code>../../shell.php</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-构造-payload-进行攻击">3. 构造 Payload 进行攻击
+</h4><p>根据探测到的漏洞类型，编写具体的攻击代码：</p>
+<ul>
+<li><strong>SQL注入 Payload</strong>：
+<ul>
+<li><strong>布尔盲注</strong>：<code>id=1' AND ASCII(SUBSTRING(DATABASE(),1,1))&gt;100--+</code></li>
+<li><strong>联合查询</strong>：<code>id=-1' UNION SELECT 1,2,DATABASE()--+</code></li>
+</ul>
+</li>
+<li><strong>XSS Payload</strong>：
+<ul>
+<li>反射型：<code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code></li>
+<li>存储型：在评论或输入框中直接注入。</li>
+</ul>
+</li>
+<li><strong>反序列化/SSTI Payload</strong>：
+<ul>
+<li>这是较复杂的题型。需要先理解序列化格式，然后构造恶意对象。</li>
+<li><em>SSTI示例（Python Jinja2模板）</em>：<code>{{ config.__class__.__import__('os').popen('whoami').read() }}</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="三-实战演练以http头绕过为例">三、 实战演练：以HTTP头绕过为例
+</h3><p>假设题目是“通过HTTP头绕过访问限制，获取管理员Flag”。</p>
+<ol>
+<li><strong>拦截请求</strong>：发现访问后台<code>/admin</code>返回403禁止访问。</li>
+<li><strong>分析请求</strong>：查看请求头，发现没有<code>X-Forwarded-For</code>字段。</li>
+<li><strong>猜测漏洞</strong>：服务器可能通过该头来识别本地请求。</li>
+<li><strong>构造攻击</strong>：在Burp中添加请求头 <code>X-Forwarded-For: 127.0.0.1</code>，然后重新发送。</li>
+<li><strong>获取结果</strong>：如果配置不当，服务器会认为你是本地请求，从而返回管理员页面或Flag。</li>
+</ol>
+<h3 id="四-总结与避坑">四、 总结与避坑
+</h3><ul>
+<li><strong>耐心是关键</strong>：Web题往往需要多次尝试，不要因为一次失败就放弃。</li>
+<li><strong>关注细节</strong>：服务器返回的任何一个字符（如403、500、空页面）都可能是解题的线索。</li>
+<li><strong>工具辅助</strong>：熟练使用Burp Suite、SQLMap、Dirsearch等工具，可以极大提高效率，但也要理解手工分析的逻辑。</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Loyal
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/lloyal-sudo01/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
